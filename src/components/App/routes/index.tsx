@@ -7,6 +7,7 @@ import {Container, Row} from "react-bootstrap";
 
 const HomePage = lazy(() => import('../pages/Home'));
 const AdminPage = lazy(() => import('../pages/Admin'));
+const NotFoundPage = lazy(() => import('../pages/NotFound'));
 
 const Layout = () => {
   return (
@@ -54,14 +55,16 @@ const AppRoutes = () => {
               </Suspense>
             }
           />
+          {/* NOT FOUND */}
+          <Route
+            path='*'
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <NotFoundPage />
+              </Suspense>
+            }
+          />
         </Route>
-        {/*<GeneralLayoutRoute exact path="/" component={ HomePage }/>*/}
-        {/*/!*{ isAllowed &&  <GeneralLayoutRoute exact path="/info" component={ Info } needsLogin={true} isLoggedIn={isLoggedIn}/> }*!/*/}
-
-        {/*<LoginCallbackRoute exact path="/post-login" component={ LoginCallback }/>*/}
-
-        {/* NOT FOUND */}
-        {/*<GeneralLayoutRoute path="/" component={ NotFoundPage } needsLogin={false}/>*/}
       </Routes>
   )
 };
