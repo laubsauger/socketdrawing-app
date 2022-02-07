@@ -1,12 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+
+import { StoreProvider } from './contexts';
+
+import './index.scss';
+import App from './components/App';
+import {RootStore} from "./stores/rootStore";
+// @ts-ignore
 import reportWebVitals from './reportWebVitals';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StoreProvider store={new RootStore()}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
