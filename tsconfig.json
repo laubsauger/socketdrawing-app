@@ -4,8 +4,9 @@
     "target": "es6",
     "module": "esnext",
     "jsx": "react",
+    "inlineSource": true,
     "sourceMap": true,
-//    "outDir": "./dist",
+    "outDir": "./dist",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -20,7 +21,7 @@
 //    }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "exclude": [
     "*.stories.tsx",

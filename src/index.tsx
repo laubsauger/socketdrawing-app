@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-
 import { StoreProvider } from './contexts';
 
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-dark-5/dist/css/bootstrap-night.css";
 import './index.scss';
 import App from './components/App';
 import {RootStore} from "./stores/rootStore";
