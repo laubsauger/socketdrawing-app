@@ -1,45 +1,19 @@
 import React, { Suspense, lazy } from 'react';
-import { Outlet, Route, Routes} from 'react-router-dom';
-import { Container, Row } from "react-bootstrap";
+import { Route, Routes} from 'react-router-dom';
 import { observer } from "mobx-react-lite";
 import LoadingSpinner from "../../LoadingSpinner";
-import Navigation from "../Navigation";
+import DefaultLayout from "../Layouts/Default";
+import NoNavLayout from "../Layouts/NoNav";
 
 const HomePage = lazy(() => import('../Pages/Home'));
 const JoinPage = lazy(() => import('../Pages/Join'));
 const AdminPage = lazy(() => import('../Pages/Admin'));
 const NotFoundPage = lazy(() => import('../Pages/NotFound'));
 
-const Layout = () => {
-  return (
-    <div>
-      <Navigation />
-      <main>
-        <Container>
-          <Row>
-            <Outlet />
-          </Row>
-        </Container>
-      </main>
-      {/*<Footer/>*/}
-    </div>
-  );
-};
-
-const LayoutNoNav = () => {
-  return (
-    <div>
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  );
-};
-
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/join" element={<LayoutNoNav />}>
+      <Route path="/join" element={<NoNavLayout />}>
         <Route
           index
           element={
@@ -49,7 +23,7 @@ const AppRoutes = () => {
           }
         />
       </Route>
-      <Route path="/" element={<Layout />}>
+      <Route path="/" element={<DefaultLayout />}>
         <Route
           index
           element={
@@ -66,7 +40,7 @@ const AppRoutes = () => {
             </Suspense>
           }
         />
-        {/* NOT FOUND */}
+        {/* NOT FOUND catch all */}
         <Route
           path='*'
           element={

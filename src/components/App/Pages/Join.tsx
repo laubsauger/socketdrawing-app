@@ -1,16 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-// import { useStores } from '../../../hooks/useStores';
+import Controller from "../../Controller";
 
-const Admin: React.FC = (props) => {
-  // const { userStore } = useStores();
-
-  console.log('running join')
-
+const Join: React.FC = (props) => {
   return (
-    // <div>Functional Component for { userStore.name }</div>
-    <div>Join</div>
+    <div>
+      <Controller />
+    </div>
   )
 };
 
-export default observer(Admin);
+export default observer(Join);

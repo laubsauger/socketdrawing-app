@@ -1,0 +1,65 @@
+.btn {
+  z-index: 10;
+  position: fixed;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 20%;
+  font-weight: bold;
+  font-size: 1.25rem;
+  outline-offset: 3px;
+  opacity: 60%;
+
+  &:hover,
+  &:focus {
+    opacity: 75%;
+  }
+
+  &:active {
+    opacity: 100%;
+  }
+
+  &.btn-black {
+    top: 10px;
+    left: 10px;
+    background-color: #000000;
+
+    &:active {
+      background-color: #111;
+      outline: 2px solid #000000;
+    }
+  }
+
+  &.btn-red {
+    top: 10px;
+    right: 10px;
+    background-color: #ff0000;
+
+    &:active {
+      background-color: #ff3333;
+      outline: 1px solid #ff4444;
+    }
+  }
+
+  &.btn-green {
+    bottom: 10px;
+    left: 10px;
+    background-color: #008000;
+
+    &:active {
+      background-color: #448444;
+      outline: 2px solid #448444;
+    }
+  }
+
+  &.btn-blue {
+    bottom: 10px;
+    right: 10px;
+
+    background-color: #0000ff;
+
+    &:active {
+      background-color: #3333ff;
+      outline: 2px solid #3333ff;
+    }
+  }
+}

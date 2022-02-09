@@ -16,9 +16,6 @@
       "node_modules/@types",
       "src/types"
     ]
-//    "paths":{
-//      "osc": ["./src/types/osc"]
-//    }
   },
   "include": [
     "src/**/*",

@@ -1,14 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStores } from '../../../hooks/useStores';
+// import { useStores } from '../../../hooks/useStores';
 
 const Home: React.FC = (props) => {
-  const { userStore } = useStores();
-
-  console.log('running home')
+  // const { userStore } = useStores();
 
   return (
-    <div>Home ({ userStore.name })</div>
+    <div>Home</div>
   )
 };
 
