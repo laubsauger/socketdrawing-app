@@ -8,14 +8,17 @@
   font-size: 1.25rem;
   outline-offset: 3px;
   opacity: 60%;
+  filter: saturate(0.4);
 
   &:hover,
   &:focus {
     opacity: 75%;
+    filter: saturate(0.8);
   }
 
   &:active {
     opacity: 100%;
+    filter: saturate(1);
   }
 
   &.btn-black {

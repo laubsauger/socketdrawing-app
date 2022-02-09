@@ -6,12 +6,16 @@ import './styles.scss';
 import CtrlButton from "./CtrlButton";
 import CtrlXY from "./CtrlXY";
 import SessionInfo from "./SessionInfo";
+import LogoBackground from "../LogoBackground";
 
 const Controller: React.FC = (props) => {
   // const { userStore } = useStores();
 
   return (
     <div className="Controller">
+      <LogoBackground />
+      <SessionInfo />
+
       {/* //@todo: create buttons according to config */}
       <CtrlButton label="1" channelName="b1" variant="black" />
       <CtrlButton label="2" channelName="b2" variant="red" />
@@ -20,8 +24,6 @@ const Controller: React.FC = (props) => {
 
       {/* //@todo: create xy controller canvas if configured */}
       <CtrlXY channelNames={['x','y']}/>
-
-      <SessionInfo />
     </div>
   )
 };

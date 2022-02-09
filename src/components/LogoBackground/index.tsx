@@ -6,12 +6,10 @@ import './styles.scss';
 
 const LogoBackground = () => {
   return (
-    <div className="LogoBackground position-fixed w-100 h-100 d-flex flex-column justify-content-center align-items-center opacity-25 pointer-events-none">
+    <div className="LogoBackground position-fixed w-100 h-100 d-flex flex-column justify-content-center align-items-center pointer-events-none">
       <img
         alt=""
         src={ Logo }
-        width="15%"
-        height="15%"
         className="d-inline-block align-top"
       />
       <div><span className="font-monospace">OSC.<i>Link</i></span></div>
