@@ -14,4 +14,4 @@ const Canvas = (props:Props) => {
   return <canvas className="position-fixed w-100 h-100" ref={canvasRef} {...rest}/>;
 }
 
-export default Canvas
+export default Canvas;

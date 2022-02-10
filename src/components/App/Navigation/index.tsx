@@ -15,7 +15,7 @@ const Navigation = () => {
             height="30"
             className="d-inline-block align-top"
           />
-          <span className="mx-2 font-monospace">OSC.<i>Link</i></span>
+          <div className="mx-2 font-monospace" style={{fontSize: "16px"}}>OSC.<i>Link</i></div>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav">

@@ -1,11 +1,20 @@
-import {useRef, useEffect, useState} from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 function resizeCanvasToDisplaySize(canvas:HTMLCanvasElement) {
-  const { width, height } = canvas.getBoundingClientRect()
+  const { width, height } = canvas.getBoundingClientRect();
 
   if (canvas.width !== width || canvas.height !== height) {
-    canvas.width = width;
-    canvas.height = height;
+    const { devicePixelRatio:ratio = 1 } = window;
+    const context:CanvasRenderingContext2D|null = canvas.getContext('2d');
+
+    if (!context) {
+      return false;
+    }
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    context.scale(ratio, ratio);
+
     return true;
   }
 
@@ -41,7 +50,7 @@ const useCanvas = (draw:Function, options:{ context:any }) => {
       return;
     }
 
-    const canvas: HTMLCanvasElement = canvasRef.current
+    const canvas: HTMLCanvasElement = canvasRef.current;
 
     const context = canvas.getContext(options.context || '2d');
     let frameCount = 0;
@@ -58,7 +67,7 @@ const useCanvas = (draw:Function, options:{ context:any }) => {
     render();
 
     return () => {
-      window.cancelAnimationFrame(animationFrameId)
+      window.cancelAnimationFrame(animationFrameId);
     }
   }, [ draw ]);
 

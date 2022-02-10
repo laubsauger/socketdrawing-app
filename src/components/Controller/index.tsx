@@ -1,15 +1,16 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-// import { useStores } from '../../../hooks/useStores';
 
 import './styles.scss';
 import CtrlButton from "./CtrlButton";
 import CtrlXY from "./CtrlXY";
 import SessionInfo from "./SessionInfo";
 import LogoBackground from "../LogoBackground";
+import { useSocket } from "../../hooks/useSocket";
 
 const Controller: React.FC = (props) => {
   // const { userStore } = useStores();
+  const socket = useSocket();
 
   return (
     <div className="Controller">
