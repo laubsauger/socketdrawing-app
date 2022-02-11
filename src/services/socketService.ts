@@ -1,4 +1,1 @@
-
-const SocketService = () => {
-
-};
+export const SocketService = () => {}
