@@ -1,21 +1,36 @@
-import React, { useCallback, useEffect } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
+import {useLocation} from 'react-router-dom';
+import queryString from 'query-string';
 
 import './styles.scss';
+import config from '../../config';
 import CtrlButton from './CtrlButton';
 import CtrlXY from './CtrlXY';
 import SessionInfo from './SessionInfo';
 import LogoBackground from '../LogoBackground';
 import { useSocket } from '../../hooks/useSocket';
-import { useStores } from "../../hooks/useStores";
-import config from "../../config";
+import { useStores } from '../../hooks/useStores';
 
 const Controller = () => {
   const { socketStore } = useStores();
   const socket = useSocket();
 
+  const { search } = useLocation();
+
+  const [ wantsSlot, setWantsSlot ] = useState(0);
+
+  useEffect(() => {
+    const query = queryString.parse(search);
+    console.log(query.slot);
+    if (query.slot) {
+      setWantsSlot(Number(query.slot));
+    }
+  }, [ search ]);
+
   const handleConnected = useCallback(() => {
     console.log('socket::connected');
+
     socketStore.updateConnectionState({
       connected: true,
       connecting: false,
@@ -23,12 +38,15 @@ const Controller = () => {
       failReason: '',
     });
 
-    socket.emit('JOIN_REQUEST', config.socketRoom);
+    socket.emit('USER_JOIN_REQUEST', {
+      room: config.socketRoom,
+      wantsSlot: wantsSlot,
+    });
 
     socketStore.updateConnectionState({
       joining: true,
     });
-  }, [ socket, socketStore ]);
+  }, [ socket, socketStore, wantsSlot ]);
 
   const handleDisconnected = useCallback((data:any) => {
     console.log('socket::disconnected', data);
@@ -42,7 +60,7 @@ const Controller = () => {
   }, [ socketStore ]);
 
   const handleJoinAccepted = useCallback((data:any) => {
-    console.log('socket::JOIN_ACCEPTED', data);
+    console.log('socket::USER_JOIN_ACCEPTED', data);
 
     socketStore.updateConnectionState({
       joining: false,
@@ -50,27 +68,38 @@ const Controller = () => {
       rejected: false,
       rejectReason: '',
     });
+
+    socketStore.updateRoomState({
+      currentSlot: data.userSlot,
+    });
   }, [ socketStore ]);
 
   const handleJoinRejected = useCallback((data:any) => {
-    console.log('socket::JOIN_REJECTED', data);
+    console.log('socket::USER_JOIN_REJECTED', data);
+
     socketStore.updateConnectionState({
       joining: false,
       rejected: true,
       rejectReason: data.reason
     });
-
-    // @todo: react to this by showing retry button or something so a user can try again
   }, [ socketStore ]);
 
   const handleUserJoined = useCallback((data:any) => {
     console.log('socket::USER_JOINED', data);
+
     socketStore.updateRoomState({
       numCurrentUsers: data.usedSlots,
-      numMaxUsers: data.maxClients,
+      numMaxUsers: data.maxSlots,
     });
+  }, [ socketStore ]);
 
-    // @todo: react to this by showing retry button or something so a user can try again
+  const handleUserLeft = useCallback((data:any) => {
+    console.log('socket::USER_LEFT', data);
+
+    socketStore.updateRoomState({
+      numCurrentUsers: data.usedSlots,
+      numMaxUsers: data.maxSlots,
+    });
   }, [ socketStore ]);
 
   useEffect(() => {
@@ -84,22 +113,23 @@ const Controller = () => {
 
     socket.on('connect', handleConnected);
     socket.on('disconnect', handleDisconnected);
-    socket.on('JOIN_ACCEPTED', handleJoinAccepted);
-    socket.on('JOIN_REJECTED', handleJoinRejected);
+    socket.on('USER_JOIN_ACCEPTED', handleJoinAccepted);
+    socket.on('USER_JOIN_REJECTED', handleJoinRejected);
     socket.on('USER_JOINED', handleUserJoined);
+    socket.on('USER_LEFT', handleUserLeft);
 
     return () => {
+      // what to do here if we get unmounted and events etc are handled
       socketStore.resetConnectionState();
-
-      // @todo: close socket?
 
       socket.off('connect', handleConnected);
       socket.off('disconnect', handleDisconnected);
-      socket.off('JOIN_ACCEPTED', handleJoinAccepted);
-      socket.off('JOIN_REJECTED', handleJoinRejected);
+      socket.off('USER_JOIN_ACCEPTED', handleJoinAccepted);
+      socket.off('USER_JOIN_REJECTED', handleJoinRejected);
       socket.off('USER_JOINED', handleUserJoined);
+      socket.off('USER_LEFT', handleUserLeft);
     };
-  }, [socket, socketStore, handleConnected, handleDisconnected, handleJoinAccepted, handleJoinRejected]);
+  }, [socket, socketStore, handleConnected, handleDisconnected, handleJoinAccepted, handleJoinRejected, handleUserLeft]);
 
   return (
     <div className='Controller'>

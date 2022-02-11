@@ -15,6 +15,7 @@ export type ConnectionState = {
 export type RoomState = {
   numCurrentUsers?: number;
   numMaxUsers?: number;
+  currentSlot?: number;
 }
 
 export interface ISocketStore {
@@ -36,6 +37,7 @@ const connectionStateStub = {
 const roomStateStub = {
   numCurrentUsers: 0,
   numMaxUsers: 0,
+  currentSlot: 0,
 };
 
 export class SocketStore implements ISocketStore {
