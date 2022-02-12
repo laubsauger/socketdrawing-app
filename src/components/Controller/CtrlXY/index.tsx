@@ -66,6 +66,8 @@ const CtrlXY = (props:Props) => {
       return;
     }
 
+    emitMouseDownStateMessage(1);
+
     console.log('painting...');
     setIsPainting(true);
     const mousePos = ev.type === 'touchstart' ? getTouchPosition(ev, ref) : getMousePosition(ev, ref);
@@ -99,10 +101,21 @@ const CtrlXY = (props:Props) => {
     });
   }, [ socket ]);
 
+  const emitMouseDownStateMessage = useCallback((state) => {
+    socket.emit('OSC_CTRL_MESSAGE', {
+      message: 'mouseDown',
+      state,
+    });
+  }, [ socket ]);
+
   useEffect(() => {
     if (isPainting && released) {
       console.log('painting stop');
       setIsPainting(false);
+    }
+
+    if (released) {
+      emitMouseDownStateMessage(0);
     }
   }, [ socket, isPainting, released ]);
 
