@@ -1,6 +1,5 @@
 const config = {
-  // socketServer: 'https://socket.osc.link',
-  socketServer: 'http://localhost:8080',
+  socketServer: process.env.NODE_ENV === 'production' ? 'https://socket.osc.link' : 'http://localhost:8080',
   socketRoom: 'users',
 };
 
