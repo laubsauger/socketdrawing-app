@@ -124,21 +124,22 @@ const Controller = () => {
       socket.off('USER_JOINED', handleUserJoined);
       socket.off('USER_LEFT', handleUserLeft);
     };
-  }, [socket, socketStore, handleConnected, handleDisconnected, handleJoinAccepted, handleJoinRejected, handleUserLeft]);
+  }, [socket, socketStore, handleConnected, handleDisconnected, handleJoinAccepted, handleJoinRejected, handleUserJoined, handleUserLeft]);
 
   const handleMouseUp = useCallback((data:any) => {
     console.log('UI::mouseUp', data);
     setFiredMouseUp(true);
     setFiredMouseUp(false);
-  }, [ socketStore ]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp);
-
+    window.addEventListener('touchend', handleMouseUp);
     return () => {
       window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('touchend', handleMouseUp)
     };
-  }, [])
+  }, [ handleMouseUp ])
 
   return (
     <div className='Controller'>
@@ -154,7 +155,7 @@ const Controller = () => {
           <CtrlButton channelName='b4' label='4' variant='blue' released={firedMouseUp}/>
 
           {/* //@todo: create xy controller canvas if configured */}
-          <CtrlXY channelNames={['x','y']}/>
+          <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
         </React.Fragment>
       }
     </div>

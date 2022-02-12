@@ -51,14 +51,27 @@ const useCanvas = (draw:Function, options:{ context:any }) => {
     }
 
     const canvas: HTMLCanvasElement = canvasRef.current;
-
     const context = canvas.getContext(options.context || '2d');
+
+    if (!context) {
+      return;
+    }
+
+    context.lineWidth = 1;
+    context.lineJoin = 'round';
+    context.lineCap = 'round';
+    // context.globalCompositeOperation = 'destination-atop';
+
     let frameCount = 0;
     let animationFrameId = 0;
 
     const render = () => {
       frameCount++;
-      draw(context, frameCount);
+
+      if (context) {
+        draw(context, frameCount);
+      }
+
       animationFrameId = window.requestAnimationFrame(render);
     };
 

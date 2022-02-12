@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
 
 import './styles.scss';
-import {useSocket} from "../../../hooks/useSocket";
+import { useSocket } from "../../../hooks/useSocket";
 
 type Props = {
   label: string,
@@ -23,7 +23,7 @@ const CtrlButton = (props:Props) => {
       btnId: channelName,
       state: 1,
     });
-  }, []);
+  }, [ socket, channelName ]);
 
   useEffect(() => {
     if (pressed && released) {
@@ -35,7 +35,7 @@ const CtrlButton = (props:Props) => {
 
       setPressed(false);
     }
-  }, [ pressed, released ]);
+  }, [ socket, pressed, released, channelName ]);
 
   return (
     <button className={`btn btn-${variant}`}
