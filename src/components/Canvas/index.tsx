@@ -29,9 +29,9 @@ const Canvas = (props:Props) => {
   }, [onTouchStart]);
 
   const touchMoveListener = useCallback((e:any) => {
-    if (e.target === canvasRef.current) {
-      e.preventDefault();
+    e.preventDefault();
 
+    if (e.target === canvasRef.current) {
       if (onTouchMove) {
         onTouchMove(e);
       }
