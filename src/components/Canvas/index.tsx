@@ -72,9 +72,6 @@ const Canvas = (props:Props) => {
                  onMouseDown={onMouseDown}
                  onMouseUp={onMouseUp}
                  onMouseMove={onMouseMove}
-                 // onTouchStart={onTouchStart}
-                 // onTouchMove={onTouchMove}
-                 // onTouchEnd={onTouchEnd}
                  {...rest}
   />;
 }

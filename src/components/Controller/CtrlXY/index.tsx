@@ -33,8 +33,10 @@ function getTouchPosition(ev:TouchEvent, ref:any) {
   const x = firstTouch.pageX - ref.current.offsetLeft;
   const y = firstTouch.pageY - ref.current.offsetLeft;
 
-  const normalized_x = (x / ref.current.width) * 2;
-  const normalized_y = (y / ref.current.height) * 2;
+  const { devicePixelRatio:ratio = 1 } = window;
+
+  const normalized_x = (x / ref.current.width) * ratio;
+  const normalized_y = (y / ref.current.height) * ratio;
 
   return {
     x,
@@ -54,6 +56,8 @@ const CtrlXY = (props:Props) => {
 
   const draw = useCallback((ctx:any, frameCount:any) => {
     if (isPainting && pos && ref.current) {
+
+
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.strokeStyle = 'rgba(255,255,255,0.7)';
 
