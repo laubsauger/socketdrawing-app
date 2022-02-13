@@ -12,27 +12,35 @@ type Props = {
   released: boolean,
 }
 
-function getMousePosition(ev:MouseEvent, ref:any) {
+function getMousePosition(ev:MouseEvent|Touch, ref:any) {
   const x = ev.pageX - ref.current.offsetLeft;
   const y = ev.pageY - ref.current.offsetTop;
+
+  const normalized_x = (x / ref.current.width);
+  const normalized_y = (y / ref.current.height);
 
   return {
     x,
     y,
-    normalized_x: x / ref.current.width,
-    normalized_y: y / ref.current.height,
+    normalized_x: normalized_x < 0 ? 0 : (normalized_x > 1 ? 1 : normalized_x),
+    normalized_y: normalized_y < 0 ? 0 : (normalized_y > 1 ? 1 : normalized_y),
   }
 }
 
 function getTouchPosition(ev:TouchEvent, ref:any) {
-  const x = ev.touches[0].pageX - ref.current.offsetLeft;
-  const y = ev.touches[0].pageY - ref.current.offsetTop;
+  const firstTouch = ev.touches[0];
+
+  const x = firstTouch.pageX - ref.current.offsetLeft;
+  const y = firstTouch.pageY - ref.current.offsetLeft;
+
+  const normalized_x = (x / ref.current.width) * 2;
+  const normalized_y = (y / ref.current.height) * 2;
 
   return {
     x,
     y,
-    normalized_x: x / ref.current.width,
-    normalized_y: y / ref.current.height,
+    normalized_x: normalized_x < 0 ? 0 : (normalized_x > 1 ? 1 : normalized_x),
+    normalized_y: normalized_y < 0 ? 0 : (normalized_y > 1 ? 1 : normalized_y),
   }
 }
 
@@ -60,6 +68,25 @@ const CtrlXY = (props:Props) => {
     }
   }, [ isPainting, pos, ref ]);
 
+
+  const emitPaintMessage = useCallback((mousePos) => {
+    const posObj:any = {};
+    posObj[channelNames.x] = mousePos.normalized_x;
+    posObj[channelNames.y] = mousePos.normalized_y;
+
+    socket.emit('OSC_CTRL_MESSAGE', {
+      message: 'paint',
+      ...posObj,
+    });
+  }, [ socket, channelNames.x, channelNames.y ]);
+
+  const emitMouseDownStateMessage = useCallback((state) => {
+    socket.emit('OSC_CTRL_MESSAGE', {
+      message: 'mouseDown',
+      state,
+    });
+  }, [ socket ]);
+
   const handleDragStart = useCallback((ev) => {
     if (!ref || ev.target !== ref.current) {
       console.log('no ref or ref current is not target, dont draw');
@@ -78,7 +105,7 @@ const CtrlXY = (props:Props) => {
       setPos(mousePos);
       emitPaintMessage(mousePos);
     }
-  }, [ref, pos]);
+  }, [ref, pos, emitPaintMessage, emitMouseDownStateMessage]);
 
   const handlePaint = useCallback((ev) => {
     if (!isPainting) {
@@ -88,25 +115,7 @@ const CtrlXY = (props:Props) => {
     const mousePos = ev.type === 'touchmove' ? getTouchPosition(ev, ref) : getMousePosition(ev, ref);
     setPos(mousePos);
     emitPaintMessage(mousePos);
-  }, [ ref, isPainting, socket, channelNames ]);
-
-  const emitPaintMessage = useCallback((mousePos) => {
-    const posObj:any = {};
-    posObj[channelNames.x] = mousePos.normalized_x;
-    posObj[channelNames.y] = mousePos.normalized_y;
-
-    socket.emit('OSC_CTRL_MESSAGE', {
-      message: 'paint',
-      ...posObj,
-    });
-  }, [ socket ]);
-
-  const emitMouseDownStateMessage = useCallback((state) => {
-    socket.emit('OSC_CTRL_MESSAGE', {
-      message: 'mouseDown',
-      state,
-    });
-  }, [ socket ]);
+  }, [ ref, isPainting, emitPaintMessage ]);
 
   useEffect(() => {
     if (isPainting && released) {
@@ -117,7 +126,7 @@ const CtrlXY = (props:Props) => {
     if (released) {
       emitMouseDownStateMessage(0);
     }
-  }, [ socket, isPainting, released ]);
+  }, [ socket, isPainting, released, emitMouseDownStateMessage ]);
 
   return (
     <div className="CtrlXY"
