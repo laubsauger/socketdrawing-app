@@ -114,7 +114,6 @@ const Controller = () => {
     socket.on('USER_LEFT', handleUserLeft);
 
     return () => {
-      // what to do here if we get unmounted and events etc are handled
       socketStore.resetConnectionState();
 
       socket.off('connect', handleConnected);
