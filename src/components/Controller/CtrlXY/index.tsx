@@ -129,8 +129,7 @@ const CtrlXY = (props:Props) => {
   }, [ socket, isPainting, released, emitMouseDownStateMessage ]);
 
   return (
-    <div className="CtrlXY"
-    >
+    <div className="CtrlXY">
       <Canvas draw={draw} options={{ context: '2d' }}
               setRef={setRef}
               onMouseDown={handleDragStart}

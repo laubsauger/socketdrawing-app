@@ -17,7 +17,12 @@ const SessionInfo = () => {
             { socketStore.connectionState.connected && <div className="text-success">Connected to {config.socketServer}</div> }
             { socketStore.connectionState.failed && <div className="text-danger">Failed to connect: {socketStore.connectionState.failReason}</div> }
             { socketStore.connectionState.joining && <div>Joining "{config.socketRoom}"...</div> }
-            { socketStore.connectionState.joined && <div className="text-success">Room "{config.socketRoom}" | Slot: {socketStore.roomState.currentSlot} | Online: {socketStore.roomState.numCurrentUsers}/{socketStore.roomState.numMaxUsers}</div> }
+            { socketStore.connectionState.joined &&
+                <React.Fragment>
+                  <div className="text-success">Room "{config.socketRoom}" | Online: {socketStore.roomState.numCurrentUsers}/{socketStore.roomState.numMaxUsers}</div>
+                  <div className="text-success">Slot: {socketStore.roomState.currentSlot}</div>
+                </React.Fragment>
+            }
             { socketStore.connectionState.rejected && <div className="text-warning">Join Request rejected: "{socketStore.connectionState.rejectReason}"</div> }
           </div>
         </Col>
