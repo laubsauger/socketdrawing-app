@@ -11,7 +11,6 @@ import {RootStore} from "./stores/rootStore";
 // @ts-ignore
 import reportWebVitals from './reportWebVitals';
 
-
 ReactDOM.render(
   <React.StrictMode>
     <StoreProvider store={new RootStore()}>

@@ -14,7 +14,7 @@ import { useStores } from '../../hooks/useStores';
 
 const Controller = () => {
   const { socketStore } = useStores();
-  const { search } = useLocation();
+  const { pathname, search } = useLocation();
   const socket = useSocket();
 
   const [ wantsSlot, setWantsSlot ] = useState(0);
@@ -25,7 +25,7 @@ const Controller = () => {
     if (query.slot) {
       setWantsSlot(Number(query.slot));
     }
-  }, [ search ]);
+  }, [ pathname, search ]);
 
   const handleConnected = useCallback(() => {
     console.log('socket::connected');

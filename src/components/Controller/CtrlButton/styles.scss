@@ -1,4 +1,5 @@
-.btn {
+.CtrlButton {
+  border: 1px solid transparent;
   touch-action: manipulation;
   z-index: 10;
   position: fixed;
@@ -22,7 +23,7 @@
     filter: saturate(1);
   }
 
-  &.btn-black {
+  &.CtrlButton-black {
     top: 15px;
     left: 15px;
     background-color: #000000;
@@ -33,7 +34,7 @@
     }
   }
 
-  &.btn-red {
+  &.CtrlButton-red {
     top: 15px;
     right: 15px;
     background-color: #ff0000;
@@ -44,7 +45,7 @@
     }
   }
 
-  &.btn-green {
+  &.CtrlButton-green {
     bottom: 15px;
     left: 15px;
     background-color: #008000;
@@ -55,7 +56,7 @@
     }
   }
 
-  &.btn-blue {
+  &.CtrlButton-blue {
     bottom: 15px;
     right: 15px;
 

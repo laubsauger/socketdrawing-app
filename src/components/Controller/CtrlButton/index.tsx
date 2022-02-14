@@ -38,7 +38,7 @@ const CtrlButton = (props:Props) => {
   }, [ socket, pressed, released, channelName ]);
 
   return (
-    <button className={`btn btn-${variant}`}
+    <button className={`CtrlButton CtrlButton-${variant}`}
             onMouseDown={handleBtnPress}
     >
       { label }

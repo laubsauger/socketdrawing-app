@@ -46,6 +46,18 @@ function getTouchPosition(ev:TouchEvent, ref:any) {
   }
 }
 
+const drawCrossHair = (ctx:CanvasRenderingContext2D, canvasWidth:number, canvasHeight:number, pos:any, alpha:number) => {
+  ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+  // paint crosshair
+  ctx.beginPath();
+  ctx.moveTo(0, pos.y);
+  ctx.lineTo(canvasWidth, pos.y);
+  ctx.moveTo(pos.x, 0);
+  ctx.lineTo(pos.x, canvasHeight);
+  ctx.stroke();
+  ctx.closePath();
+}
+
 const CtrlXY = (props:Props) => {
   const { channelNames, released } = props;
   const socket = useSocket();
@@ -54,23 +66,30 @@ const CtrlXY = (props:Props) => {
   const [ pos, setPos ] = useState<any>();
   const [ ref, setRef ] = useState<any>({});
 
+  const [ feedbackPositions, setFeedbackPositions ] = useState<any>([]);
+
   const draw = useCallback((ctx:any, frameCount:any) => {
     if (isPainting && pos && ref.current) {
-
-
+      console.log('is drawing');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      ctx.strokeStyle = 'rgba(255,255,255,0.7)';
 
-      // paint crosshair
-      ctx.beginPath();
-      ctx.moveTo(0, pos.y);
-      ctx.lineTo(ref.current.width, pos.y);
-      ctx.moveTo(pos.x, 0);
-      ctx.lineTo(pos.x, ref.current.height);
-      ctx.stroke();
-      ctx.closePath();
+      // if (feedbackPositions) {
+      //   for (let i = 0; i < feedbackPositions.length; i++) {
+      //     console.log('feedback', i)
+      //     drawCrossHair(ctx, ref.current.width, ref.current.height, feedbackPositions[feedbackPositions.length-1-i], 0.5 / feedbackPositions.length-1-i );
+      //   }
+      // }
+
+      drawCrossHair(ctx, ref.current.width, ref.current.height, pos, 0.7);
+      //
+      // const newPosSet = [ ...feedbackPositions, pos ];
+      // if (newPosSet.length > 100) {
+      //   setFeedbackPositions([ ...feedbackPositions.slice(1), pos ]);
+      // } else {
+      //   setFeedbackPositions([ ...feedbackPositions, pos ]);
+      // }
     }
-  }, [ isPainting, pos, ref ]);
+  }, [ isPainting, pos, ref, feedbackPositions]);
 
 
   const emitPaintMessage = useCallback((mousePos) => {
@@ -122,15 +141,12 @@ const CtrlXY = (props:Props) => {
   }, [ ref, isPainting, emitPaintMessage ]);
 
   useEffect(() => {
-    if (isPainting && released) {
+    if (released) {
       console.log('painting stop');
+      emitMouseDownStateMessage(0);
       setIsPainting(false);
     }
-
-    if (released) {
-      emitMouseDownStateMessage(0);
-    }
-  }, [ socket, isPainting, released, emitMouseDownStateMessage ]);
+  }, [ released, emitMouseDownStateMessage ]);
 
   return (
     <div className="CtrlXY">

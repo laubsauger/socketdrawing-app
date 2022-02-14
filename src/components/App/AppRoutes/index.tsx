@@ -7,13 +7,24 @@ import NoNavLayout from "../Layouts/NoNav";
 
 const HomePage = lazy(() => import('../Pages/Home'));
 const JoinPage = lazy(() => import('../Pages/Join'));
+const SessionPage = lazy(() => import('../Pages/Session'));
 const AdminPage = lazy(() => import('../Pages/Admin'));
 const NotFoundPage = lazy(() => import('../Pages/NotFound'));
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/join" element={<NoNavLayout />}>
+      <Route path="/session" element={<NoNavLayout />}>
+        <Route
+          index
+          element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <SessionPage />
+            </Suspense>
+          }
+        />
+      </Route>
+      <Route path="/join" element={<DefaultLayout />}>
         <Route
           index
           element={
@@ -33,7 +44,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="config"
+          path="/config"
           element={
             <Suspense fallback={<LoadingSpinner />}>
               <AdminPage />
