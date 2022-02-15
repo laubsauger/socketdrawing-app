@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Home: React.FC = (props) => {
   return (
-    <Col className="mt-4" md={{ span: 6, offset: 3 }}>
+    <Col className="mt-5 offset-lg-2 col-8">
       <Card>
         <Card.Body>
           <Card.Title>OSC control at your fingertips</Card.Title>

@@ -9,7 +9,7 @@ const SessionInfo = () => {
   const { socketStore } = useStores();
 
   return (
-    <Container className="SessionInfo pointer-events-none">
+    <Container className="SessionInfo pointer-events-none mt-3 position-fixed">
       <Row>
         <Col>
           <div className="text-muted font-monospace small opacity-50">
@@ -19,8 +19,11 @@ const SessionInfo = () => {
             { socketStore.connectionState.joining && <div>Joining "{config.socketRoom}"...</div> }
             { socketStore.connectionState.joined &&
                 <React.Fragment>
-                  <div className="text-success">Room "{config.socketRoom}" | Online: {socketStore.roomState.numCurrentUsers}/{socketStore.roomState.numMaxUsers}</div>
-                  <div className="text-success">Slot: {socketStore.roomState.currentSlot}</div>
+                  <div className="text-success">
+                    <div>Room: "{config.socketRoom}"</div>
+                    <div>Online: {socketStore.roomState.numCurrentUsers}/{socketStore.roomState.numMaxUsers}</div>
+                    <div>Slot: {socketStore.roomState.currentSlot}</div>
+                  </div>
                 </React.Fragment>
             }
             { socketStore.connectionState.rejected && <div className="text-warning">Join Request rejected: "{socketStore.connectionState.rejectReason}"</div> }

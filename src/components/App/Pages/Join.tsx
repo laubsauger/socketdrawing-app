@@ -17,7 +17,7 @@ const LinkButton = (props:any) => {
 
 const Join: React.FC = (props) => {
   return (
-    <div className="mt-4">
+    <Col className="mt-5 offset-lg-2 col-8">
       {/*<Card>*/}
       {/*  <Card.Body>*/}
       {/*    <div>Session is (active/inactive)</div>*/}
@@ -39,7 +39,7 @@ const Join: React.FC = (props) => {
         {/*<Button variant="outline-info" size="sm">Slot: <strong>4</strong></Button>*/}
         {/*<Button variant="outline-info" size="sm">Slot: <strong>5</strong></Button>*/}
       {/*</div>*/}
-    </div>
+    </Col>
   )
 };
 

@@ -1,16 +1,14 @@
 .CtrlButton {
   border: 1px solid transparent;
   touch-action: manipulation;
-  z-index: 10;
-  position: fixed;
   width: 4.75rem;
   height: 4.75rem;
   border-radius: 20%;
   font-weight: bold;
   font-size: 1.25rem;
   outline-offset: 3px;
-  opacity: 60%;
-  filter: saturate(0.4);
+  opacity: 65%;
+  filter: saturate(0.5);
 
   &:hover,
   &:focus {
@@ -24,8 +22,6 @@
   }
 
   &.CtrlButton-black {
-    top: 15px;
-    left: 15px;
     background-color: #000000;
 
     &:active {
@@ -35,8 +31,6 @@
   }
 
   &.CtrlButton-red {
-    top: 15px;
-    right: 15px;
     background-color: #ff0000;
 
     &:active {
@@ -46,8 +40,8 @@
   }
 
   &.CtrlButton-green {
-    bottom: 15px;
-    left: 15px;
+    //bottom: 15px;
+    //left: 15px;
     background-color: #008000;
 
     &:active {
@@ -57,9 +51,6 @@
   }
 
   &.CtrlButton-blue {
-    bottom: 15px;
-    right: 15px;
-
     background-color: #0000ff;
 
     &:active {

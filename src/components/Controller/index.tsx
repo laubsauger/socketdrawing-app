@@ -49,13 +49,7 @@ const Controller = () => {
 
   const handleDisconnected = useCallback((data:any) => {
     console.log('socket::disconnected', data);
-
-    socketStore.updateConnectionState({
-      joining: false,
-      joined: false,
-      connected: false,
-      connecting: false,
-    });
+    socketStore.resetConnectionState();
   }, [ socketStore ]);
 
   const handleJoinAccepted = useCallback((data:any) => {
@@ -102,10 +96,6 @@ const Controller = () => {
   }, [ socketStore ]);
 
   useEffect(() => {
-    socketStore.updateConnectionState({
-      connecting: true,
-    });
-
     socket.on('connect', handleConnected);
     socket.on('disconnect', handleDisconnected);
     socket.on('USER_JOIN_ACCEPTED', handleJoinAccepted);
@@ -114,7 +104,7 @@ const Controller = () => {
     socket.on('USER_LEFT', handleUserLeft);
 
     return () => {
-      socketStore.resetConnectionState();
+      // socketStore.resetConnectionState();
 
       socket.off('connect', handleConnected);
       socket.off('disconnect', handleDisconnected);
@@ -149,10 +139,12 @@ const Controller = () => {
       { socketStore.connectionState.joined &&
         <React.Fragment>
           {/* //@todo: create buttons according to config */}
-          <CtrlButton channelName='b1' label='1' variant='black' released={firedMouseUp}/>
-          <CtrlButton channelName='b2' label='2' variant='red' released={firedMouseUp}/>
-          <CtrlButton channelName='b3' label='3' variant='green' released={firedMouseUp}/>
-          <CtrlButton channelName='b4' label='4' variant='blue' released={firedMouseUp}/>
+          <div className="d-flex justify-content-between pb-3 px-3 bottom-0 position-fixed w-100" style={{ zIndex: 10 }}>
+            <CtrlButton channelName='b1' label='1' variant='black' released={firedMouseUp}/>
+            <CtrlButton channelName='b2' label='2' variant='red' released={firedMouseUp}/>
+            <CtrlButton channelName='b3' label='3' variant='green' released={firedMouseUp}/>
+            <CtrlButton channelName='b4' label='4' variant='blue' released={firedMouseUp}/>
+          </div>
 
           {/* //@todo: create xy controller canvas if configured */}
           <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
