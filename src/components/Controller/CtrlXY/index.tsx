@@ -63,7 +63,7 @@ const CtrlXY = (props:Props) => {
   const socket = useSocket();
 
   const [ isPainting, setIsPainting ] = useState(false);
-  const [ pos, setPos ] = useState<any>();
+  const [ pos, setPos ] = useState<any>({ x: 0.5, y: 0.5 });
   const [ ref, setRef ] = useState<any>({});
 
   const [ feedbackPositions, setFeedbackPositions ] = useState<any>([]);
