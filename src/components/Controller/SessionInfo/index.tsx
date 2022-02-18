@@ -9,10 +9,10 @@ const SessionInfo = () => {
   const { socketStore } = useStores();
 
   return (
-    <Container className="SessionInfo pointer-events-none mt-3 position-fixed">
+    <Container className="SessionInfo pointer-events-none mt-5 position-fixed">
       <Row>
         <Col>
-          <div className="text-muted font-monospace small opacity-50">
+          <div className="mt-3 text-muted font-monospace small opacity-50">
             { socketStore.connectionState.connecting && <div>Connecting to {config.socketServer}...</div> }
             { socketStore.connectionState.connected && <div className="text-success">Connected to {config.socketServer}</div> }
             { socketStore.connectionState.failed && <div className="text-danger">Failed to connect: {socketStore.connectionState.failReason}</div> }

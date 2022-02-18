@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 const Home: React.FC = (props) => {
   return (
-    <Col className="mt-5 offset-lg-2 col-8">
+    <Col className="mt-5 offset-lg-2 col-lg-8 col-md-12">
       <Card>
-        <Card.Body>
+        <Card.Body className="text-center">
           <Card.Title>OSC control at your fingertips</Card.Title>
           <Card.Text>Participate in live projection mapping</Card.Text>
           <Link to={'/join'}>

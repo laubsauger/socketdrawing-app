@@ -138,6 +138,8 @@ const Controller = () => {
 
       { socketStore.connectionState.joined &&
         <React.Fragment>
+          {/* //@todo: create xy controller canvas if configured */}
+          <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
           {/* //@todo: create buttons according to config */}
           <div className="d-flex justify-content-between pb-3 px-3 bottom-0 position-fixed w-100" style={{ zIndex: 10 }}>
             <CtrlButton channelName='b1' label='1' variant='black' released={firedMouseUp}/>
@@ -145,9 +147,6 @@ const Controller = () => {
             <CtrlButton channelName='b3' label='3' variant='green' released={firedMouseUp}/>
             <CtrlButton channelName='b4' label='4' variant='blue' released={firedMouseUp}/>
           </div>
-
-          {/* //@todo: create xy controller canvas if configured */}
-          <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
         </React.Fragment>
       }
     </div>

@@ -17,7 +17,7 @@ const LinkButton = (props:any) => {
 
 const Join: React.FC = (props) => {
   return (
-    <Col className="mt-5 offset-lg-2 col-8">
+    <Col className="mt-5 offset-lg-2 col-lg-8 col-md-12">
       {/*<Card>*/}
       {/*  <Card.Body>*/}
       {/*    <div>Session is (active/inactive)</div>*/}
@@ -27,7 +27,7 @@ const Join: React.FC = (props) => {
       {/*  </Card.Body>*/}
       {/*</Card>*/}
 
-      <div className="mt-4 text-center">Jump into a randomly selected slot</div>
+      <div className="mt-4 text-center">Take a randomly selected slot</div>
       <LinkButton path={'/session'} label={'Join'} variant={'info'}/>
 
       {/*<div className="mt-5 text-center">or, take control of a specific slot</div>*/}
