@@ -12,12 +12,11 @@ type Props = {
   released: boolean,
 }
 
-function getMousePosition(ev:MouseEvent|Touch, ref:any) {
-  const x = ev.pageX - ref.current.offsetLeft;
-  const y = ev.pageY - ref.current.offsetTop;
+function normalizePosition(x:number, y:number, width:number, height:number) {
+  const { devicePixelRatio:ratio = 1 } = window;
 
-  const normalized_x = (x / ref.current.width);
-  const normalized_y = (y / ref.current.height);
+  const normalized_x = (x / width) * ratio;
+  const normalized_y = (y / height) * ratio;
 
   return {
     x,
@@ -27,23 +26,20 @@ function getMousePosition(ev:MouseEvent|Touch, ref:any) {
   }
 }
 
+function getMousePosition(ev:MouseEvent|Touch, ref:any) {
+  const x = ev.pageX - ref.current.offsetLeft;
+  const y = ev.pageY - ref.current.offsetTop;
+
+  return normalizePosition(x, y, ref.current.width, ref.current.height);
+}
+
 function getTouchPosition(ev:TouchEvent, ref:any) {
   const firstTouch = ev.touches[0];
 
   const x = firstTouch.pageX - ref.current.offsetLeft;
   const y = firstTouch.pageY - ref.current.offsetLeft;
 
-  const { devicePixelRatio:ratio = 1 } = window;
-
-  const normalized_x = (x / ref.current.width) * ratio;
-  const normalized_y = (y / ref.current.height) * ratio;
-
-  return {
-    x,
-    y,
-    normalized_x: normalized_x < 0 ? 0 : (normalized_x > 1 ? 1 : normalized_x),
-    normalized_y: normalized_y < 0 ? 0 : (normalized_y > 1 ? 1 : normalized_y),
-  }
+  return normalizePosition(x, y, ref.current.width, ref.current.height);
 }
 
 const drawCrossHair = (ctx:CanvasRenderingContext2D, canvasWidth:number, canvasHeight:number, pos:any, alpha:number) => {
@@ -63,10 +59,12 @@ const CtrlXY = (props:Props) => {
   const socket = useSocket();
 
   const [ isPainting, setIsPainting ] = useState(false);
-  const [ pos, setPos ] = useState<any>({ x: 0.5, y: 0.5 });
+  const [ pos, setPos ] = useState<any>({ x: 0.5, y: 0.5, normalized_x: 0.5, normalized_y: 0.5 });
   const [ ref, setRef ] = useState<any>({});
 
   const [ feedbackPositions, setFeedbackPositions ] = useState<any>([]);
+
+  console.log('window.devicePixelRatio', window.devicePixelRatio);
 
   const draw = useCallback((ctx:any, frameCount:any) => {
     if (isPainting && pos && ref.current) {
@@ -149,7 +147,13 @@ const CtrlXY = (props:Props) => {
   }, [ released, emitMouseDownStateMessage ]);
 
   return (
-    <div className="CtrlXY">
+    <div className={`CtrlXY ${isPainting ? 'no-cursor' : ''}`}>
+      {/*<div className="position-absolute w-100 d-flex flex-column align-items-end font-monospace" style={{  }}>*/}
+      {/*  <div style={{ marginRight: '10px' }}>x (normalized): { pos.normalized_x.toFixed(2) }</div>*/}
+      {/*  <div style={{ marginRight: '10px' }}>y (normalized): { pos.normalized_y.toFixed(2) }</div>*/}
+      {/*  <div style={{ marginRight: '10px' }}>x (screen): { pos.x }</div>*/}
+      {/*  <div style={{ marginRight: '10px' }}>y (screen): { pos.y }</div>*/}
+      {/*</div>*/}
       <Canvas draw={draw} options={{ context: '2d' }}
               setRef={setRef}
               onMouseDown={handleDragStart}

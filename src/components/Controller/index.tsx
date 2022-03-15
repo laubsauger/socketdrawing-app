@@ -141,7 +141,7 @@ const Controller = () => {
           {/* //@todo: create xy controller canvas if configured */}
           <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
           {/* //@todo: create buttons according to config */}
-          <div className="d-flex justify-content-between pb-3 px-3 bottom-0 position-fixed w-100" style={{ zIndex: 10 }}>
+          <div className="d-flex justify-content-between py-2 px-2 bottom-0 position-fixed w-100 bg-dark" style={{ zIndex: 10, borderTop: '1px solid black' }}>
             <CtrlButton channelName='b1' label='1' variant='black' released={firedMouseUp}/>
             <CtrlButton channelName='b2' label='2' variant='red' released={firedMouseUp}/>
             <CtrlButton channelName='b3' label='3' variant='green' released={firedMouseUp}/>

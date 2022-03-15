@@ -67,7 +67,8 @@ const Canvas = (props:Props) => {
     }
   }, [ setRef, canvasRef, onTouchMove ]);
 
-  return <canvas className="position-fixed w-100 h-100"
+  return <canvas className="position-fixed w-100"
+                 style={{ minHeight: 'calc(100vh - 93px)' }}
                  ref={canvasRef}
                  onMouseDown={onMouseDown}
                  onMouseUp={onMouseUp}
