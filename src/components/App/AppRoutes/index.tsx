@@ -4,16 +4,28 @@ import { observer } from "mobx-react-lite";
 import LoadingSpinner from "../../LoadingSpinner";
 import DefaultLayout from "../Layouts/Default";
 import NoNavLayout from "../Layouts/NoNav";
+import DiscoDiffusion from "../Pages/DiscoDiffusion";
 
 const HomePage = lazy(() => import('../Pages/Home'));
 const JoinPage = lazy(() => import('../Pages/Join'));
 const SessionPage = lazy(() => import('../Pages/Session'));
+const DiscoDiffusionPage = lazy(() => import('../Pages/DiscoDiffusion'));
 const AdminPage = lazy(() => import('../Pages/Admin'));
 const NotFoundPage = lazy(() => import('../Pages/NotFound'));
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/disco" element={<DefaultLayout />}>
+        <Route
+          index
+          element={
+            <Suspense fallback={<LoadingSpinner />}>
+              <DiscoDiffusionPage />
+            </Suspense>
+          }
+        />
+      </Route>
       <Route path="/session" element={<NoNavLayout />}>
         <Route
           index

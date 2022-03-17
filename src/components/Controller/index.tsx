@@ -13,9 +13,9 @@ import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
 
 const Controller = () => {
-  const { socketStore } = useStores();
   const { pathname, search } = useLocation();
   const socket = useSocket();
+  const { socketStore } = useStores();
 
   const [ wantsSlot, setWantsSlot ] = useState(0);
   const [ firedMouseUp, setFiredMouseUp ] = useState(false);

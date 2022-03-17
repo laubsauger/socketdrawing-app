@@ -64,7 +64,7 @@ const CtrlXY = (props:Props) => {
 
   const [ feedbackPositions, setFeedbackPositions ] = useState<any>([]);
 
-  console.log('window.devicePixelRatio', window.devicePixelRatio);
+  // console.log('window.devicePixelRatio', window.devicePixelRatio);
 
   const draw = useCallback((ctx:any, frameCount:any) => {
     if (isPainting && pos && ref.current) {
