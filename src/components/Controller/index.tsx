@@ -19,6 +19,7 @@ const Controller = () => {
 
   const [ wantsSlot, setWantsSlot ] = useState(0);
   const [ firedMouseUp, setFiredMouseUp ] = useState(false);
+  const [ alreadyConnected, setAlreadyConnected ] = useState(socketStore.connectionState.connected);
 
   useEffect(() => {
     const query = queryString.parse(search);
@@ -27,16 +28,13 @@ const Controller = () => {
     }
   }, [ pathname, search ]);
 
-  const handleConnected = useCallback(() => {
-    console.log('socket::connected');
+  useEffect(() => {
+    if (alreadyConnected) {
+      sendJoinRequest();
+    }
+  }, [ alreadyConnected ]);
 
-    socketStore.updateConnectionState({
-      connected: true,
-      connecting: false,
-      failed: false,
-      failReason: '',
-    });
-
+  const sendJoinRequest = useCallback(() => {
     socket.emit('USER_JOIN_REQUEST', {
       room: config.socketRoom,
       wantsSlot: wantsSlot,
@@ -46,6 +44,20 @@ const Controller = () => {
       joining: true,
     });
   }, [ socket, socketStore, wantsSlot ]);
+
+  const handleConnected = useCallback(() => {
+    console.log('socket::connected');
+    setAlreadyConnected(false);
+
+    socketStore.updateConnectionState({
+      connected: true,
+      connecting: false,
+      failed: false,
+      failReason: '',
+    });
+
+    sendJoinRequest();
+  }, [ socketStore ]);
 
   const handleDisconnected = useCallback((data:any) => {
     console.log('socket::disconnected', data);
