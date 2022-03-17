@@ -3,12 +3,10 @@ import { observer } from 'mobx-react-lite';
 import {Button, Card, Col, Form } from "react-bootstrap";
 import {useSocket} from "../../../hooks/useSocket";
 import {useStores} from "../../../hooks/useStores";
-import config from "../../../config";
 
 const DiscoDiffusion: React.FC = (props) => {
   const socket = useSocket();
   const { socketStore } = useStores();
-  const [ isConnected, setIsConnected ] = useState(false);
   const [ sent, setSent ] = useState(false);
 
   const [ text, setText ] = useState('');
@@ -18,12 +16,17 @@ const DiscoDiffusion: React.FC = (props) => {
 
   const handleConnected = useCallback(() => {
     console.log('socket::connected');
-    setIsConnected(true);
+    socketStore.updateConnectionState({
+      connected: true,
+      connecting: false,
+      failed: false,
+      failReason: '',
+    });
   }, []);
 
   const handleDisconnected = useCallback((data:any) => {
     console.log('socket::disconnected', data);
-    setIsConnected(false);
+    socketStore.resetConnectionState();
   }, []);
 
   const handleSubmit = useCallback((ev) => {
@@ -84,10 +87,10 @@ const DiscoDiffusion: React.FC = (props) => {
             :
             <React.Fragment>
 
-              { !isConnected &&
+              { !socketStore.connectionState.connected &&
                 <div className="text-center text-muted">Connecting...</div>
               }
-              { isConnected &&
+              { socketStore.connectionState.connected &&
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-3" controlId="formTextPrompt">
                     <Form.Label>Text prompt *</Form.Label>
