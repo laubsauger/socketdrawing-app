@@ -8,7 +8,7 @@ export class RootStore {
 
   constructor() {
     // this.authStore = new AuthStore();
-    this.userStore = new UserStore(this); // Pass `this` into stores for easy communication
-    this.socketStore = new SocketStore(this); // Pass `this` into stores for easy communication
+    this.userStore = new UserStore(this);
+    this.socketStore = new SocketStore(this);
   }
 }

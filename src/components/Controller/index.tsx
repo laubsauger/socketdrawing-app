@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
-import {useLocation} from 'react-router-dom';
-import queryString from 'query-string';
+import {useParams} from 'react-router-dom';
 
 import './styles.scss';
 import config from '../../config';
@@ -12,38 +11,79 @@ import LogoBackground from '../LogoBackground';
 import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
 
+const CtrlButtons = (numButtons:number, eventHandler:any) => {
+  let content = [];
+  for (let i = 1; i <= numButtons; i++) {
+    content.push(<CtrlButton key={i} channelName={`b${i}`} label={String(i)} variant='black' released={eventHandler}/>);
+  }
+  return content;
+}
+
 const Controller = () => {
-  const { pathname, search } = useLocation();
+  // const { pathname, search } = useLocation();
   const socket = useSocket();
   const { socketStore } = useStores();
+  const { instanceId, slotId } = useParams();
 
-  const [ wantsSlot, setWantsSlot ] = useState(0);
+  const [ isValid, setIsValid ] = useState(false);
   const [ firedMouseUp, setFiredMouseUp ] = useState(false);
   const [ alreadyConnected, setAlreadyConnected ] = useState(socketStore.connectionState.connected);
 
   useEffect(() => {
-    const query = queryString.parse(search);
-    if (query.slot) {
-      setWantsSlot(Number(query.slot));
+    if (!socketStore.availableInstances.length) {
+        fetch(`${config.socketServer}/api/instances.json`)
+          .then(response => response.json())
+          .then(data => {
+            socketStore.setAvailableInstances(data);
+          }).catch(() => {
+          socketStore.setAvailableInstances([]);
+        });
     }
-  }, [ pathname, search ]);
+  }, [ socketStore, socketStore.availableInstances ])
 
   useEffect(() => {
-    if (alreadyConnected) {
-      sendJoinRequest();
+    if (!socketStore.availableInstances.length) {
+      return;
     }
-  }, [ alreadyConnected ]);
+
+    console.log('has instances', instanceId, socketStore.availableInstances)
+
+    // @todo: improve validation to check against instance config from api
+    // @todo: add error message and redirect to /join on error
+    if (!instanceId || !slotId) {
+      setIsValid(false);
+      socketStore.setCurrentInstance(undefined);
+    } else {
+      const selectedInstance = socketStore.availableInstances.filter(item => item.id === Number(instanceId))[0];
+      setIsValid(true);
+      socketStore.setCurrentInstance(selectedInstance);
+      console.log(instanceId, socketStore.availableInstances)
+    }
+  }, [ instanceId, slotId, socketStore, socketStore.availableInstances ]);
 
   const sendJoinRequest = useCallback(() => {
+    if (!socketStore.currentInstance) {
+      return;
+    }
+
+    console.log(socketStore.currentInstance)
+
     socket.emit('USER_JOIN_REQUEST', {
-      room: config.socketRoom,
-      wantsSlot: wantsSlot,
+      instanceId: instanceId,
+      room: `${config.socketRoomPrefix}:${instanceId}`,
+      wantsSlot: slotId,
     });
 
     socketStore.updateConnectionState({
       joining: true,
     });
-  }, [ socket, socketStore, wantsSlot ]);
+  }, [ socket, socketStore, slotId, instanceId, socketStore.currentInstance ]);
+
+  useEffect(() => {
+    if (alreadyConnected) {
+      sendJoinRequest();
+    }
+  }, [ alreadyConnected, sendJoinRequest, socketStore.currentInstance ]);
 
   const handleConnected = useCallback(() => {
     console.log('socket::connected');
@@ -57,7 +97,7 @@ const Controller = () => {
     });
 
     sendJoinRequest();
-  }, [ socketStore ]);
+  }, [ socketStore, sendJoinRequest ]);
 
   const handleDisconnected = useCallback((data:any) => {
     console.log('socket::disconnected', data);
@@ -150,15 +190,18 @@ const Controller = () => {
 
       { socketStore.connectionState.joined &&
         <React.Fragment>
-          {/* //@todo: create xy controller canvas if configured */}
-          <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
-          {/* //@todo: create buttons according to config */}
-          <div className="d-flex justify-content-between py-2 px-2 bottom-0 position-fixed w-100 bg-dark" style={{ zIndex: 10, borderTop: '1px solid black' }}>
-            <CtrlButton channelName='b1' label='1' variant='black' released={firedMouseUp}/>
-            <CtrlButton channelName='b2' label='2' variant='red' released={firedMouseUp}/>
-            <CtrlButton channelName='b3' label='3' variant='green' released={firedMouseUp}/>
-            <CtrlButton channelName='b4' label='4' variant='blue' released={firedMouseUp}/>
-          </div>
+          { socketStore.currentInstance &&
+            <>
+              { socketStore.currentInstance.settings.controls.xy &&
+                <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
+              }
+              { socketStore.currentInstance.settings.controls.buttons > 0 &&
+                <div className="d-flex justify-content-between py-2 px-2 bottom-0 position-fixed w-100 bg-dark" style={{ zIndex: 10, borderTop: '1px solid black' }}>
+                  {CtrlButtons(socketStore.currentInstance.settings.controls.buttons, firedMouseUp)}
+                </div>
+              }
+            </>
+          }
         </React.Fragment>
       }
     </div>

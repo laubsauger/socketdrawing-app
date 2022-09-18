@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
-import {Button, Card, Col, Row} from "react-bootstrap";
+import {Accordion, Button, Card, Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import config from "../../../config";
+import LoadingSpinner from "../../LoadingSpinner";
+import {Instance} from "../../../stores/socketStore";
+import {useStores} from "../../../hooks/useStores";
 
 const LinkButton = (props:any) => {
   const { path, label, variant, disabled } = props;
@@ -15,30 +19,100 @@ const LinkButton = (props:any) => {
   );
 }
 
+const SlotButton = (props:any) => {
+  const { path, label, variant, disabled } = props;
+
+  return (
+    <Link to={path} className="text-decoration-none">
+      <div className="mt-3">
+        <Button variant={variant}>{label}</Button>
+      </div>
+    </Link>
+  );
+}
+
+const SlotButtons = (instance:Instance) => {
+  let content = [];
+  for (let i = 1; i <= instance.settings.slots; i++) {
+    content.push(<SlotButton key={i} path={`/session/${instance.id}/${i}`} label={`Slot ${i}`} variant={'outline-info'}/>);
+  }
+  return content;
+}
+
 const Join: React.FC = (props) => {
+  const [ isLoadingInstances, setIsLoadingInstances ] = useState(true);
+  const { socketStore } = useStores();
+
+  useEffect(() => {
+    setIsLoadingInstances(true);
+
+    fetch(`${config.socketServer}/api/instances.json`)
+      .then(response => response.json())
+      .then(data => {
+        socketStore.setAvailableInstances(data);
+        setIsLoadingInstances(false);
+      }).catch(() => {
+        socketStore.setAvailableInstances([]);
+        setIsLoadingInstances(false);
+      });
+  },[ socketStore ]);
+
   return (
     <Col className="mt-5 offset-lg-2 col-lg-8 col-md-12">
-      {/*<Card>*/}
-      {/*  <Card.Body>*/}
-      {/*    <div>Session is (active/inactive)</div>*/}
-      {/*    <div>Show stats of current session</div>*/}
-      {/*    <div>Show Join button (random free slot) - disable if no free slot</div>*/}
-      {/*    <div>Show Slot Join button - disable if not available</div>*/}
-      {/*  </Card.Body>*/}
-      {/*</Card>*/}
+      <div>
+        <h5>Available Sessions</h5>
+        { isLoadingInstances && <LoadingSpinner size='small'/> }
+        { !isLoadingInstances && socketStore.availableInstances.length ?
+          <Accordion defaultActiveKey={String(1)}>
+          { socketStore.availableInstances.map(instance =>
+            <Accordion.Item key={instance.id} eventKey={String(instance.id)}>
+              <Accordion.Header>{ instance.id } :: { instance.name }</Accordion.Header>
+              <Accordion.Body>
+                <Row>
+                  <Col lg={6} md={12} className="mb-md-3 mb-sm-3">
+                    <h6 className="text-muted">Description</h6>
+                    <div>{ instance.description }</div>
+                  </Col>
+                  <Col lg={3} md={6} className="mb-sm-3">
+                    <h6 className="text-muted">Settings</h6>
+                    <div>
+                      <div>slots: { instance.settings.slots }</div>
+                      <div>random pick: { JSON.stringify(instance.settings.randomPick) }</div>
+                    </div>
+                  </Col>
+                  <Col lg={3} md={6}>
+                    <h6 className="text-muted">Controls</h6>
+                    <div>
+                      { Object.entries(instance.settings.controls).map(([key, val]) =>
+                        <div key={ key }>
+                          <div>{ key }: {JSON.stringify(val)}</div>
+                        </div>
+                      )}
+                    </div>
+                  </Col>
 
-      <div className="mt-4 text-center">Take a randomly selected slot</div>
-      <LinkButton path={'/session'} label={'Join'} variant={'info'}/>
-
-      {/*<div className="mt-5 text-center">or, take control of a specific slot</div>*/}
-      {/*<div className="d-grid gap-2 mt-3">*/}
-        {/*<LinkButton path={'/session?slot=1'} label={<>Slot: <strong>1</strong></>} variant={'outline-info'}/>*/}
-        {/*<LinkButton path={'/session?slot=2'} label={<>Slot: <strong>2</strong></>} variant={'outline-info'} disabled={true}/>*/}
-        {/*<Button variant="outline-secondary" size="sm" disabled={true}>Slot: <strong>2</strong></Button>*/}
-        {/*<Button variant="outline-info" size="sm">Slot: <strong>3</strong></Button>*/}
-        {/*<Button variant="outline-info" size="sm">Slot: <strong>4</strong></Button>*/}
-        {/*<Button variant="outline-info" size="sm">Slot: <strong>5</strong></Button>*/}
-      {/*</div>*/}
+                  <div>
+                    <hr/>
+                    <div className="mt-3 text-center">Join a specific slot</div>
+                    <div className="btn-group" role="group" aria-label="Basic outlined example">
+                      {SlotButtons(instance)}
+                    </div>
+                    { instance.settings.randomPick &&
+                      <>
+                        <div className="mt-4 text-center">Take a randomly selected slot</div>
+                        <LinkButton path={'/session/1/0'} label={'Join'} variant={'outline-info'}/>
+                      </>
+                    }
+                  </div>
+                </Row>
+              </Accordion.Body>
+            </Accordion.Item>
+            )}
+          </Accordion>
+          :
+          <div>No sessions found.</div>
+        }
+      </div>
     </Col>
   )
 };

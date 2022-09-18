@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import LoadingSpinner from "../../LoadingSpinner";
 import DefaultLayout from "../Layouts/Default";
 import NoNavLayout from "../Layouts/NoNav";
-import DiscoDiffusion from "../Pages/DiscoDiffusion";
 
 const HomePage = lazy(() => import('../Pages/Home'));
 const JoinPage = lazy(() => import('../Pages/Join'));
@@ -26,7 +25,7 @@ const AppRoutes = () => {
           }
         />
       </Route>
-      <Route path="/session" element={<NoNavLayout />}>
+      <Route path="/session/:instanceId/:slotId" element={<NoNavLayout />}>
         <Route
           index
           element={
