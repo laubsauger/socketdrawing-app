@@ -23,7 +23,7 @@ const Navigation = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto" activeKey={location.pathname}>
             <Nav.Link as={NavLink} to="/join">Join</Nav.Link>
-            <Nav.Link as={NavLink} to="/disco">DiscoDiffusion</Nav.Link>
+            {/*<Nav.Link as={NavLink} to="/disco">DiscoDiffusion</Nav.Link>*/}
             {/*<Nav.Link as={Link} to="/config">Configure</Nav.Link>*/}
           </Nav>
         </Navbar.Collapse>

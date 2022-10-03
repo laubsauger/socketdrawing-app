@@ -26,6 +26,7 @@ export type Instance = {
     slots: number,
     randomPick: boolean,
     controls: {
+      text: boolean,
       xy: boolean,
       buttons: number,
       fader: number,
@@ -92,7 +93,6 @@ export class SocketStore implements ISocketStore {
   }
 
   @action setAvailableInstances(instances:Instance[]) {
-    console.log(instances);
     this.availableInstances = instances;
   }
 

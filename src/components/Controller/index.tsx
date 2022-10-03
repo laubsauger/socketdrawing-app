@@ -10,6 +10,7 @@ import SessionInfo from './SessionInfo';
 import LogoBackground from '../LogoBackground';
 import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
+import CtrlText from "./CtrlText";
 
 const CtrlButtons = (numButtons:number, eventHandler:any) => {
   let content = [];
@@ -80,10 +81,11 @@ const Controller = () => {
   }, [ socket, socketStore, slotId, instanceId, socketStore.currentInstance ]);
 
   useEffect(() => {
-    if (alreadyConnected) {
+    if (socketStore.currentInstance && socketStore.connectionState.connected) {
+      console.log('sending join request')
       sendJoinRequest();
     }
-  }, [ alreadyConnected, sendJoinRequest, socketStore.currentInstance ]);
+  }, [ alreadyConnected, sendJoinRequest, socketStore.connectionState.connected, socketStore.currentInstance ]);
 
   const handleConnected = useCallback(() => {
     console.log('socket::connected');
@@ -96,7 +98,7 @@ const Controller = () => {
       failReason: '',
     });
 
-    sendJoinRequest();
+    // sendJoinRequest();
   }, [ socketStore, sendJoinRequest ]);
 
   const handleDisconnected = useCallback((data:any) => {
@@ -186,17 +188,19 @@ const Controller = () => {
   return (
     <div className='Controller'>
       <LogoBackground />
-      <SessionInfo />
 
       { socketStore.connectionState.joined &&
         <React.Fragment>
           { socketStore.currentInstance &&
             <>
+              { socketStore.currentInstance.settings.controls.text &&
+                <CtrlText label={'Text Prompt'} />
+              }
               { socketStore.currentInstance.settings.controls.xy &&
                 <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
               }
               { socketStore.currentInstance.settings.controls.buttons > 0 &&
-                <div className="d-flex justify-content-between py-2 px-2 bottom-0 position-fixed w-100 bg-dark" style={{ zIndex: 10, borderTop: '1px solid black' }}>
+                <div className="d-flex justify-content-between py-2 px-2 bottom-0 position-fixed w-100 bg-black" style={{ zIndex: 10, borderTop: '1px solid black' }}>
                   {CtrlButtons(socketStore.currentInstance.settings.controls.buttons, firedMouseUp)}
                 </div>
               }
@@ -204,6 +208,8 @@ const Controller = () => {
           }
         </React.Fragment>
       }
+
+      <SessionInfo />
     </div>
   )
 };
