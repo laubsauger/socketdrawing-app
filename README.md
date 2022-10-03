@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# OSC.LINK
+_______________
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+OSC.LINK is a control interface for realtime interaction between a mobile or desktop browser, and the OSC protocol. It was designed for the rapid-prototyping of multi-user media installations, and simple extensible deployment for mobile phone interaction without the cumbersome steps of joining a network, downloading an app, or signing up for an account.
 
-## Available Scripts
+By snapping a QR code or following a simple URL, user devices are turned into input devices that can send active and passive interaction data to a local client and fed to any platform that can recieve OSC, such as game engines, DAWs or
+media servers
 
-In the project directory, you can run:
+![screen1.png](screen1.png)
+![screen2.png](screen2.png)
 
-### `npm start`
+___________
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Quickstart:
+- Head to the releases page and download the latest platform specific build for your system
+- Join an available session from the list available
+- Configure your destination application to listen to localhost IP(127.0.0.1), on the hardcoded port 57121
+- Interaction data from users that join this session from [osc.link](https://osc.link) will now be sent over UDP to the target destination
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+______________
 
-### `npm test`
+### Known Issues:
+- [x] "Made by Laubsauger | Powered by socketosc" text needs to be offset with a depth layer behind the UI to avoid space collision conflicts. Currently the second session can't be joined from mobile on iphone13Pro for this reason  (fine on larger screen android), and the conflict is present in Chrome browser, but can be scaled around
+- [ ] extra headroom at the bottom of the page and scrollable side panels will make for better UX and control on a small screen
+- [ ] wide aspect browser windows on desktop are unable to reach the bottom of the float range on the Y axis of 2d control
+- [ ] "Click Here to Join Another Slot" button is broken/inactive
+- [ ] "Take a randomly selective slot" button in session 2 doesn't work, joins session 1 user 1
+- [ ] on mobile (iPhone 13) buttons send both the true and false messages at the same time, only on button release. seems to work as expected on desktop browser
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+_____________________
 
-### `npm run build`
+### TO DO / RFE wishlist:
+- [x] Deprecate "Disco Diffusion" branch from hamburger menu and publish String field parameter instead as data type
+- [ ] fullscreen option for session control screen
+- [ ] change Mousedown, button, connect status output from true/false stringbool to 0/1 ints to maintain type consistency
+- [ ] host side option to end a session and open a new session, instead of quitting application to join a new session
+- [ ] ability to host multiple local sessions, or
+- [ ] hostside configuration for IP / Port instead of hardcoded destination
+- [ ] host side dashboard for quick visual feedback to see number of slots/connections, indicate activity
+- [ ] reverse sorted logging or adjustable limit of console readout for host feedback
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+_________________
+### Future Roadmap:
+- implement user credential system for private sessions
+- implement admin dashboard for creation and customization of hosted sessions, with Name/Label attributes for each parameter, and a variety of parameter data types
+    - button (momentary, toggle and radio type)
+    - knob (min / max attributes, endless option, vertical/horz control option)
+    - fader (min / max attributes, endless option, vertical/horz control option)
+    - 2d pad
+    - string float (optional submission button to send the string as a value)
+    - dropdown menu
+    - colorPicker (thumbnail with popup wheel or RGB/HSB faders)
+- Enable passive data from mobile users such as GPS, accelerometer/gyro, roll/tilt/yaw
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+_______
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Credits:
+built and maintained by [Laubsauger](https://github.com/laubsauger)
+conception/direction from [DRMBT](https://github.com/drmbt)
+prototype and forked from [ThorneBrandt](https://github.com/thornebrandt)
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
