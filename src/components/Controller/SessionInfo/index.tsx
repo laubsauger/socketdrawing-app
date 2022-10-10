@@ -2,7 +2,6 @@ import React from 'react';
 import {Col, Container, Row} from "react-bootstrap";
 import { observer } from 'mobx-react-lite';
 import { useStores } from "../../../hooks/useStores";
-import './styles.scss';
 import config from "../../../config";
 
 const SessionInfo = () => {

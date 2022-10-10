@@ -51,9 +51,8 @@ const Canvas = (props:Props) => {
   useEffect(() => {
     if (setRef) {
       setRef(canvasRef);
-  //
+
       if (canvasRef && canvasRef.current) {
-        // canvasRef.current.addEventListener('mousemove', onMouseMove, { passive: true })
         document.body.addEventListener('touchstart', touchStartListener, { passive: false })
         document.body.addEventListener('touchmove', touchMoveListener, { passive: false })
         document.body.addEventListener('touchend', touchEndListener, { passive: false })

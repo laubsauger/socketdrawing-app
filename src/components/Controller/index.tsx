@@ -157,6 +157,8 @@ const Controller = () => {
     socket.on('USER_JOINED', handleUserJoined);
     socket.on('USER_LEFT', handleUserLeft);
 
+    document.body.classList.add('prevent-scroll-drag');
+
     return () => {
       // socketStore.resetConnectionState();
 
@@ -166,6 +168,8 @@ const Controller = () => {
       socket.off('USER_JOIN_REJECTED', handleJoinRejected);
       socket.off('USER_JOINED', handleUserJoined);
       socket.off('USER_LEFT', handleUserLeft);
+
+      document.body.classList.remove('prevent-scroll-drag');
     };
   }, [socket, socketStore, handleConnected, handleDisconnected, handleJoinAccepted, handleJoinRejected, handleUserJoined, handleUserLeft]);
 
