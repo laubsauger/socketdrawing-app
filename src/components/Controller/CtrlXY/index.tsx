@@ -36,8 +36,17 @@ function getMousePosition(ev:MouseEvent|Touch, ref:any) {
 function getTouchPosition(ev:TouchEvent, ref:any) {
   const firstTouch = ev.touches[0];
 
+  console.log('firstTouch', firstTouch);
+  console.log('ref.current', ref.current);
+  console.log('pageX', firstTouch.pageX);
+  console.log('pageY', firstTouch.pageY);
+  console.log('canvas offsetLeft', ref.current.offsetLeft);
+  console.log('canvas offsetTop', ref.current.offsetTop);
+  console.log('canvas width', ref.current.width);
+  console.log('canvas height', ref.current.height);
+
   const x = firstTouch.pageX - ref.current.offsetLeft;
-  const y = firstTouch.pageY - ref.current.offsetLeft;
+  const y = firstTouch.pageY - ref.current.offsetTop;
 
   return normalizePosition(x, y, ref.current.width, ref.current.height);
 }
@@ -137,6 +146,30 @@ const CtrlXY = (props:Props) => {
     setPos(mousePos);
     emitPaintMessage(mousePos);
   }, [ ref, isPainting, emitPaintMessage ]);
+
+  // const throttledHandlePaint = (ev:any) => {
+  //   if (!isPainting) {
+  //     return;
+  //   }
+  //
+  //   const mousePos = ev.type === 'touchmove' ? getTouchPosition(ev, ref) : getMousePosition(ev, ref);
+  //   setPos(mousePos);
+  //   emitPaintMessage(mousePos);
+  //
+  //   if (!ref.current) {
+  //     //@ts-ignore
+  //     canvasRef.current = setTimeout(() => {
+  //       // if (ev.target === canvasRef.current) {
+  //         if (onTouchMove) {
+  //           onTouchMove(ev);
+  //         }
+  //       // }
+  //       //@ts-ignore
+  //       clearTimeout(ref.current);
+  //       ref.current = null;
+  //     }, 500)
+  //   }
+  // }
 
   useEffect(() => {
     if (released) {

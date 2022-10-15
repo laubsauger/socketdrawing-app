@@ -1,5 +1,7 @@
-import React, {MouseEventHandler, TouchEventHandler, useCallback, useEffect} from 'react'
+import React, {MouseEventHandler, TouchEventHandler, useCallback, useEffect, useState} from 'react'
 import useCanvas from "../../hooks/useCanvas";
+import {useStores} from "../../hooks/useStores";
+import {observer} from "mobx-react-lite";
 
 type Props = {
   draw: Function,
@@ -14,9 +16,30 @@ type Props = {
 }
 
 const Canvas = (props:Props) => {
+  const { socketStore } = useStores();
   const { draw, options, setRef, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd, ...rest } = props;
   const { context } = options;
   const canvasRef = useCanvas(draw, { context });
+
+  const [ toolbarsHeight, setToolbarsHeight ] = useState<string>('0px');
+  //
+  // const handleTouchMove = (ev:any) => {
+  //   ev.preventDefault();
+  //
+  //   if (!canvasRef.current) {
+  //     //@ts-ignore
+  //     canvasRef.current = setTimeout(() => {
+  //       // if (ev.target === canvasRef.current) {
+  //         if (onTouchMove) {
+  //           onTouchMove(ev);
+  //         }
+  //       // }
+  //       //@ts-ignore
+  //       clearTimeout(canvasRef.current);
+  //       canvasRef.current = null;
+  //     }, 500)
+  //   }
+  // }
 
   const touchStartListener = useCallback((e:any) => {
       if (e.target === canvasRef.current) {
@@ -66,8 +89,22 @@ const Canvas = (props:Props) => {
     }
   }, [ setRef, canvasRef, onTouchMove ]);
 
+  useEffect(() => {
+    let totalHeight = 0;
+
+    if (socketStore.currentInstance?.settings.controls.text) {
+      totalHeight += 70
+    }
+
+    if (socketStore.currentInstance?.settings.controls.buttons) {
+      totalHeight += 93
+    }
+
+    setToolbarsHeight(`${totalHeight}px`);
+  }, [ socketStore.currentInstance ])
+
   return <canvas className="position-fixed w-100"
-                 style={{ minHeight: 'calc(100vh - 163px)' }}
+                 style={{ height: `calc(100vh - ${toolbarsHeight})` }}
                  ref={canvasRef}
                  onMouseDown={onMouseDown}
                  onMouseUp={onMouseUp}
@@ -76,4 +113,4 @@ const Canvas = (props:Props) => {
   />;
 }
 
-export default Canvas;
+export default observer(Canvas);
