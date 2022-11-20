@@ -46,7 +46,7 @@ const Axis = (props:AxisProps) => {
             </div>
           </div>
 
-          <div className="position-absolute font-monospace top-0 text-muted text-center w-100" style={{ fontSize: '8px' }}>
+          <div className="position-absolute font-monospace top-0 text-muted text-center w-100 pt-1" style={{ fontSize: '8px' }}>
             <div style={{ top: 0 }}>{ label }</div>
             <div style={{ bottom: 0 }}>{ normalizedValue }</div>
           </div>

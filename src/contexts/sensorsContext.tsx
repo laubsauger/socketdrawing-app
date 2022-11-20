@@ -5,7 +5,7 @@ type Orientation = {
   angle: null|number,
 }
 
-type Acceleration = {
+export type Acceleration = {
   rotation: {
     alpha: number,
     beta: number,
