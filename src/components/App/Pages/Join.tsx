@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
-import {Accordion, Button, Card, Col, Row} from "react-bootstrap";
+import {Accordion, Badge, Button, Card, Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import config from "../../../config";
 import LoadingSpinner from "../../LoadingSpinner";
@@ -24,7 +24,7 @@ const SlotButton = (props:any) => {
 
   return (
     <Link to={path} className="text-decoration-none">
-      <div className="mt-3">
+      <div className="mt-3 me-2">
         <Button variant={variant}>{label}</Button>
       </div>
     </Link>
@@ -76,16 +76,22 @@ const Join: React.FC = (props) => {
                   <Col lg={3} xs={6} className="mb-3">
                     <h6 className="text-muted">Settings</h6>
                     <div>
-                      <div>slots: { instance.settings.slots }</div>
-                      <div>random: { JSON.stringify(instance.settings.randomPick) }</div>
+                      <div>
+                        <Badge bg="secondary">slots [ { instance.settings.slots } ]</Badge>
+                      </div>
+                      { instance.settings.randomPick &&
+                          <div>
+                            <Badge bg="secondary">randomPick</Badge>
+                          </div>
+                      }
                     </div>
                   </Col>
                   <Col lg={3} xs={6}>
                     <h6 className="text-muted">Controls</h6>
                     <div>
-                      { Object.entries(instance.settings.controls).map(([key, val]) =>
+                      { Object.entries(instance.settings.controls).filter(([key, val]) => !!val).map(([key, val]) =>
                         <div key={ key }>
-                          <div>{ key }: {JSON.stringify(val)}</div>
+                          <Badge bg="black">{ key } { val !== true ? `[ ${val} ]` : '' }</Badge>
                         </div>
                       )}
                     </div>

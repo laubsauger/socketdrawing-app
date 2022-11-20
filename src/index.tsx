@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreProvider } from './contexts/storeContext';
+import SensorsProvider from './contexts/sensorsContext';
 
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-dark-5/dist/css/bootstrap-night.css";
@@ -13,11 +14,13 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <StoreProvider store={new RootStore()}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </StoreProvider>
+    <SensorsProvider multiplier={3} useGravity={false}>
+      <StoreProvider store={new RootStore()}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </StoreProvider>
+    </SensorsProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

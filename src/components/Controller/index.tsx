@@ -11,6 +11,7 @@ import LogoBackground from '../LogoBackground';
 import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
 import CtrlText from "./CtrlText";
+import Sensors from "./Sensors";
 
 const CtrlButtons = (numButtons:number, eventHandler:any) => {
   let content = [];
@@ -197,6 +198,9 @@ const Controller = () => {
         <React.Fragment>
           { socketStore.currentInstance &&
             <>
+              { (socketStore.currentInstance.settings.controls.gyroscope || socketStore.currentInstance.settings.controls.accelerometer) &&
+                <Sensors gyroscope={socketStore.currentInstance.settings.controls.gyroscope} accelerometer={socketStore.currentInstance.settings.controls.accelerometer}/>
+              }
               { socketStore.currentInstance.settings.controls.text &&
                 <CtrlText label={'Text Prompt'} />
               }
