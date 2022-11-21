@@ -12,11 +12,20 @@ import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
 import CtrlText from "./CtrlText";
 import Sensors from "./Sensors";
+import CtrlFader from "./CtrlFader";
 
 const CtrlButtons = (numButtons:number, eventHandler:any) => {
   let content = [];
   for (let i = 1; i <= numButtons; i++) {
     content.push(<CtrlButton key={i} channelName={`b${i}`} label={String(i)} variant='black' released={eventHandler}/>);
+  }
+  return content;
+}
+
+const CtrlFaders = (numFaders:number, eventHandler:any) => {
+  let content = [];
+  for (let i = 1; i <= numFaders; i++) {
+    content.push(<CtrlFader key={i} channelName={`f${i}`} label={String(i)} variant='blue'/>);
   }
   return content;
 }
@@ -191,7 +200,7 @@ const Controller = () => {
   }, [ handleMouseUp ])
 
   return (
-    <div className='Controller'>
+    <div className='Controller d-flex flex-column' style={{ height: '100vh' }}>
       <LogoBackground />
 
       { socketStore.connectionState.joined &&
@@ -201,6 +210,11 @@ const Controller = () => {
               { (socketStore.currentInstance.settings.controls.gyroscope || socketStore.currentInstance.settings.controls.accelerometer) &&
                 <Sensors gyroscope={socketStore.currentInstance.settings.controls.gyroscope} accelerometer={socketStore.currentInstance.settings.controls.accelerometer}/>
               }
+              { socketStore.currentInstance.settings.controls.faders &&
+                <div className="d-flex justify-content-between py-2 px-2 w-100 h-100">
+                  {CtrlFaders(socketStore.currentInstance.settings.controls.faders, firedMouseUp)}
+                </div>
+              }
               { socketStore.currentInstance.settings.controls.text &&
                 <CtrlText label={'Text Prompt'} />
               }
@@ -208,7 +222,7 @@ const Controller = () => {
                 <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
               }
               { socketStore.currentInstance.settings.controls.buttons > 0 &&
-                <div className="d-flex justify-content-between py-2 px-2 bottom-0 position-fixed w-100 bg-black" style={{ zIndex: 10, borderTop: '1px solid black' }}>
+                <div className="d-flex justify-content-between py-2 px-2 w-100 bg-black" style={{ zIndex: 10, borderTop: '1px solid black' }}>
                   {CtrlButtons(socketStore.currentInstance.settings.controls.buttons, firedMouseUp)}
                 </div>
               }

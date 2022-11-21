@@ -29,7 +29,7 @@ export type Instance = {
       text: boolean,
       xy: boolean,
       buttons: number,
-      fader: number,
+      faders: number,
       gyroscope: boolean,
       accelerometer: boolean,
     }
