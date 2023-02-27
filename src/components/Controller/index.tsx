@@ -222,7 +222,7 @@ const Controller = () => {
                 <CtrlXY channelNames={{ x: 'x', y: 'y'}} released={firedMouseUp}/>
               }
               { socketStore.currentInstance.settings.controls.buttons > 0 &&
-                <div className="d-flex justify-content-between py-2 px-2 w-100 bg-black" style={{ zIndex: 10, borderTop: '1px solid black' }}>
+                <div className="d-flex justify-content-between py-2 px-2 w-100 bg-black mt-auto" style={{ zIndex: 10, borderTop: '1px solid black' }}>
                   {CtrlButtons(socketStore.currentInstance.settings.controls.buttons, firedMouseUp)}
                 </div>
               }
