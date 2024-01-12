@@ -6,10 +6,13 @@ import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
 
 type Props = {
   label: string,
+  messageField: string,
+  textArea?: boolean,
+  onSubmitSuccess?: () => void,
 };
 
 const CtrlText = (props:Props) => {
-  const { label } = props;
+  const { label, messageField, textArea, onSubmitSuccess } = props;
   const [ text, setText ] = useState('');
   const [ sent, setSent ] = useState(false);
   const socket = useSocket();
@@ -24,11 +27,12 @@ const CtrlText = (props:Props) => {
     ev.preventDefault();
 
     socket.emit('OSC_CTRL_MESSAGE', {
-      message: 'textPrompt',
+      message: messageField,
       text: text,
     });
 
     setSent(true);
+    onSubmitSuccess && onSubmitSuccess()
   }, [ socket, text ]);
 
   return (
@@ -36,19 +40,38 @@ const CtrlText = (props:Props) => {
       { !sent ?
         <Form onSubmit={handleSubmit}>
           <Form.Group className="d-flex" controlId="formTextPrompt">
-            {/*<Form.Label>Text prompt *</Form.Label>*/}
-            <InputGroup>
-              <Form.Control type="text"
-                            placeholder={label}
-                            required={true}
-                            onChange={handleChangeText}
-                            aria-label={label}
-              />
-
-              <Button variant="primary" type="submit" disabled={!text}>
-                Submit
-              </Button>
-            </InputGroup>
+            { textArea
+              ? (
+                <div className="w-100">
+                  <Form.Control
+                    as="textarea"
+                    placeholder={label}
+                    required={true}
+                    onChange={handleChangeText}
+                    aria-label={label}
+                  />
+                  <div>
+                    <Button variant="primary" type="submit" disabled={!text}>
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+              )
+              : (
+                <InputGroup>
+                  <Form.Control
+                    type="text"
+                    placeholder={label}
+                    required={true}
+                    onChange={handleChangeText}
+                    aria-label={label}
+                  />
+                  <Button variant="primary" type="submit" disabled={!text}>
+                    Submit
+                  </Button>
+                </InputGroup>
+              )
+            }
           </Form.Group>
 
           {/*<Form.Group className="mb-3" controlId="formImage">*/}

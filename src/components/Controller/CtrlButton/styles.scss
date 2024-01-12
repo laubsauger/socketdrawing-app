@@ -52,4 +52,13 @@
       outline: 2px solid #3333ff;
     }
   }
+
+  &.CtrlButton-yellow {
+    border-color: #ffb833;
+
+    &:active {
+      background-color: #ffb833;
+      outline: 2px solid #ffb833;
+    }
+  }
 }

@@ -79,10 +79,23 @@ const Join: React.FC = (props) => {
                       <div>
                         <Badge bg="secondary">slots [ { instance.settings.slots } ]</Badge>
                       </div>
-                      { instance.settings.randomPick &&
-                          <div>
+                      { instance.settings.slotPick
+                        ? <div>
+                          <Badge bg="secondary">slotPick</Badge>
+                        </div>
+                        : null
+                      }
+                      { instance.settings.randomPick
+                        ? <div>
                             <Badge bg="secondary">randomPick</Badge>
                           </div>
+                        : null
+                      }
+                      { instance.settings.sequentialPick
+                        ? <div>
+                          <Badge bg="secondary">sequentialPick</Badge>
+                        </div>
+                        : null
                       }
                     </div>
                   </Col>
@@ -99,14 +112,22 @@ const Join: React.FC = (props) => {
 
                   <div>
                     <hr/>
-                    <div className="mt-3 text-center">Join a specific slot</div>
-                    <div className="btn-group" role="group" aria-label="Basic outlined example">
-                      {SlotButtons(instance)}
-                    </div>
+                    { instance.settings.slotPick &&
+                      <>
+                        <div className="mt-4 text-center">Take next free slot</div>
+                        <LinkButton path={`/session/${instance.id}/0`} label={'Join'} variant={'outline-info'}/>
+                      </>
+                    }
                     { instance.settings.randomPick &&
                       <>
                         <div className="mt-4 text-center">Take a randomly selected slot</div>
-                        <LinkButton path={'/session/1/0'} label={'Join'} variant={'outline-info'}/>
+                        <LinkButton path={`/session/${instance.id}/0`} label={'Join'} variant={'outline-info'}/>
+                      </>
+                    }
+                    { instance.settings.sequentialPick &&
+                      <>
+                        <div className="mt-4 text-center">Take next free slot</div>
+                        <LinkButton path={`/session/${instance.id}/0`} label={'Join'} variant={'outline-info'}/>
                       </>
                     }
                   </div>

@@ -6,9 +6,9 @@ import { useSocket } from "../../../hooks/useSocket";
 
 type Props = {
   label: string,
-  variant: 'black' | 'red' | 'green' | 'blue',
+  variant: 'black' | 'red' | 'green' | 'blue' | 'yellow',
   channelName: string,
-  released: boolean,
+  released?: boolean,
 };
 
 const CtrlButton = (props:Props) => {
@@ -26,6 +26,10 @@ const CtrlButton = (props:Props) => {
   }, [ socket, channelName ]);
 
   useEffect(() => {
+    if (typeof released === 'undefined') {
+      return
+    }
+
     if (pressed && released) {
       socket.emit('OSC_CTRL_MESSAGE', {
         message: 'button',
