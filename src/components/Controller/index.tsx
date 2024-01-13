@@ -205,7 +205,7 @@ const Controller = () => {
   }, [ handleMouseUp ])
 
   return (
-    <div className='Controller d-flex flex-column' style={{ height: '100%' }}>
+    <div className='Controller d-flex flex-column ' style={{ height: '100%' }}>
       <LogoBackground />
 
       { socketStore.connectionState.joined &&

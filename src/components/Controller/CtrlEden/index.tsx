@@ -10,7 +10,7 @@ const CtrlEden = (props:Props) => {
   const [ showOtherControls, setShowOtherControls ] = useState(false)
 
   return (
-    <div className="d-flex flex-column" style={{ height: '100vh'}}>
+    <div className="d-flex flex-column" style={{ height: '100%'}}>
       <CtrlText
         singleUse={true}
         label={'Name'}
@@ -19,12 +19,15 @@ const CtrlEden = (props:Props) => {
       />
       { showOtherControls
         ? (
-          <div className="d-flex flex-column z-index-above mt-4">
-            <CtrlText
-              label={'Text Prompt'}
-              messageField={'textPrompt'}
-              textArea={true}
-            />
+          <div className="d-flex flex-column z-index-above">
+            <div>
+              <CtrlText
+                label={'Text Prompt'}
+                messageField={'textPrompt'}
+                textArea={true}
+              />
+            </div>
+
             <div
               className="d-flex position-absolute justify-content-between py-2 px-2 w-100 bg-black"
               style={{ zIndex: 10, borderTop: '1px solid black', bottom: '0px' }}

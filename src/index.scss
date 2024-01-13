@@ -13,7 +13,10 @@ code {
 }
 
 body {
+  background: #111;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   /* mobile viewport bug fix */
   min-height: -webkit-fill-available;
 }

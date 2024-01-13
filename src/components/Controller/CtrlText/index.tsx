@@ -37,7 +37,7 @@ const CtrlText = (props:Props) => {
   }, [ socket, text ]);
 
   return (
-    <div className={`CtrlText p-3 bg-black`}>
+    <div className={`CtrlText p-3`}>
       { !sent ?
         <Form onSubmit={handleSubmit}>
           <Form.Group className="d-flex" controlId="formTextPrompt">
