@@ -242,7 +242,7 @@ const Controller = () => {
                   : null
                 }
                 { socketStore.currentInstance.settings.controls.eden
-                  ? <CtrlEden />
+                  ? <CtrlEden firedMouseUp={firedMouseUp}/>
                   : null
                 }
               </div>
@@ -256,7 +256,9 @@ const Controller = () => {
         </React.Fragment>
       }
 
-      <SessionInfo />
+      <div className="position-absolute fixed-bottom mt-auto z-index-above">
+        <SessionInfo />
+      </div>
     </div>
   )
 };

@@ -100,6 +100,10 @@ const Canvas = (props:Props) => {
       totalHeight += 93
     }
 
+    if (socketStore.currentInstance?.settings.controls.eden) {
+      totalHeight += 93
+    }
+
     setToolbarsHeight(`${totalHeight}px`);
   }, [ socketStore.currentInstance ])
 

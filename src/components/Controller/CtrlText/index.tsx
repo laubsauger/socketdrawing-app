@@ -9,6 +9,7 @@ type Props = {
   messageField: string,
   textArea?: boolean,
   onSubmitSuccess?: () => void,
+  singleUse?: boolean,
 };
 
 const CtrlText = (props:Props) => {
@@ -45,6 +46,7 @@ const CtrlText = (props:Props) => {
                 <div className="w-100">
                   <Form.Control
                     as="textarea"
+                    rows={6}
                     placeholder={label}
                     required={true}
                     onChange={handleChangeText}
@@ -91,8 +93,21 @@ const CtrlText = (props:Props) => {
         </Form>
         :
         <div className="d-flex justify-content-around align-items-center">
-          <div>Sent!</div>
-          <Button variant="outline-primary" onClick={() => setSent(false)}>Send another one</Button>
+          {
+            props.singleUse
+              ? <>
+                  <div>
+                    Name: <strong>{text}</strong>
+                  </div>
+                  <div>
+                    <Button size="sm" variant="outline-primary" onClick={() => setSent(false)}>Change</Button>
+                  </div>
+                </>
+              : <>
+                  <div>Sent!</div>
+                  <Button variant="outline-primary" onClick={() => setSent(false)}>Send another one</Button>
+                </>
+          }
         </div>
       }
     </div>
