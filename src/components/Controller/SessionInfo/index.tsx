@@ -8,19 +8,19 @@ const SessionInfo = () => {
   const { socketStore } = useStores();
 
   return (
-    <Container className="SessionInfo pointer-events-none mt-4 position-fixed">
+    <Container className="SessionInfo pointer-events-none position-fixed">
       <Row>
         <Col>
-          <div className="mt-5 text-muted font-monospace small opacity-50">
+          <div className="text-muted font-monospace small opacity-50 d-flex gap-2">
             { socketStore.connectionState.connecting && <div>Connecting to {config.socketServer}...</div> }
-            { socketStore.connectionState.connected && <div className="text-success">Connected to {config.socketServer}</div> }
+            {/*{ socketStore.connectionState.connected && <div className="text-success">Connected</div> }*/}
             { socketStore.connectionState.failed && <div className="text-danger">Failed to connect: {socketStore.connectionState.failReason}</div> }
             { socketStore.connectionState.joining && <div>Joining "{config.socketRoomPrefix}:{socketStore.currentInstance?.id}"...</div> }
             { socketStore.connectionState.joined &&
                 <React.Fragment>
-                  <div className="text-success">
-                    <div>Room: "{config.socketRoomPrefix}:{socketStore.currentInstance?.id}"</div>
-                    <div>Slot: {socketStore.roomState.currentSlot}</div>
+                  <div className="text-success d-flex gap-2 w-100 justify-content-between">
+                    <div>Room: "{config.socketRoomPrefix}:{socketStore.currentInstance?.id}"</div> |
+                    <div>Slot: {socketStore.roomState.currentSlot}</div> |
                     <div>Online: {socketStore.roomState.numCurrentUsers}/{socketStore.roomState.numMaxUsers}</div>
                   </div>
                 </React.Fragment>

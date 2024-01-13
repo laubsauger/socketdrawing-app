@@ -256,7 +256,7 @@ const Controller = () => {
         </React.Fragment>
       }
 
-      <div className="position-absolute fixed-bottom mt-auto z-index-above">
+      <div className="position-absolute mt-auto z-index-above" style={{ bottom: '120px' }}>
         <SessionInfo />
       </div>
     </div>

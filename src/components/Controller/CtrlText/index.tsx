@@ -52,7 +52,7 @@ const CtrlText = (props:Props) => {
                     onChange={handleChangeText}
                     aria-label={label}
                   />
-                  <div>
+                  <div className="mt-3">
                     <Button variant="primary" type="submit" disabled={!text}>
                       Submit
                     </Button>
