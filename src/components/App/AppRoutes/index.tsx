@@ -15,16 +15,6 @@ const NotFoundPage = lazy(() => import('../Pages/NotFound'));
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/disco" element={<DefaultLayout />}>
-        <Route
-          index
-          element={
-            <Suspense fallback={<LoadingSpinner />}>
-              <DiscoDiffusionPage />
-            </Suspense>
-          }
-        />
-      </Route>
       <Route path="/session/:instanceId/:slotId" element={<NoNavLayout />}>
         <Route
           index

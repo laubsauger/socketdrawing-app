@@ -205,49 +205,50 @@ const Controller = () => {
   }, [ handleMouseUp ])
 
   return (
-    <div className='Controller d-flex flex-column' style={{ height: '100vh' }}>
+    <div className='Controller d-flex flex-column' style={{ height: '100%' }}>
       <LogoBackground />
 
       { socketStore.connectionState.joined &&
         <React.Fragment>
           { socketStore.currentInstance &&
             <>
-              <div>
-                { (socketStore.currentInstance.settings.controls.gyroscope || socketStore.currentInstance.settings.controls.accelerometer) ?
+              <div className="w-100 h-100">
+                {(socketStore.currentInstance.settings.controls.gyroscope || socketStore.currentInstance.settings.controls.accelerometer) ?
                   <Sensors
                     gyroscope={socketStore.currentInstance.settings.controls.gyroscope || false}
                     accelerometer={socketStore.currentInstance.settings.controls.accelerometer || false}
                   />
                   : null
                 }
-                { socketStore.currentInstance.settings.controls.faders
+                {socketStore.currentInstance.settings.controls.faders
                   ? <div className="d-flex justify-content-between py-2 px-2 w-100 h-100">
-                      {CtrlFaders(socketStore.currentInstance.settings.controls.faders, firedMouseUp)}
-                    </div>
+                    {CtrlFaders(socketStore.currentInstance.settings.controls.faders, firedMouseUp)}
+                  </div>
                   : null
                 }
-                { socketStore.currentInstance.settings.controls.name
-                  ? <CtrlText label={'Name'} messageField='userName' />
+                {socketStore.currentInstance.settings.controls.name
+                  ? <CtrlText label={'Name'} messageField='userName'/>
                   : null
                 }
-                { socketStore.currentInstance.settings.controls.text
-                  ? <CtrlText label={'Text Prompt'} messageField={'textPrompt'} textArea={true} />
+                {socketStore.currentInstance.settings.controls.text
+                  ? <CtrlText label={'Text Prompt'} messageField={'textPrompt'} textArea={true}/>
                   : null
                 }
-                { socketStore.currentInstance.settings.controls.xy
+                {socketStore.currentInstance.settings.controls.xy
                   ? <CtrlXY
-                      channelNames={{ x: 'x', y: 'y'}}
-                      released={firedMouseUp}
-                    />
+                    channelNames={{ x: 'x', y: 'y' }}
+                    released={firedMouseUp}
+                  />
                   : null
                 }
-                { socketStore.currentInstance.settings.controls.eden
+                {socketStore.currentInstance.settings.controls.eden
                   ? <CtrlEden firedMouseUp={firedMouseUp}/>
                   : null
                 }
               </div>
-              { socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons > 0 &&
-                <div className="d-flex justify-content-between py-2 px-2 w-100 bg-black" style={{ zIndex: 10, borderTop: '1px solid black' }}>
+              {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons > 0 &&
+                <div className="d-flex justify-content-between py-2 px-2 w-100 bg-black"
+                     style={{ zIndex: 10, borderTop: '1px solid black' }}>
                   {CtrlButtons(socketStore.currentInstance.settings.controls.buttons, firedMouseUp)}
                 </div>
               }
