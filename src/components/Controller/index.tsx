@@ -212,7 +212,7 @@ const Controller = () => {
         <React.Fragment>
           { socketStore.currentInstance &&
             <>
-              <div className=" w-100 h-100">
+              <div>
                 { (socketStore.currentInstance.settings.controls.gyroscope || socketStore.currentInstance.settings.controls.accelerometer) ?
                   <Sensors
                     gyroscope={socketStore.currentInstance.settings.controls.gyroscope || false}
