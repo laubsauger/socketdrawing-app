@@ -2,15 +2,30 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import CtrlText from '../CtrlText';
 import { CtrlButtons } from '../index';
+import { useStores } from '../../../hooks/useStores';
+import { Badge } from 'react-bootstrap';
 
 type Props = {
   firedMouseUp: boolean
 }
 const CtrlEden = (props:Props) => {
   const [ showOtherControls, setShowOtherControls ] = useState(false)
+  const { socketStore } = useStores();
 
   return (
     <div className="d-flex flex-column" style={{ height: '100%'}}>
+      <div className="p-2 border-bottom d-flex gap-2 justify-content-between">
+        <div className="d-flex align-items-center gap-2">
+          <strong>{socketStore.currentInstance?.name}</strong>
+          <Badge bg="dark">Round 1</Badge>
+        </div>
+        <div className="d-flex align-items-center gap-2">
+          <Badge bg="light">Player Selection</Badge>
+          <Badge bg="warning">Prompting</Badge>
+          <Badge bg="info">Voting</Badge>
+          <Badge bg="success">Results</Badge>
+        </div>
+      </div>
       <CtrlText
         singleUse={true}
         label={'Name'}

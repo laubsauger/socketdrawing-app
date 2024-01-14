@@ -37,7 +37,7 @@ const CtrlText = (props:Props) => {
   }, [ socket, text ]);
 
   return (
-    <div className={`CtrlText p-3`}>
+    <div className={`CtrlText p-2 mt-2`}>
       { !sent ?
         <Form onSubmit={handleSubmit}>
           <Form.Group className="d-flex" controlId="formTextPrompt">
@@ -52,7 +52,7 @@ const CtrlText = (props:Props) => {
                     onChange={handleChangeText}
                     aria-label={label}
                   />
-                  <div className="mt-3">
+                  <div className="mt-2">
                     <Button variant="primary" type="submit" disabled={!text}>
                       Submit
                     </Button>
@@ -60,7 +60,7 @@ const CtrlText = (props:Props) => {
                 </div>
               )
               : (
-                <InputGroup>
+                <InputGroup className="d-flex align-items-center">
                   <Form.Control
                     type="text"
                     placeholder={label}
@@ -92,7 +92,7 @@ const CtrlText = (props:Props) => {
           {/*</Form.Group>*/}
         </Form>
         :
-        <div className="d-flex justify-content-around align-items-center">
+        <div className="d-flex justify-content-between align-items-center">
           {
             props.singleUse
               ? <>
@@ -100,7 +100,7 @@ const CtrlText = (props:Props) => {
                     Name: <strong>{text}</strong>
                   </div>
                   <div>
-                    <Button size="sm" variant="outline-primary" onClick={() => setSent(false)}>Change</Button>
+                    <Button size="sm" variant="outline-secondary" onClick={() => setSent(false)}>Change</Button>
                   </div>
                 </>
               : <>
