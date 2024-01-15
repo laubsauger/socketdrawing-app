@@ -171,6 +171,7 @@ const Controller = () => {
     socket.on('USER_JOIN_REJECTED', handleJoinRejected);
     socket.on('USER_JOINED', handleUserJoined);
     socket.on('USER_LEFT', handleUserLeft);
+    // socket.on('HOST_MESSAGE', handleHostMessage);
 
     document.body.classList.add('prevent-scroll-drag');
 
@@ -183,6 +184,7 @@ const Controller = () => {
       socket.off('USER_JOIN_REJECTED', handleJoinRejected);
       socket.off('USER_JOINED', handleUserJoined);
       socket.off('USER_LEFT', handleUserLeft);
+      // socket.on('HOST_MESSAGE', handleHostMessage);
 
       document.body.classList.remove('prevent-scroll-drag');
     };

@@ -43,6 +43,8 @@ export type Instance = {
 export interface ISocketStore {
   connectionState: ConnectionState,
   roomState: RoomState,
+  availableInstances: Instance[],
+  currentInstance: Instance|undefined,
 }
 
 const connectionStateStub = {
