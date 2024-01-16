@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { ChangeEvent, FormEvent, ReactEventHandler, useCallback, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
@@ -18,13 +18,13 @@ const CtrlText = (props:Props) => {
   const [ sent, setSent ] = useState(false);
   const socket = useSocket();
 
-  const handleChangeText = useCallback((ev) => {
+  const handleChangeText = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     console.log('change', ev.target.value)
     setText(ev.target.value);
   }, []);
 
 
-  const handleSubmit = useCallback((ev) => {
+  const handleSubmit = useCallback((ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
     socket.emit('OSC_CTRL_MESSAGE', {
@@ -97,7 +97,7 @@ const CtrlText = (props:Props) => {
             props.singleUse
               ? <>
                   <div>
-                    Name: <strong>{text}</strong>
+                    <strong>{text}</strong>
                   </div>
                   <div>
                     <Button size="sm" variant="outline-secondary" onClick={() => setSent(false)}>Change</Button>
