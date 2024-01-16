@@ -36,7 +36,7 @@ const CtrlFaders = (numFaders:number, eventHandler:any) => {
 const Controller = () => {
   // const { pathname, search } = useLocation();
   const socket = useSocket();
-  const { socketStore } = useStores();
+  const { socketStore, gameStore } = useStores();
   const { instanceId, slotId } = useParams();
 
   const [ isValid, setIsValid ] = useState(false);
@@ -164,6 +164,12 @@ const Controller = () => {
     });
   }, [ socketStore ]);
 
+  const handleHostMessage = useCallback((data:any) => {
+    console.log('socket::HOST_MESSAGE', data);
+
+    gameStore.handleUpdate(data)
+  }, [ socketStore ]);
+
   useEffect(() => {
     socket.on('connect', handleConnected);
     socket.on('disconnect', handleDisconnected);
@@ -171,7 +177,7 @@ const Controller = () => {
     socket.on('USER_JOIN_REJECTED', handleJoinRejected);
     socket.on('USER_JOINED', handleUserJoined);
     socket.on('USER_LEFT', handleUserLeft);
-    // socket.on('HOST_MESSAGE', handleHostMessage);
+    socket.on('OSC_HOST_MESSAGE', handleHostMessage);
 
     document.body.classList.add('prevent-scroll-drag');
 
@@ -184,7 +190,7 @@ const Controller = () => {
       socket.off('USER_JOIN_REJECTED', handleJoinRejected);
       socket.off('USER_JOINED', handleUserJoined);
       socket.off('USER_LEFT', handleUserLeft);
-      // socket.on('HOST_MESSAGE', handleHostMessage);
+      socket.on('OSC_HOST_MESSAGE', handleHostMessage);
 
       document.body.classList.remove('prevent-scroll-drag');
     };
