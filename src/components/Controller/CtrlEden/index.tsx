@@ -39,7 +39,6 @@ const CtrlEden = (props: Props) => {
     console.log('CtrlEden - useEffect::currentPhase', gameStore.currentPhase)
     if (gameStore.currentPhase === '0-lounge') {
       setShowLounge(true);
-      navigator.vibrate(200);
       return
     }
 
@@ -86,13 +85,6 @@ const CtrlEden = (props: Props) => {
 
       {/*{ gameStore.currentPhase ? gameStore.currentPhase : 'unknown / undefined phase' }*/}
 
-      {/* //@todo: game.controls */}
-      {/*<CtrlText*/}
-      {/*  singleUse={true}*/}
-      {/*  label={'Name'}*/}
-      {/*  messageField='userName'*/}
-      {/*  onSubmitSuccess={() => setShowOtherControls(true)}*/}
-      {/*/>*/}
       { showOtherControls
         ? (
           <div className="d-flex flex-column z-index-above">
@@ -103,7 +95,6 @@ const CtrlEden = (props: Props) => {
                 textArea={true}
               />
             </div>
-
             <div
               className="d-flex position-absolute justify-content-between py-2 px-2 w-100 bg-black"
               style={{ zIndex: 10, borderTop: '1px solid black', bottom: '0px' }}

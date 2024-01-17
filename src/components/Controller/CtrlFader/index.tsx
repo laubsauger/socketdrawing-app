@@ -25,7 +25,7 @@ const CtrlFader = (props:Props) => {
     });
   }, [ socket, channelName ]), 250);
 
-  const handleMove = useCallback((val) => {
+  const handleMove = useCallback((val:number) => {
     setValue(val);
     sendValue(val);
   }, [ sendValue, socket, channelName ]);

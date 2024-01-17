@@ -19,6 +19,7 @@ body {
   flex-direction: column;
   /* mobile viewport bug fix */
   min-height: -webkit-fill-available;
+  overflow: hidden;
 }
 
 html {
@@ -130,8 +131,8 @@ main {
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #777777;
-  color: #777777;
+  background-color: #495057;
+  color: #495057;
   animation: dot-floating 2.5s infinite cubic-bezier(0.15, 0.6, 0.9, 0.1);
 }
 .dot-floating::before, .dot-floating::after {
@@ -145,8 +146,8 @@ main {
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #777777;
-  color: #777777;
+  background-color: #495057;
+  color: #495057;
   animation: dot-floating-before 2.5s infinite ease-in-out;
 }
 .dot-floating::after {
@@ -154,8 +155,8 @@ main {
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #777777;
-  color: #777777;
+  background-color: #495057;
+  color: #495057;
   animation: dot-floating-after 2.5s infinite cubic-bezier(0.4, 0, 1, 1);
 }
 

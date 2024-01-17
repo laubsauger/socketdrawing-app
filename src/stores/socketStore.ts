@@ -2,6 +2,7 @@ import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
 
 export type ConnectionState = {
+  clientId?: string;
   connecting?: boolean;
   connected?: boolean;
   failed?: boolean;
@@ -13,7 +14,7 @@ export type ConnectionState = {
 }
 
 export type RoomState = {
-  numCurrentUsers?: number;
+  users?: User[];
   numMaxUsers?: number;
   currentSlot?: number;
 }
@@ -47,7 +48,15 @@ export interface ISocketStore {
   currentInstance: Instance|undefined,
 }
 
+export type User = {
+  id: string,
+  client_index: number,
+  name?: string,
+  points?: number
+}
+
 const connectionStateStub = {
+  clientId: '',
   connecting: false,
   connected: false,
   failed: false,
@@ -68,13 +77,12 @@ export class SocketStore implements ISocketStore {
   private rootStore: RootStore;
 
   @observable connectionState = Object.assign({}, connectionStateStub);
-  @observable roomState = Object.assign({}, roomStateStub);
+  @observable roomState: RoomState = Object.assign({}, roomStateStub);
   @observable availableInstances:Instance[] = [];
   @observable currentInstance:Instance|undefined = undefined;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
-
     this.rootStore = rootStore;
   }
 

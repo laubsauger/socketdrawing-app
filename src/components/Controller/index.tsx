@@ -14,6 +14,7 @@ import CtrlText from "./CtrlText";
 import Sensors from "./Sensors";
 import CtrlFader from "./CtrlFader";
 import CtrlEden from './CtrlEden';
+import { User } from '../../stores/socketStore';
 
 export const CtrlButtons = (numButtons:number, eventHandler?:any) => {
   const colors = [ 'red', 'green', 'blue', 'yellow' ]
@@ -105,6 +106,7 @@ const Controller = () => {
     setAlreadyConnected(false);
 
     socketStore.updateConnectionState({
+      clientId: socket.id,
       connected: true,
       connecting: false,
       failed: false,
@@ -123,6 +125,7 @@ const Controller = () => {
     console.log('socket::USER_JOIN_ACCEPTED', data);
 
     socketStore.updateConnectionState({
+      clientId: socket.id,
       joining: false,
       joined: true,
       rejected: false,
@@ -149,8 +152,8 @@ const Controller = () => {
 
     socketStore.updateRoomState({
       currentSlot: data.client_index,
-      numCurrentUsers: data.usedSlots,
       numMaxUsers: data.maxSlots,
+      users: data.users,
     });
   }, [ socketStore ]);
 
@@ -159,8 +162,27 @@ const Controller = () => {
 
     socketStore.updateRoomState({
       currentSlot: data.client_index,
-      numCurrentUsers: data.usedSlots,
       numMaxUsers: data.maxSlots,
+      users: data.users,
+    });
+  }, [ socketStore ]);
+
+  const handleUserUpdate = useCallback((data:any) => {
+    console.log('socket::USER_UPDATE', data);
+
+    console.log(socketStore.roomState.users)
+    socketStore.updateRoomState({
+      users: socketStore.roomState.users?.map((user: User) => {
+        if (user.id !== data.id) {
+          return user;
+        }
+        console.log(user, user.id, data.client_index)
+
+        return{
+          ...user,
+          name: data.name
+        }
+      }),
     });
   }, [ socketStore ]);
 
@@ -176,6 +198,7 @@ const Controller = () => {
     socket.on('USER_JOIN_ACCEPTED', handleJoinAccepted);
     socket.on('USER_JOIN_REJECTED', handleJoinRejected);
     socket.on('USER_JOINED', handleUserJoined);
+    socket.on('USER_UPDATE', handleUserUpdate);
     socket.on('USER_LEFT', handleUserLeft);
     socket.on('OSC_HOST_MESSAGE', handleHostMessage);
 
@@ -189,6 +212,7 @@ const Controller = () => {
       socket.off('USER_JOIN_ACCEPTED', handleJoinAccepted);
       socket.off('USER_JOIN_REJECTED', handleJoinRejected);
       socket.off('USER_JOINED', handleUserJoined);
+      socket.off('USER_UPDATE', handleUserUpdate);
       socket.off('USER_LEFT', handleUserLeft);
       socket.on('OSC_HOST_MESSAGE', handleHostMessage);
 

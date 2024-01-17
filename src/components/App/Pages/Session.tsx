@@ -1,11 +1,10 @@
-import React, {useCallback} from 'react';
+import React, { MouseEvent, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import Controller from "../../Controller";
-import {Button} from "react-bootstrap";
 
 const Session: React.FC = (props) => {
 
-  const handleReloadClick = useCallback((e) => {
+  const handleReloadClick = useCallback((e:MouseEvent) => {
     e.preventDefault();
     window.location.reload();
   }, []);

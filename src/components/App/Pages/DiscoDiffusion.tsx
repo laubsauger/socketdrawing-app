@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import {Button, Card, Col, Form } from "react-bootstrap";
 import {useSocket} from "../../../hooks/useSocket";
@@ -17,6 +17,7 @@ const DiscoDiffusion: React.FC = (props) => {
   const handleConnected = useCallback(() => {
     console.log('socket::connected');
     socketStore.updateConnectionState({
+      clientId: socket.id,
       connected: true,
       connecting: false,
       failed: false,
@@ -29,7 +30,7 @@ const DiscoDiffusion: React.FC = (props) => {
     socketStore.resetConnectionState();
   }, []);
 
-  const handleSubmit = useCallback((ev) => {
+  const handleSubmit = useCallback((ev:FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
     const data = {
@@ -54,19 +55,19 @@ const DiscoDiffusion: React.FC = (props) => {
     };
   }, [socket, socketStore, handleConnected]);
 
-  const handleChangeText = useCallback((ev) => {
+  const handleChangeText = useCallback((ev:ChangeEvent<HTMLInputElement>) => {
     setText(ev.target.value);
   }, []);
 
-  const handleChangeImage = useCallback((ev) => {
+  const handleChangeImage = useCallback((ev:ChangeEvent<HTMLInputElement>) => {
     setImage(ev.target.value);
   }, []);
 
-  const handleChangeName = useCallback((ev) => {
+  const handleChangeName = useCallback((ev:ChangeEvent<HTMLInputElement>) => {
     setName(ev.target.value);
   }, []);
 
-  const handleChangeEmail = useCallback((ev) => {
+  const handleChangeEmail = useCallback((ev:ChangeEvent<HTMLInputElement>) => {
     setEmail(ev.target.value);
   }, []);
 

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Badge } from 'react-bootstrap';
 import React from 'react';
 import { Phase1SplashData } from './index';
+import { observer } from 'mobx-react-lite';
 
 const Splash = ({data}: { data: Phase1SplashData}) => {
   return (
@@ -22,7 +23,10 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 2, ease: 'backOut',  duration: 0.5 }}
         >
-          <div className="fw-bold fs-2 text-white p-4 rounded-4 bg-black p-2" style={{ boxShadow: '0 1rem 2rem rgb(0 0 0)'}}>
+          <div
+            className="fw-bold fs-2 text-white p-4 rounded-4 bg-black p-2"
+            style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
+          >
             {data.title}
           </div>
         </motion.div>
@@ -34,9 +38,9 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
           >
             <div
               className="fs-3 text-primary p-3 rounded-4 bg-black p-2 mb-3"
-              style={{ boxShadow: '0 1rem 2rem rgb(0 0 0)' }}
+              style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
             >
-              <div className="fs-6 text-primary font-monospace">
+              <div className="fs-6 text-light font-monospace">
                 {data.description}
               </div>
 
@@ -55,8 +59,9 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
             <motion.div>
               <div
                 className="d-flex flex-column justify-content-center align-items-center position-relative overflow-hidden rounded-4 bg-black p-1 mb-3"
+                style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
               >
-                <div className="text-dark fst-italic mb-2">Awaiting round start</div>
+                <div className="text-light-emphasis fst-italic mb-2">Awaiting player selection</div>
                 <div className="dot-floating mb-2"></div>
               </div>
             </motion.div>
@@ -67,4 +72,4 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
   )
 }
 
-export default Splash
+export default observer(Splash)

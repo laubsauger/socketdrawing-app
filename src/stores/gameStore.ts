@@ -28,6 +28,7 @@ export class GameStore implements IGameStore {
   @observable phases: Phase[] = [];
   @observable currentPhase: Phase|null = null;
   @observable currentData: Phase0LoungeData|null = null;
+  @observable players: string[] = [];
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
