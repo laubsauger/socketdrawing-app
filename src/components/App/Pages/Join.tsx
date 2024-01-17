@@ -114,11 +114,13 @@ const Join: React.FC = (props) => {
                     <hr/>
                     { instance.settings.slotPick &&
                       <>
-                        <div className="mt-4 text-center">Take next free slot</div>
-                        <LinkButton path={`/session/${instance.id}/0`} label={'Join'} variant={'outline-info'}/>
+                        <div className="mt-4 text-center">Choose Slot</div>
+                        <div className="btn-group" role="group" aria-label="Basic outlined example">
+                          {SlotButtons(instance)}
+                        </div>
                       </>
                     }
-                    { instance.settings.randomPick &&
+                    {instance.settings.randomPick &&
                       <>
                         <div className="mt-4 text-center">Take a randomly selected slot</div>
                         <LinkButton path={`/session/${instance.id}/0`} label={'Join'} variant={'outline-info'}/>

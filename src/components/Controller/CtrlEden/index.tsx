@@ -7,6 +7,7 @@ import { Badge } from 'react-bootstrap';
 import { motion } from "framer-motion"
 import Splash from './Splash';
 import Lounge from './Lounge';
+import Players from './Players';
 
 type Props = {
   firedMouseUp: boolean
@@ -23,13 +24,17 @@ export type Phase1SplashData = {
   player_count: number
 }
 
+export type Phase2PlayerData = {
+  player_indexes: number[]
+}
 
 const CtrlEden = (props: Props) => {
   const [showOtherControls, setShowOtherControls] = useState(false)
   const { socketStore, gameStore } = useStores();
 
-  const [showSplash, setShowSplash] = useState(false)
   const [showLounge, setShowLounge] = useState(true)
+  const [showSplash, setShowSplash] = useState(false)
+  const [showPlayers, setShowPlayers] = useState(false)
 
   useEffect(() => {
     gameStore.setCurrentPhase('0-lounge')
@@ -38,16 +43,27 @@ const CtrlEden = (props: Props) => {
   useEffect(() => {
     console.log('CtrlEden - useEffect::currentPhase', gameStore.currentPhase)
     if (gameStore.currentPhase === '0-lounge') {
-      setShowLounge(true);
+      setShowLounge(true)
+      setShowSplash(false)
+      setShowPlayers(false)
       return
     }
+    setShowLounge(false)
 
     if (gameStore.currentPhase === '1-splash') {
       setShowSplash(true);
+      setShowPlayers(false)
       navigator.vibrate(200);
       return
     }
     setShowSplash(false)
+
+    if (gameStore.currentPhase === '2-announce_players') {
+      setShowPlayers(true);
+      navigator.vibrate(200);
+      return
+    }
+    setShowPlayers(false)
   }, [gameStore.currentPhase])
 
   return (
@@ -58,6 +74,10 @@ const CtrlEden = (props: Props) => {
       }
       { showSplash && gameStore.currentData
         ? <Splash data={gameStore.currentData as Phase1SplashData}/>
+        : null
+      }
+      { showPlayers && gameStore.currentData
+        ? <Players data={gameStore.currentData as Phase2PlayerData}/>
         : null
       }
 {/*`      {*/}

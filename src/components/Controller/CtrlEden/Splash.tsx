@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 
 const Splash = ({data}: { data: Phase1SplashData}) => {
   return (
-    <div className="position-absolute w-100 h-100 z-index-above d-flex flex-column align-items-center bg-black justify-content-center">
+    <div className="position-absolute w-100 h-100 z-index-above d-flex flex-column align-items-center bg-black justify-content-center overflow-hidden">
       <motion.img
         src={data.image}
         alt={data.title}
@@ -17,14 +17,14 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
         transition={{ ease: "easeOut", duration: 1 }}
       />
 
-      <div className="h-100 p-3 d-flex flex-column align-items-center justify-content-between z-index-above">
+      <div className="h-100 p-2 d-flex flex-column align-items-center justify-content-between z-index-above">
         <motion.div
           initial={{scale: 3, opacity: 0}}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 2, ease: 'backOut',  duration: 0.5 }}
         >
           <div
-            className="fw-bold fs-2 text-white p-4 rounded-4 bg-black p-2"
+            className="fw-bold fs-2 text-white p-4 rounded-4 bg-black"
             style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
           >
             {data.title}
@@ -37,7 +37,7 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
             transition={{ delay: 2.5, ease: 'backOut', duration: 0.5 }}
           >
             <div
-              className="fs-3 text-primary p-3 rounded-4 bg-black p-2 mb-3"
+              className="fs-3 text-primary px-3 py-3 rounded-4 bg-black mb-3"
               style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
             >
               <div className="fs-6 text-light font-monospace">
@@ -56,12 +56,16 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
               </div>
             </div>
 
-            <motion.div>
+            <motion.div
+              initial={{ y: 300 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 3, ease: 'backOut', duration: 0.5 }}
+            >
               <div
                 className="d-flex flex-column justify-content-center align-items-center position-relative overflow-hidden rounded-4 bg-black p-1 mb-3"
                 style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
               >
-                <div className="text-light-emphasis fst-italic mb-2">Awaiting player selection</div>
+                <div className="mb-2" style={{ color: '#0a73d5' }}>Awaiting player selection</div>
                 <div className="dot-floating mb-2"></div>
               </div>
             </motion.div>

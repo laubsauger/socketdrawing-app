@@ -1,8 +1,8 @@
 import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
-import { Phase0LoungeData } from '../components/Controller/CtrlEden';
+import { Phase0LoungeData, Phase1SplashData, Phase2PlayerData } from '../components/Controller/CtrlEden';
 
-export type Phase = '0-lounge'|'1-splash'|'2-rules'| '3-announce_players'|'4-countdown'|'5-round_start'|'6-round_end'|'7-voting_start'| '8-voting_end'| '9-results'
+export type Phase = '0-lounge'|'1-splash'|'2-announce_players'|'3-countdown'|'4-round_start'|'5-round_end'|'6-voting_start'| '7-voting_end'| '8-results'
 
 export interface IGameStore {
   id: string;
@@ -15,19 +15,21 @@ export interface IGameStore {
 export type GameStateUpdatePayload = {
   gameState: {
     phase: Phase,
-    data: Phase0LoungeData
+    data: PhaseData
   }
 }
+
+export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData
 
 export class GameStore implements IGameStore {
   private rootStore: RootStore;
 
   @observable id: string = '';
-  @observable name: string = '';
+  @observable title: string = '';
   @observable description: string = '';
   @observable phases: Phase[] = [];
   @observable currentPhase: Phase|null = null;
-  @observable currentData: Phase0LoungeData|null = null;
+  @observable currentData: PhaseData|null = null;
   @observable players: string[] = [];
 
   constructor(rootStore: RootStore) {
@@ -41,14 +43,20 @@ export class GameStore implements IGameStore {
     console.log('gameStore - handleUpdate', { data })
     this.currentPhase = data.gameState.phase
     this.currentData = data.gameState.data
+
+    if (this.currentPhase === '1-splash') {
+      const { title, description} = data.gameState.data as Phase1SplashData || {}
+      this.setTitle(title)
+      this.setDescription(description)
+    }
   }
 
   @action setId = (id: string): void => {
     this.id = id;
   }
 
-  @action setName = (name: string): void => {
-    this.name = name;
+  @action setTitle = (title: string): void => {
+    this.title = title;
   }
 
   @action setDescription = (description: string): void => {

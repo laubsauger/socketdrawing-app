@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import CtrlText from '../CtrlText';
-import { Container } from 'react-bootstrap';
 import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 
@@ -33,7 +32,7 @@ const Lounge = () => {
               <div key={`${user.id}_${index}`}>
                 <>
                   {user.id === socketStore.connectionState.clientId
-                    ? <div className="text-info fw-bold">{user.client_index}:{user.name ? user.name : user.id.slice(0, 6)}(You!)</div>
+                    ? <div className="text-info fw-bold">{user.client_index}:{user.name ? user.name : user.id.slice(0, 6)}</div>
                     : <div>{user.client_index}:{user.name ? user.name : user.id.slice(0, 6)}</div>
                   }
                 </>
