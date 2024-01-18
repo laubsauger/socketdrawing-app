@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FormEvent, ReactEventHandler, useCallback, useState } from 'react';
+import React, { ChangeEvent, FormEvent, ReactEventHandler, useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
-import {Button, Col, Form, InputGroup, Row} from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 
 type Props = {
   label: string,
@@ -10,12 +10,14 @@ type Props = {
   textArea?: boolean,
   onSubmitSuccess?: () => void,
   singleUse?: boolean,
+  autoFocus?: boolean,
+  shouldSubmit?: boolean,
 };
 
-const CtrlText = (props:Props) => {
-  const { label, messageField, textArea, onSubmitSuccess } = props;
-  const [ text, setText ] = useState('');
-  const [ sent, setSent ] = useState(false);
+const CtrlText = (props: Props) => {
+  const { label, messageField, textArea, autoFocus, shouldSubmit, onSubmitSuccess } = props;
+  const [text, setText] = useState('');
+  const [sent, setSent] = useState(false);
   const socket = useSocket();
 
   const handleChangeText = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +25,7 @@ const CtrlText = (props:Props) => {
     setText(ev.target.value);
   }, []);
 
-
-  const handleSubmit = useCallback((ev: FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
-
+  const doSubmit = () => {
     socket.emit('OSC_CTRL_MESSAGE', {
       message: messageField,
       text: text,
@@ -34,81 +33,113 @@ const CtrlText = (props:Props) => {
 
     setSent(true);
     onSubmitSuccess && onSubmitSuccess()
-  }, [ socket, text ]);
+  }
+
+  useEffect(() => {
+    if (shouldSubmit && !sent) {
+      doSubmit()
+    }
+  }, [shouldSubmit]);
+
+  const handleSubmit = useCallback((ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    doSubmit()
+  }, [socket, text]);
 
   return (
     <div className={`CtrlText p-2 mt-2`}>
-      { !sent ?
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="d-flex" controlId="formTextPrompt">
-            { textArea
-              ? (
-                <div className="w-100">
-                  <Form.Control
-                    as="textarea"
-                    rows={6}
-                    placeholder={label}
-                    required={true}
-                    onChange={handleChangeText}
-                    aria-label={label}
-                  />
-                  <div className="mt-2">
-                    <Button variant="primary" type="submit" disabled={!text}>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="d-flex flex-column" controlId="formTextPrompt">
+          {textArea
+            ? (
+              <div className="w-100">
+                <Form.Control
+                  as="textarea"
+                  rows={6}
+                  placeholder={label}
+                  required={true}
+                  onChange={handleChangeText}
+                  aria-label={label}
+                  autoFocus={autoFocus}
+                  disabled={props.singleUse ? sent && props.singleUse : sent}
+                  className={sent ? 'border-success bg-black' : ''}
+                />
+              </div>
+            )
+            : (
+              <>
+                {!sent
+                  ? <InputGroup className="d-flex align-items-center">
+                      <Form.Control
+                        type="text"
+                        placeholder={label}
+                        required={true}
+                        onChange={handleChangeText}
+                        aria-label={label}
+                        autoFocus={autoFocus}
+                        disabled={props.singleUse ? sent && props.singleUse : sent}
+                      />
+                    </InputGroup>
+                  : null
+                }
+              </>
+            )
+          }
+          {!sent
+            ? (
+              <div>
+                  <div className="mt-4">
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      disabled={!text || (props.singleUse ? sent && props.singleUse : sent)}
+                    >
                       Submit
                     </Button>
                   </div>
-                </div>
-              )
-              : (
-                <InputGroup className="d-flex align-items-center">
-                  <Form.Control
-                    type="text"
-                    placeholder={label}
-                    required={true}
-                    onChange={handleChangeText}
-                    aria-label={label}
-                  />
-                  <Button variant="primary" type="submit" disabled={!text}>
-                    Submit
-                  </Button>
-                </InputGroup>
-              )
-            }
-          </Form.Group>
+              </div>
+            )
+            :
+            (
+              <>
+                {textArea ? <div className="mt-1 w-100 text-end text-success">Sent!</div> : null}
+              </>
+            )
+          }
+        </Form.Group>
 
-          {/*<Form.Group className="mb-3" controlId="formImage">*/}
-          {/*  <Form.Label>Image URL (optional)</Form.Label>*/}
-          {/*  <Form.Control type="url" pattern="https://.*" placeholder="Link to a .JPG or .PNG image" onChange={handleChangeImage}/>*/}
-          {/*</Form.Group>*/}
+        {/*<Form.Group className="mb-3" controlId="formImage">*/}
+        {/*  <Form.Label>Image URL (optional)</Form.Label>*/}
+        {/*  <Form.Control type="url" pattern="https://.*" placeholder="Link to a .JPG or .PNG image" onChange={handleChangeImage}/>*/}
+        {/*</Form.Group>*/}
 
-          {/*<Form.Group className="mb-3" controlId="formUsername">*/}
-          {/*  <Form.Label>Name (optional)</Form.Label>*/}
-          {/*  <Form.Control type="text" placeholder="Your name" onChange={handleChangeName}/>*/}
-          {/*</Form.Group>*/}
+        {/*<Form.Group className="mb-3" controlId="formUsername">*/}
+        {/*  <Form.Label>Name (optional)</Form.Label>*/}
+        {/*  <Form.Control type="text" placeholder="Your name" onChange={handleChangeName}/>*/}
+        {/*</Form.Group>*/}
 
-          {/*<Form.Group className="mb-3" controlId="formBasicEmail">*/}
-          {/*  <Form.Label>Email (optional)</Form.Label>*/}
-          {/*  <Form.Control type="email" placeholder="Your email" onChange={handleChangeEmail}/>*/}
-          {/*</Form.Group>*/}
-        </Form>
-        :
-        <div className="d-flex justify-content-between align-items-center">
+        {/*<Form.Group className="mb-3" controlId="formBasicEmail">*/}
+        {/*  <Form.Label>Email (optional)</Form.Label>*/}
+        {/*  <Form.Control type="email" placeholder="Your email" onChange={handleChangeEmail}/>*/}
+        {/*</Form.Group>*/}
+      </Form>
+
+      {sent
+        ? <div className="d-flex justify-content-between align-items-center">
           {
             props.singleUse
               ? <>
-                  <div>
-                    <strong>{text}</strong>
-                  </div>
-                  <div>
-                    <Button size="sm" variant="outline-secondary" onClick={() => setSent(false)}>Change</Button>
-                  </div>
-                </>
-              : <>
-                  <div>Sent!</div>
-                  <Button variant="outline-primary" onClick={() => setSent(false)}>Send another one</Button>
-                </>
+                <div>
+                  <strong>{text}</strong>
+                </div>
+                <div>
+                  <Button size="sm" variant="outline-secondary" onClick={() => setSent(false)}>Change</Button>
+                </div>
+              </>
+              : null
           }
         </div>
+        : null
       }
     </div>
   )

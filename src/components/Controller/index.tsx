@@ -14,7 +14,7 @@ import CtrlText from "./CtrlText";
 import Sensors from "./Sensors";
 import CtrlFader from "./CtrlFader";
 import CtrlEden from './CtrlEden';
-import { User } from '../../stores/socketStore';
+import { Player } from '../../stores/socketStore';
 
 export const CtrlButtons = (numButtons:number, eventHandler?:any) => {
   const colors = [ 'red', 'green', 'blue', 'yellow' ]
@@ -172,7 +172,7 @@ const Controller = () => {
 
     console.log(socketStore.roomState.users)
     socketStore.updateRoomState({
-      users: socketStore.roomState.users?.map((user: User) => {
+      users: socketStore.roomState.users?.map((user: Player) => {
         if (user.id !== data.id) {
           return user;
         }

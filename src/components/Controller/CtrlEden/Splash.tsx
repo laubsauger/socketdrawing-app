@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { Badge } from 'react-bootstrap';
 import React from 'react';
-import { Phase1SplashData } from './index';
 import { observer } from 'mobx-react-lite';
+import { Phase1SplashData } from '../../../stores/gameStore';
 
 const Splash = ({data}: { data: Phase1SplashData}) => {
   return (

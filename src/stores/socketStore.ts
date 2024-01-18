@@ -14,7 +14,7 @@ export type ConnectionState = {
 }
 
 export type RoomState = {
-  users?: User[];
+  users?: Player[];
   numMaxUsers?: number;
   currentSlot?: number;
 }
@@ -48,10 +48,11 @@ export interface ISocketStore {
   currentInstance: Instance|undefined,
 }
 
-export type User = {
+export type Player = {
   id: string,
   client_index: number,
   name?: string,
+  color: string,
   points?: number
 }
 

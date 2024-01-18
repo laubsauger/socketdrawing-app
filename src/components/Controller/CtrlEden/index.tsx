@@ -3,29 +3,14 @@ import { observer } from 'mobx-react-lite';
 import CtrlText from '../CtrlText';
 import { CtrlButtons } from '../index';
 import { useStores } from '../../../hooks/useStores';
-import { Badge } from 'react-bootstrap';
-import { motion } from "framer-motion"
 import Splash from './Splash';
 import Lounge from './Lounge';
 import Players from './Players';
+import { Phase1SplashData, Phase2PlayerData, Phase3RoundData } from '../../../stores/gameStore';
+import Round from './Round';
 
 type Props = {
   firedMouseUp: boolean
-}
-
-export type Phase0LoungeData = {
-
-}
-
-export type Phase1SplashData = {
-  title: string,
-  description: string,
-  image: string,
-  player_count: number
-}
-
-export type Phase2PlayerData = {
-  player_indexes: number[]
 }
 
 const CtrlEden = (props: Props) => {
@@ -35,6 +20,7 @@ const CtrlEden = (props: Props) => {
   const [showLounge, setShowLounge] = useState(true)
   const [showSplash, setShowSplash] = useState(false)
   const [showPlayers, setShowPlayers] = useState(false)
+  const [showRound, setShowRound] = useState(false)
 
   useEffect(() => {
     gameStore.setCurrentPhase('0-lounge')
@@ -46,6 +32,7 @@ const CtrlEden = (props: Props) => {
       setShowLounge(true)
       setShowSplash(false)
       setShowPlayers(false)
+      setShowRound(false)
       return
     }
     setShowLounge(false)
@@ -53,6 +40,7 @@ const CtrlEden = (props: Props) => {
     if (gameStore.currentPhase === '1-splash') {
       setShowSplash(true);
       setShowPlayers(false)
+      setShowRound(false)
       navigator.vibrate(200);
       return
     }
@@ -60,10 +48,18 @@ const CtrlEden = (props: Props) => {
 
     if (gameStore.currentPhase === '2-announce_players') {
       setShowPlayers(true);
+      setShowRound(false)
       navigator.vibrate(200);
       return
     }
     setShowPlayers(false)
+
+    if (gameStore.currentPhase === '3-round_start') {
+      setShowRound(true);
+      navigator.vibrate(200);
+      return
+    }
+    setShowRound(false)
   }, [gameStore.currentPhase])
 
   return (
@@ -78,6 +74,10 @@ const CtrlEden = (props: Props) => {
       }
       { showPlayers && gameStore.currentData
         ? <Players data={gameStore.currentData as Phase2PlayerData}/>
+        : null
+      }
+      { showRound && gameStore.currentData
+        ? <Round data={gameStore.currentData as Phase3RoundData}/>
         : null
       }
 {/*`      {*/}
@@ -105,26 +105,26 @@ const CtrlEden = (props: Props) => {
 
       {/*{ gameStore.currentPhase ? gameStore.currentPhase : 'unknown / undefined phase' }*/}
 
-      { showOtherControls
-        ? (
-          <div className="d-flex flex-column z-index-above">
-            <div>
-              <CtrlText
-                label={'Text Prompt'}
-                messageField={'textPrompt'}
-                textArea={true}
-              />
-            </div>
-            <div
-              className="d-flex position-absolute justify-content-between py-2 px-2 w-100 bg-black"
-              style={{ zIndex: 10, borderTop: '1px solid black', bottom: '0px' }}
-            >
-              {CtrlButtons(4, props.firedMouseUp)}
-            </div>
-          </div>
-        )
-        : null
-      }
+      {/*{ showOtherControls*/}
+      {/*  ? (*/}
+      {/*    <div className="d-flex flex-column z-index-above">*/}
+      {/*      <div>*/}
+      {/*        <CtrlText*/}
+      {/*          label={'Text Prompt'}*/}
+      {/*          messageField={'textPrompt'}*/}
+      {/*          textArea={true}*/}
+      {/*        />*/}
+      {/*      </div>*/}
+      {/*      <div*/}
+      {/*        className="d-flex position-absolute justify-content-between py-2 px-2 w-100 bg-black"*/}
+      {/*        style={{ zIndex: 10, borderTop: '1px solid black', bottom: '0px' }}*/}
+      {/*      >*/}
+      {/*        {CtrlButtons(4, props.firedMouseUp)}*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*  )*/}
+      {/*  : null*/}
+      {/*}*/}
     </div>
   )
 };
