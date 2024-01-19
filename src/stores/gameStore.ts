@@ -77,6 +77,11 @@ export class GameStore implements IGameStore {
   }
 
   @action handleUpdate = (data: GameStateUpdatePayload) :void => {
+    if (this.currentPhase === data.gameState.phase) {
+      console.log('redundant handleUpdate, current phase', this.currentPhase)
+      return
+    }
+
     // @todo: reducer-like action handler factory
     console.log('gameStore - handleUpdate', { data })
     this.currentPhase = data.gameState.phase
