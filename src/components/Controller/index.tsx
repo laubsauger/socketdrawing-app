@@ -7,7 +7,6 @@ import config from '../../config';
 import CtrlButton from './CtrlButton';
 import CtrlXY from './CtrlXY';
 import SessionInfo from './SessionInfo';
-import LogoBackground from '../LogoBackground';
 import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
 import CtrlText from "./CtrlText";
@@ -40,7 +39,6 @@ const Controller = () => {
   const { socketStore, gameStore } = useStores();
   const { instanceId, slotId } = useParams();
 
-  const [ isValid, setIsValid ] = useState(false);
   const [ firedMouseUp, setFiredMouseUp ] = useState(false);
   const [ alreadyConnected, setAlreadyConnected ] = useState(socketStore.connectionState.connected);
 
@@ -66,11 +64,11 @@ const Controller = () => {
     // @todo: improve validation to check against instance config from api
     // @todo: add error message and redirect to /join on error
     if (!instanceId || !slotId) {
-      setIsValid(false);
+      // setIsValid(false);
       socketStore.setCurrentInstance(undefined);
     } else {
       const selectedInstance = socketStore.availableInstances.filter(item => item.id === Number(instanceId))[0];
-      setIsValid(true);
+      // setIsValid(true);
       socketStore.setCurrentInstance(selectedInstance);
       console.log(instanceId, socketStore.availableInstances)
     }
@@ -238,7 +236,7 @@ const Controller = () => {
 
   return (
     <div className='Controller d-flex flex-column ' style={{ height: '100%' }}>
-      <LogoBackground />
+      {/*<LogoBackground />*/}
 
       { socketStore.connectionState.joined &&
         <React.Fragment>

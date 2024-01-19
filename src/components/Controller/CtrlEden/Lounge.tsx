@@ -2,10 +2,10 @@ import React from 'react'
 import CtrlText from '../CtrlText';
 import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
+// import Toasty from '../../Toasty';
 
 const Lounge = () => {
-  const { socketStore } = useStores()
-
+  const { socketStore, gameStore } = useStores()
   return (
     <div>
       <div className="text-center fw-bold py-2 bg-dark">Waiting Room</div>
@@ -17,13 +17,16 @@ const Lounge = () => {
           singleUse={true}
           label={'Name'}
           messageField='userName'
-          // onSubmitSuccess={() => setShowOtherControls(true)}
+          onSubmitSuccess={(name: string|null) => {
+            gameStore.setUserName(name)
+            // setShowWelcome(true)
+          }}
         />
       </div>
       <hr className="m-2"/>
       <div>
         <div className="px-2 mb-2 d-flex justify-content-between">
-          <span>Lounge</span>
+          <span>Users</span>
           <span className="fs-6 text-light">{socketStore.roomState.users?.length} / {socketStore.roomState.numMaxUsers}</span>
         </div>
         <div className="m-0 px-3">
@@ -41,6 +44,7 @@ const Lounge = () => {
           </div>
         </div>
       </div>
+      {/*<Toasty title={`Hi, ${gameStore.userName}!`} text={"Take a seat, we'll get going soon"} visible={showWelcome} onHide={() => setShowWelcome(false)} />*/}
     </div>
   )
 }

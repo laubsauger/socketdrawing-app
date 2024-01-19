@@ -99,7 +99,7 @@ const CtrlXY = (props:Props) => {
   }, [ isPainting, pos, ref, feedbackPositions]);
 
 
-  const emitPaintMessage = useCallback((mousePos) => {
+  const emitPaintMessage = useCallback((mousePos: { normalized_x: number, normalized_y: number }) => {
     const posObj:any = {};
     posObj[channelNames.x] = mousePos.normalized_x;
     posObj[channelNames.y] = mousePos.normalized_y;
@@ -110,14 +110,14 @@ const CtrlXY = (props:Props) => {
     });
   }, [ socket, channelNames.x, channelNames.y ]);
 
-  const emitMouseDownStateMessage = useCallback((state) => {
+  const emitMouseDownStateMessage = useCallback((state: any) => {
     socket.emit('OSC_CTRL_MESSAGE', {
       message: 'mouseDown',
       state,
     });
   }, [ socket ]);
 
-  const handleDragStart = useCallback((ev) => {
+  const handleDragStart = useCallback((ev:any) => {
     if (!ref || ev.target !== ref.current) {
       console.log('no ref or ref current is not target, dont draw');
       return;
@@ -137,7 +137,7 @@ const CtrlXY = (props:Props) => {
     }
   }, [ref, pos, emitPaintMessage, emitMouseDownStateMessage]);
 
-  const handlePaint = useCallback((ev) => {
+  const handlePaint = useCallback((ev:any) => {
     if (!isPainting) {
       return;
     }

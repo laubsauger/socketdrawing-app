@@ -19,7 +19,6 @@ export type GameStateUpdatePayload = {
   }
 }
 
-
 export type Phase0LoungeData = {
 
 }
@@ -42,6 +41,19 @@ export type Phase3RoundData = {
   hint?: string
 }
 
+export type Phase4RoundData = {
+
+}
+
+export type Phase5VotingData = {
+  results: [
+    {
+      player_index: number,
+      image: string,
+    }
+  ]
+}
+
 export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData
 
 export class GameStore implements IGameStore {
@@ -53,9 +65,11 @@ export class GameStore implements IGameStore {
   @observable phases: Phase[] = [];
   @observable currentPhase: Phase|null = null;
   @observable currentData: PhaseData|null = null;
+  @observable userName: string|null = null;
   @observable players: Player[] = [];
   @observable audience: Player[] = [];
   @observable roundData: Phase3RoundData|null = null;
+  @observable votingData: Phase5VotingData|null = null;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -74,6 +88,7 @@ export class GameStore implements IGameStore {
       this.setPlayers([])
       this.setAudience([])
       this.setRoundData(null)
+      this.setVotingData(null)
       return
     }
 
@@ -87,6 +102,12 @@ export class GameStore implements IGameStore {
     if (this.currentPhase === '3-round_start') {
       // const { pre_delay, timer, prompt, hint} = data.gameState.data as Phase3RoundStartData || {}
       this.setRoundData(data.gameState.data as Phase3RoundData)
+      return
+    }
+
+    if (this.currentPhase === '5-voting') {
+      // const { pre_delay, timer, prompt, hint} = data.gameState.data as Phase3RoundStartData || {}
+      this.setVotingData(data.gameState.data as Phase5VotingData)
       return
     }
   }
@@ -115,11 +136,19 @@ export class GameStore implements IGameStore {
     this.roundData = roundData || null;
   }
 
+  @action setVotingData = (votingData: Phase5VotingData|null) : void => {
+    this.votingData = votingData || null
+  }
+
   @action setPhases = (phases: Phase[]): void => {
     this.phases = phases || [];
   }
 
   @action setCurrentPhase = (newPhase: Phase): void => {
     this.currentPhase = newPhase;
+  }
+
+  @action setUserName = (name: string|null): void => {
+    this.userName = name;
   }
 }

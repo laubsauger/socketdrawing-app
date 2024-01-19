@@ -1,14 +1,14 @@
-import React, { ChangeEvent, FormEvent, ReactEventHandler, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 
 type Props = {
   label: string,
   messageField: string,
   textArea?: boolean,
-  onSubmitSuccess?: () => void,
+  onSubmitSuccess?: (text: string|null) => void,
   singleUse?: boolean,
   autoFocus?: boolean,
   shouldSubmit?: boolean,
@@ -32,7 +32,7 @@ const CtrlText = (props: Props) => {
     });
 
     setSent(true);
-    onSubmitSuccess && onSubmitSuccess()
+    onSubmitSuccess && onSubmitSuccess(text)
   }
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const CtrlText = (props: Props) => {
   }, [socket, text]);
 
   return (
-    <div className={`CtrlText p-2 mt-2`}>
+    <div className={`CtrlText p-2 mt-0 mb-0`}>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="d-flex flex-column" controlId="formTextPrompt">
           {textArea
@@ -88,7 +88,7 @@ const CtrlText = (props: Props) => {
           {!sent
             ? (
               <div>
-                  <div className="mt-4">
+                  <div className="mt-2">
                     <Button
                       variant="primary"
                       type="submit"
@@ -102,7 +102,7 @@ const CtrlText = (props: Props) => {
             :
             (
               <>
-                {textArea ? <div className="mt-1 w-100 text-end text-success">Sent!</div> : null}
+                {textArea ? <div className="mt-2 mb-0 w-100 text-success">Sent!</div> : null}
               </>
             )
           }
