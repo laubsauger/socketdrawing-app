@@ -100,20 +100,28 @@ const Round = () => {
             <div className="position-relative">
               {isPlayer
                 ?
-                  <CtrlText
-                    label={'Text Prompt'}
-                    messageField={'textPrompt'}
-                    textArea={true}
-                    shouldSubmit={roundTimer === 0}
-                  />
+                <CtrlText
+                  label={'Text Prompt'}
+                  messageField={'textPrompt'}
+                  textArea={true}
+                  shouldSubmit={roundTimer === 0}
+                />
                 :
-                  <div>
-                    <div>You're in the audience!</div>
-                    <div>After players submitted their prompts, you can vote for your favorite</div>
-                  </div>
+                <>
+                {animationCompleted
+                  ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5}}>
+                    <div className="px-4">
+                      <div className="mb-4 fw-bold text-info">You're in the audience!</div>
+                      <div className="text-light">After players submitted their prompts, you can vote for your favorite
+                      </div>
+                    </div>
+                  </motion.div>
+                  : null
+                }
+                </>
               }
 
-              { roundTimer && roundTimer > 0
+              {roundTimer && roundTimer > 0
                 ? (
                   <>
                     <div
