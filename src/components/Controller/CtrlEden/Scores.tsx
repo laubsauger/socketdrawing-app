@@ -43,17 +43,20 @@ const Scores = () => {
         <div className="d-flex flex-wrap">
           {gameStore.scoreData?.scores.map((result, index) => (
             <div key={result.image} className="w-50">
+              <div className="d-flex gap-2 justify-content-between">
+                <div>{result.player_index}</div>
+              </div>
+
               <motion.img
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 1 + (0.5 * index), duration: 0.5, ease: 'backOut', origin: 0 }}
                 key={result.image} src={result.image} alt={result.image} className="object-fit-contain"
-                style={{ maxWidth: '100%'}}
+                style={{ maxWidth: '100%' }}
               />
               {/*<div className={`CtrlButton-${getPlayer(result.player_index).color}`}>*/}
-              <div className="d-flex gap-2 justify-content-between">
-                <div>{result.player_index}</div>
-                <Badge>{result.votes}</Badge>
+              <div className="d-flex gap-2">
+                Votes: {result.votes}
               </div>
             </div>
           ))}

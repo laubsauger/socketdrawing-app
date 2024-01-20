@@ -14,13 +14,15 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
   const [ roundTimer, setRoundTimer ] = useState<number|undefined>(undefined)
   const [ animationCompleted, setAnimationCompleted ] = useState(false)
   const [ titleAnimationCompleted, setTitleAnimationCompleted ] = useState(false)
-
+  const [ firstRender, setFirstRender ] = useState(true)
   const { timer } = gameStore.roundData || {}
 
   useEffect(() => {
     if (!animationCompleted || !timer) {
       return
     }
+
+    setFirstRender(false)
 
     setRoundTimer(timer)
     const decreaseTimerInterval = setInterval(() => {
@@ -52,18 +54,18 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
   }, []);
 
   return (
-    <div style={{ height: '100vh', width: '100vw' }}>
-      <div className="d-flex flex-column z-index-above mt-4">
+    <div className="d-flex flex-column flex-grow-1" style={{ height: '100vh', width: '100vw' }}>
+      <div className="d-flex flex-column z-index-above mt-4 flex-grow-1">
         <div className="d-flex gap-4 mx-2 align-items-center justify-content-center">
           <div className="position-relative text-center" >
             <motion.div
               ref={scope}
-              initial={{ scale: 0, y: '-100vh' }}
+              initial={firstRender ? { scale: 0, y: '-100vh' } : false}
               onAnimationStart={() => setTitleAnimationCompleted(false)}
             >
               <div className="fw-semibold fs-5">{gameStore.roundData?.prompt}</div>
               <motion.div
-                initial={{ scale: 0, y: '-100vh'}}
+                initial={firstRender ? { scale: 0, y: '-100vh'} : false}
                 animate={{ scale: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.3, ease: 'backOut' }}
                 onAnimationComplete={() => setTitleAnimationCompleted(true)}
@@ -76,11 +78,12 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
 
         {titleAnimationCompleted
           ? <motion.div
-            initial={{ scale: 0, opacity: 0 }}
+            initial={firstRender ? { scale: 0, opacity: 0 } : false}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 2.5, duration: 0.5, ease: 'backOut' }}
             onAnimationStart={() => setAnimationCompleted(false)}
             onAnimationComplete={() => setAnimationCompleted(true)}
+            className="mt-auto mb-auto"
           >
             <div className="position-relative">
               <CtrlText
@@ -111,33 +114,37 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
 
       {animationCompleted
         ? (
-          <>
-            <hr className="my-1"/>
-            {gameStore.players ?
-              <div className="p-2">
-                <div className="mb-2 d-flex justify-content-between">
-                  <span className="text-dark-emphasis">Players</span>
-                </div>
-                <div className="m-0 px-2">
-                  <div>
-                    {gameStore.players?.map((player, index) => (
-                      <div key={`${player.id}_${index}`}>
-                        <PlayerItem player={player}/>
-                        <div>
-                          Points: {player.points}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              : null
-            }
-            {gameStore.audience
-              ? <ListAudience />
-              : null
-            }
-          </>
+          <div className="d-flex gap-2 justify-content-between text-light mb-2 mx-2">
+            <div>Players: {gameStore.players.length}</div>
+            <div>Audience: {gameStore.audience.length}</div>
+          </div>
+          // <>
+          //   <hr className="my-1"/>
+          //   {gameStore.players ?
+          //     <div className="p-2">
+          //       <div className="mb-2 d-flex justify-content-between">
+          //         <span className="text-dark-emphasis">Players</span>
+          //       </div>
+          //       <div className="m-0 px-2">
+          //         <div>
+          //           {gameStore.players?.map((player, index) => (
+          //             <div key={`${player.id}_${index}`}>
+          //               <PlayerItem player={player}/>
+          //               <div>
+          //                 Points: {player.points}
+          //               </div>
+          //             </div>
+          //           ))}
+          //         </div>
+          //       </div>
+          //     </div>
+          //     : null
+          //   }
+          //   {gameStore.audience
+          //     ? <ListAudience />
+          //     : null
+          //   }
+          // </>
         )
         : null
       }
