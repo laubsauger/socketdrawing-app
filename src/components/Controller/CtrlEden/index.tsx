@@ -132,7 +132,7 @@ const CtrlEden = (props: Props) => {
         : null
       }
       { showVoting && gameStore.currentData
-        ? <Voting />
+        ? <Voting firedMouseUp={props.firedMouseUp}/>
         : null
       }
       { showScores && gameStore.currentData
