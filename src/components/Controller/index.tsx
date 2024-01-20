@@ -14,6 +14,7 @@ import Sensors from "./Sensors";
 import CtrlFader from "./CtrlFader";
 import CtrlEden from './CtrlEden';
 import { Player } from '../../stores/socketStore';
+import { useWakeLock } from 'react-screen-wake-lock';
 
 export type PlayerColor = 'black'|'red'|'green'|'blue'|'yellow';
 
@@ -37,6 +38,27 @@ const CtrlFaders = (numFaders:number, eventHandler:any) => {
 }
 
 const Controller = () => {
+  const { isSupported, released, request, release } = useWakeLock({
+    // onRequest: () => alert('Screen Wake Lock: requested!'),
+    // onError: () => alert('An error happened 💥'),
+    // onRelease: () => alert('Screen Wake Lock: released!'),
+    onRequest: () => console.log('Screen Wake Lock: requested!'),
+    onError: () => console.log('An error happened 💥'),
+    onRelease: () => console.log('Screen Wake Lock: released!'),
+  });
+
+  useEffect(() => {
+    if (isSupported) {
+      if (!released) {
+        request()
+      }
+    }
+
+    return () => {
+      release()
+    }
+  }, []);
+
   // const { pathname, search } = useLocation();
   const socket = useSocket();
   const { socketStore, gameStore } = useStores();

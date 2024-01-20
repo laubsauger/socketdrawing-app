@@ -14,9 +14,9 @@ const Players = ({ data }: { data: Phase2PlayerData}) => {
     if (!data.player_indexes) {
       return
     }
-    console.log(data.player_indexes)
+    // console.log(data.player_indexes)
     const playerData = data.player_indexes.map((player_index, index) => {
-      console.log(player_index, socketStore.roomState.users)
+      // console.log(player_index, socketStore.roomState.users)
       const player =  socketStore.roomState.users?.filter(user => user.client_index === player_index)[0]
       return {
         ...player,
