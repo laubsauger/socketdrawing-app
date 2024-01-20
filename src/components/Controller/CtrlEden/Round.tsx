@@ -52,7 +52,7 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
   }, []);
 
   return (
-    <div style={{ height: 'calc(100vh - 30px)', width: '100vw' }}>
+    <div style={{ height: '100vh', width: '100vw' }}>
       <div className="d-flex flex-column z-index-above mt-4">
         <div className="d-flex gap-4 mx-2 align-items-center justify-content-center">
           <div className="position-relative text-center" >

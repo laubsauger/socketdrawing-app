@@ -8,14 +8,17 @@ import { PlayerColor } from '../index';
 type Props = {
   label?: string,
   type: 'div'|'button',
-  variant: PlayerColor
+  variant?: PlayerColor
   channelName: string,
   released?: boolean,
   children?: ReactNode
+  onClick?: () => void
+  style?: any
+  className?: string
 };
 
 const CtrlButton = (props:Props) => {
-  const { label, variant, channelName, released , type, children} = props;
+  const { label, variant, channelName, released , type, children, onClick, className, style} = props;
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
 
@@ -26,6 +29,7 @@ const CtrlButton = (props:Props) => {
       btnId: channelName,
       state: 1,
     });
+    onClick && onClick()
   }, [ socket, channelName ]);
 
   useEffect(() => {
@@ -47,8 +51,9 @@ const CtrlButton = (props:Props) => {
   if (type === 'div') {
     return (
       <div
-        className={`CtrlButton-${variant}`}
+        className={className}
         onMouseDown={handleBtnPress}
+        style={style}
       >
         {children ? children : label}
       </div>

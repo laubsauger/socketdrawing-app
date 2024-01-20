@@ -6,6 +6,12 @@ import { observer } from 'mobx-react-lite';
 const ListItemPlayer = ({player}:{player: Player}) => {
   const { socketStore } = useStores()
 
+  if (!player || !player.id) {
+    return (
+      <div className="text-light">unknown</div>
+    )
+  }
+
   return (
     <div
       className={`CtrlButton-${player.color} player d-flex align-items-center justify-content-center`}>

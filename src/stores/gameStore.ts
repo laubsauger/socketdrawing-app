@@ -59,7 +59,7 @@ export type Phase6ScoreData = {
     {
       player_index: number,
       image: string,
-      score: number
+      votes: number
     }
   ]
 }
@@ -116,6 +116,8 @@ export class GameStore implements IGameStore {
     }
 
     if (this.currentPhase === 'round_start') {
+      this.setVotingData(null)
+      this.setScoreData(null)
       this.setRoundData(data.gameState.data as Phase3RoundData)
       return
     }

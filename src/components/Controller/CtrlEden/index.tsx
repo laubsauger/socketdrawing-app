@@ -14,6 +14,7 @@ import Round from './Round';
 import RoundEnd from './RoundEnd';
 import Voting from './Voting';
 import Scores from './Scores';
+import SessionInfo from '../SessionInfo';
 
 type Props = {
   firedMouseUp: boolean
@@ -107,7 +108,9 @@ const CtrlEden = (props: Props) => {
   }, [gameStore.currentPhase])
 
   return (
-    <div className="d-flex flex-column mt-3 overflow-hidden" style={{ height: '100%'}}>
+    <div className="d-flex flex-column overflow-hidden" style={{ height: '100%'}}>
+      <SessionInfo />
+
       { showLounge
         ? <Lounge />
         : null

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
+import { Player } from '../../../stores/socketStore';
+import { Badge } from 'react-bootstrap';
 
 const Scores = () => {
   const { gameStore, socketStore } = useStores()
@@ -17,7 +19,11 @@ const Scores = () => {
     }
   }, [gameStore.scoreData, gameStore.players, socketStore.connectionState.clientId]);
 
-  console.log(ownResult)
+  const getPlayer = (player_index: number): Player => {
+    return gameStore.players.filter(player => player.client_index === player_index)[0]
+  }
+
+  console.log(socketStore.roomState.users)
 
   return (
     <div
@@ -42,8 +48,13 @@ const Scores = () => {
                 animate={{ scale: 1 }}
                 transition={{ delay: 1 + (0.5 * index), duration: 0.5, ease: 'backOut', origin: 0 }}
                 key={result.image} src={result.image} alt={result.image} className="object-fit-contain"
-                style={{ maxWidth: '100%', filter: ownResult?.player_index === result.player_index ? 'grayscale(1)' : '' }}
+                style={{ maxWidth: '100%'}}
               />
+              {/*<div className={`CtrlButton-${getPlayer(result.player_index).color}`}>*/}
+              <div className="d-flex gap-2 justify-content-between">
+                <div>{result.player_index}</div>
+                <Badge>{result.votes}</Badge>
+              </div>
             </div>
           ))}
         </div>

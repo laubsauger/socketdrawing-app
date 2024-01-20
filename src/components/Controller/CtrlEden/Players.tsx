@@ -3,7 +3,7 @@ import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { Player } from '../../../stores/socketStore';
 import { Phase2PlayerData } from 'src/stores/gameStore';
-import PlayerItem from './ListItemPlayer';
+import ListItemPlayer from './ListItemPlayer';
 import ListAudience from './ListAudience';
 import { buttonColors } from '../index';
 
@@ -41,16 +41,16 @@ const Players = ({ data }: { data: Phase2PlayerData}) => {
             <div className="m-0 px-3">
               <div>
                 {gameStore.players?.map((player, index) => (
-                  <PlayerItem key={`${player.id}_${index}`} player={player}/>
+                  <ListItemPlayer key={`${player.id}_${index}`} player={player}/>
                 ))}
               </div>
             </div>
           </div>
-          : null
+        : <div>Fetching Players...</div>
         }
         { gameStore.audience
           ? <ListAudience />
-          : null
+          : <div>Fetching Audience...</div>
         }
     </div>
   )
