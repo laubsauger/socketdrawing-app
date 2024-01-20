@@ -14,7 +14,7 @@ const ListItemPlayer = ({player}:{player: Player}) => {
 
   return (
     <div
-      className={`CtrlButton-${player.color} player d-flex align-items-center justify-content-center`}>
+      className={`CtrlButton-${player.color} player d-flex align-items-center justify-content-center w-50`}>
       <>
         {player.id === socketStore.connectionState.clientId
           ? <div

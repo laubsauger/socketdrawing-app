@@ -2,20 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { Phase3RoundData } from '../../../stores/gameStore';
-import PlayerItem from './ListItemPlayer';
-import ListAudience from './ListAudience';
+// import PlayerItem from './ListItemPlayer';
+// import ListAudience from './ListAudience';
 import CtrlText from '../CtrlText';
 import { motion, useAnimate } from 'framer-motion';
 
-const Round = ({ data }: { data: Phase3RoundData }) => {
+const Round = () => {
   const [scope, animate] = useAnimate();
-  const { gameStore } = useStores()
+  const { gameStore, socketStore } = useStores()
 
   const [ roundTimer, setRoundTimer ] = useState<number|undefined>(undefined)
   const [ animationCompleted, setAnimationCompleted ] = useState(false)
   const [ titleAnimationCompleted, setTitleAnimationCompleted ] = useState(false)
   const [ firstRender, setFirstRender ] = useState(true)
   const { timer } = gameStore.roundData || {}
+  const [ isPlayer, setIsPlayer ] = useState(false)
+
+  useEffect(() => {
+    if (gameStore.players && socketStore.connectionState.clientId) {
+      const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
+      if (currentPlayer) {
+        setIsPlayer(true)
+      } else {
+        setIsPlayer(false)
+      }
+    }
+  }, [gameStore.players, socketStore.connectionState.clientId]);
 
   useEffect(() => {
     if (!animationCompleted || !timer) {
@@ -57,7 +69,7 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
     <div className="d-flex flex-column flex-grow-1" style={{ height: '100vh', width: '100vw' }}>
       <div className="d-flex flex-column z-index-above mt-4 flex-grow-1">
         <div className="d-flex gap-4 mx-2 align-items-center justify-content-center">
-          <div className="position-relative text-center" >
+          <div className="position-relative text-center">
             <motion.div
               ref={scope}
               initial={firstRender ? { scale: 0, y: '-100vh' } : false}
@@ -86,12 +98,21 @@ const Round = ({ data }: { data: Phase3RoundData }) => {
             className="mt-auto mb-auto"
           >
             <div className="position-relative">
-              <CtrlText
-                label={'Text Prompt'}
-                messageField={'textPrompt'}
-                textArea={true}
-                shouldSubmit={roundTimer === 0}
-              />
+              {isPlayer
+                ?
+                  <CtrlText
+                    label={'Text Prompt'}
+                    messageField={'textPrompt'}
+                    textArea={true}
+                    shouldSubmit={roundTimer === 0}
+                  />
+                :
+                  <div>
+                    <div>You're in the audience!</div>
+                    <div>After players submitted their prompts, you can vote for your favorite</div>
+                  </div>
+              }
+
               { roundTimer && roundTimer > 0
                 ? (
                   <>

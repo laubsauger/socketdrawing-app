@@ -38,12 +38,10 @@ const Players = ({ data }: { data: Phase2PlayerData}) => {
             <div className="px-2 mb-2 d-flex justify-content-between">
               <span>Players</span>
             </div>
-            <div className="m-0 px-3">
-              <div>
+            <div className="m-0 px-3 d-flex flex-column gap-2">
                 {gameStore.players?.map((player, index) => (
                   <ListItemPlayer key={`${player.id}_${index}`} player={player}/>
                 ))}
-              </div>
             </div>
           </div>
         : <div>Fetching Players...</div>

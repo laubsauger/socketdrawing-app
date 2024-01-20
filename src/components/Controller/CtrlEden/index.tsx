@@ -124,7 +124,7 @@ const CtrlEden = (props: Props) => {
         : null
       }
       { showRoundStart && gameStore.currentData
-        ? <Round data={gameStore.currentData as Phase3RoundData}/>
+        ? <Round />
         : null
       }
       { showRoundEnd && gameStore.currentData
