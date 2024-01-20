@@ -1,18 +1,21 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import './styles.scss';
 import { useSocket } from "../../../hooks/useSocket";
+import { PlayerColor } from '../index';
 
 type Props = {
-  label: string,
-  variant: 'black' | 'red' | 'green' | 'blue' | 'yellow',
+  label?: string,
+  type: 'div'|'button',
+  variant: PlayerColor
   channelName: string,
   released?: boolean,
+  children?: ReactNode
 };
 
 const CtrlButton = (props:Props) => {
-  const { label, variant, channelName, released } = props;
+  const { label, variant, channelName, released , type, children} = props;
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
 
@@ -41,9 +44,21 @@ const CtrlButton = (props:Props) => {
     }
   }, [ socket, pressed, released, channelName ]);
 
+  if (type === 'div') {
+    return (
+      <div
+        className={`CtrlButton-${variant}`}
+        onMouseDown={handleBtnPress}
+      >
+        {children ? children : label}
+      </div>
+    )
+  }
+
   return (
-    <button className={`CtrlButton CtrlButton-${variant}`}
-            onMouseDown={handleBtnPress}
+    <button
+      className={`CtrlButton CtrlButton-${variant}`}
+      onMouseDown={handleBtnPress}
     >
       { label }
     </button>

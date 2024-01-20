@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Phase4RoundData } from '../../../stores/gameStore';
 import { motion } from 'framer-motion';
 
-const RoundEnd = ({ data }: { data: Phase4RoundData }) => {
+const RoundEnd = () => {
   return (
     <div
       className="d-flex flex-column justify-content-center align-items-center w-100"

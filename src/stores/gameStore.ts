@@ -2,7 +2,7 @@ import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
 import { Player } from './socketStore';
 
-export type Phase = '0-lounge'|'1-splash'|'2-announce_players'|'3-round_start'|'4-round_end'|'5-voting'|'6-results'
+export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'
 
 export interface IGameStore {
   id: string;
@@ -54,7 +54,17 @@ export type Phase5VotingData = {
   ]
 }
 
-export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData
+export type Phase6ScoreData = {
+  scores: [
+    {
+      player_index: number,
+      image: string,
+      score: number
+    }
+  ]
+}
+
+export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData | Phase4RoundData | Phase5VotingData | Phase6ScoreData
 
 export class GameStore implements IGameStore {
   private rootStore: RootStore;
@@ -70,6 +80,7 @@ export class GameStore implements IGameStore {
   @observable audience: Player[] = [];
   @observable roundData: Phase3RoundData|null = null;
   @observable votingData: Phase5VotingData|null = null;
+  @observable scoreData: Phase6ScoreData|null = null;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -82,37 +93,40 @@ export class GameStore implements IGameStore {
       return
     }
 
-    // @todo: reducer-like action handler factory
     console.log('gameStore - handleUpdate', { data })
     this.currentPhase = data.gameState.phase
     this.currentData = data.gameState.data
 
-    if (this.currentPhase === '0-lounge') {
+    if (this.currentPhase === 'lounge') {
       this.setTitle('')
       this.setDescription('')
       this.setPlayers([])
       this.setAudience([])
       this.setRoundData(null)
       this.setVotingData(null)
+      this.setScoreData(null)
       return
     }
 
-    if (this.currentPhase === '1-splash') {
+    if (this.currentPhase === 'splash') {
       const { title, description} = data.gameState.data as Phase1SplashData || {}
       this.setTitle(title)
       this.setDescription(description)
       return
     }
 
-    if (this.currentPhase === '3-round_start') {
-      // const { pre_delay, timer, prompt, hint} = data.gameState.data as Phase3RoundStartData || {}
+    if (this.currentPhase === 'round_start') {
       this.setRoundData(data.gameState.data as Phase3RoundData)
       return
     }
 
-    if (this.currentPhase === '5-voting') {
-      // const { pre_delay, timer, prompt, hint} = data.gameState.data as Phase3RoundStartData || {}
+    if (this.currentPhase === 'voting') {
       this.setVotingData(data.gameState.data as Phase5VotingData)
+      return
+    }
+
+    if (this.currentPhase === 'results') {
+      this.setScoreData(data.gameState.data as Phase6ScoreData)
       return
     }
   }
@@ -143,6 +157,10 @@ export class GameStore implements IGameStore {
 
   @action setVotingData = (votingData: Phase5VotingData|null) : void => {
     this.votingData = votingData || null
+  }
+
+  @action setScoreData = (scoreData: Phase6ScoreData|null) : void => {
+    this.scoreData = scoreData || null
   }
 
   @action setPhases = (phases: Phase[]): void => {

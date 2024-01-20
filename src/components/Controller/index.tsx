@@ -15,12 +15,15 @@ import CtrlFader from "./CtrlFader";
 import CtrlEden from './CtrlEden';
 import { Player } from '../../stores/socketStore';
 
+export type PlayerColor = 'black'|'red'|'green'|'blue'|'yellow';
+
+export const buttonColors: PlayerColor[] = [ 'red', 'green', 'blue', 'yellow' ]
+
 export const CtrlButtons = (numButtons:number, eventHandler?:any) => {
-  const colors = [ 'red', 'green', 'blue', 'yellow' ]
 
   let content = [];
   for (let i = 1; i <= numButtons; i++) {
-    content.push(<CtrlButton key={i} channelName={`b${i}`} label={String(i)} variant={colors[i - 1]  as 'black'|'red'|'green'|'blue'|'yellow'} released={eventHandler || undefined}/>);
+    content.push(<CtrlButton type='button' key={i} channelName={`b${i}`} label={String(i)} variant={buttonColors[i - 1]  as 'black'|'red'|'green'|'blue'|'yellow'} released={eventHandler || undefined}/>);
   }
   return content;
 }

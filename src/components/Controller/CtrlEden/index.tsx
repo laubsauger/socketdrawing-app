@@ -9,11 +9,11 @@ import {
   Phase2PlayerData,
   Phase3RoundData,
   Phase4RoundData,
-  Phase5VotingData
 } from '../../../stores/gameStore';
 import Round from './Round';
 import RoundEnd from './RoundEnd';
 import Voting from './Voting';
+import Scores from './Scores';
 
 type Props = {
   firedMouseUp: boolean
@@ -28,68 +28,82 @@ const CtrlEden = (props: Props) => {
   const [showRoundStart, setShowRoundStart] = useState(false)
   const [showRoundEnd, setShowRoundEnd] = useState(false)
   const [showVoting, setShowVoting] = useState(false)
+  const [showScores, setShowScores] = useState(false)
 
   useEffect(() => {
-    gameStore.setCurrentPhase('0-lounge')
+    gameStore.setCurrentPhase('lounge')
   }, []);
 
   useEffect(() => {
     console.log('CtrlEden - useEffect::currentPhase', gameStore.currentPhase)
-    if (gameStore.currentPhase === '0-lounge') {
+    if (gameStore.currentPhase === 'lounge') {
       setShowLounge(true)
       setShowSplash(false)
       setShowPlayers(false)
       setShowRoundStart(false)
       setShowRoundEnd(false)
       setShowVoting(false)
+      setShowScores(false)
       return
     }
     setShowLounge(false)
 
-    if (gameStore.currentPhase === '1-splash') {
+    if (gameStore.currentPhase === 'splash') {
       setShowSplash(true);
       setShowPlayers(false)
       setShowRoundStart(false)
       setShowRoundEnd(false)
       setShowVoting(false)
+      setShowScores(false)
       navigator.vibrate(200);
       return
     }
     setShowSplash(false)
 
-    if (gameStore.currentPhase === '2-announce_players') {
+    if (gameStore.currentPhase === 'announce_players') {
       setShowPlayers(true);
       setShowRoundStart(false)
       setShowRoundEnd(false)
       setShowVoting(false)
+      setShowScores(false)
       navigator.vibrate(200);
       return
     }
     setShowPlayers(false)
 
-    if (gameStore.currentPhase === '3-round_start') {
+    if (gameStore.currentPhase === 'round_start') {
       setShowRoundStart(true);
       setShowRoundEnd(false)
       setShowVoting(false)
+      setShowScores(false)
       navigator.vibrate(200);
       return
     }
     setShowRoundStart(false);
 
-    if (gameStore.currentPhase === '4-round_end') {
+    if (gameStore.currentPhase === 'round_end') {
       setShowRoundEnd(true);
       setShowVoting(false)
+      setShowScores(false)
       navigator.vibrate(200);
       return
     }
     setShowRoundEnd(false)
 
-    if (gameStore.currentPhase === '5-voting') {
+    if (gameStore.currentPhase === 'voting') {
       setShowVoting(true)
+      setShowScores(false)
       navigator.vibrate(200)
       return
     }
     setShowVoting(false)
+
+    if (gameStore.currentPhase === 'results') {
+      setShowScores(true)
+      navigator.vibrate(200)
+      return
+    }
+    setShowScores(false)
   }, [gameStore.currentPhase])
 
   return (
@@ -111,11 +125,15 @@ const CtrlEden = (props: Props) => {
         : null
       }
       { showRoundEnd && gameStore.currentData
-        ? <RoundEnd data={gameStore.currentData as Phase4RoundData}/>
+        ? <RoundEnd />
         : null
       }
       { showVoting && gameStore.currentData
-        ? <Voting data={gameStore.currentData as Phase5VotingData}/>
+        ? <Voting />
+        : null
+      }
+      { showScores && gameStore.currentData
+        ? <Scores />
         : null
       }
 {/*`      {*/}

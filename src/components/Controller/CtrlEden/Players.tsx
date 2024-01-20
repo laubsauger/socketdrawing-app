@@ -5,9 +5,7 @@ import { Player } from '../../../stores/socketStore';
 import { Phase2PlayerData } from 'src/stores/gameStore';
 import PlayerItem from './ListItemPlayer';
 import ListAudience from './ListAudience';
-const buttonColors = [
-  'red', 'green', 'blue', 'yellow'
-]
+import { buttonColors } from '../index';
 
 const Players = ({ data }: { data: Phase2PlayerData}) => {
   const { socketStore, gameStore } = useStores()

@@ -1,5 +1,6 @@
 import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
+import { PlayerColor } from '../components/Controller';
 
 export type ConnectionState = {
   clientId?: string;
@@ -52,7 +53,7 @@ export type Player = {
   id: string,
   client_index: number,
   name?: string,
-  color: string,
+  color: PlayerColor,
   points?: number
 }
 
