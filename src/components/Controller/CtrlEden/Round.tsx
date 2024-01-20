@@ -143,7 +143,7 @@ const Round = () => {
 
       {animationCompleted
         ? (
-          <div className="d-flex gap-2 justify-content-between text-light mb-2 mx-2">
+          <div className="d-flex gap-2 justify-content-between text-dark mb-2 mx-2">
             <div>Players: {gameStore.players.length}</div>
             <div>Audience: {gameStore.audience.length}</div>
           </div>
