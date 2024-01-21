@@ -46,7 +46,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
     <div
       className="d-flex flex-column overflow-hidden" style={{ width: '100vw' }}
     >
-      <div className={`p-2 mt-2 text-center w-100 d-flex flex-column`}>
+      <div className={`pt-0 p-2 text-center w-100 d-flex flex-column`}>
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -59,8 +59,9 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.5, duration: 0.5, ease: 'backOut' }}
         >
-          <div className={`fs-5 d-flex flex-column z-index-above mt-2 mb-2`}>
-            Choose your favorite submission
+          <div className={`fs-5 d-flex justify-content-between align-items-center z-index-above mt-2 mb-2`}>
+            <div>Choose your favorite submission</div>
+            <Timer currentTime={roundTimer} duration={timer} />
           </div>
         </motion.div>
       </div>
@@ -94,13 +95,11 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
               initialResultInView={resultInView || undefined}
              />
 
-            <Timer currentTime={roundTimer} duration={timer} />
-
-             <div className="mx-2 mb-2 d-flex justify-content-center">
+             <div className="mb-2 d-flex justify-content-center position-absolute bottom-0 w-100">
               <VoteButton
                 selectedResult={selectedResult}
                 resultInView={resultInView}
-                className="w-100"
+                className="w-100 mx-2"
                 onClick={() => setSelectedResult(resultInView)}
                 released={firedMouseUp}
               />

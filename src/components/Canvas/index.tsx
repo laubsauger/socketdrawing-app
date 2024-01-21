@@ -108,7 +108,7 @@ const Canvas = (props:Props) => {
   }, [ socketStore.currentInstance ])
 
   return <canvas className="position-fixed w-100"
-                 style={{ height: `calc(100vh - ${toolbarsHeight})` }}
+                 style={{ height: `calc(100dvh - ${toolbarsHeight})` }}
                  ref={canvasRef}
                  onMouseDown={onMouseDown}
                  onMouseUp={onMouseUp}

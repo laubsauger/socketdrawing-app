@@ -27,9 +27,9 @@ const Scores = () => {
 
   return (
     <div
-      className="d-flex flex-column" style={{ height: '100vh', width: '100vw' }}
+      className="d-flex flex-column" style={{ height: '100dvh', width: '100dvw' }}
     >
-      <div className="p-2 mt-2 text-center w-100 d-flex flex-column">
+      <div className="p-0 p-2 text-center w-100 d-flex flex-column">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}

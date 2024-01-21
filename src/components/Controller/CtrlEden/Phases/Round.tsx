@@ -65,7 +65,7 @@ const Round = () => {
   }, []);
 
   return (
-    <div className="d-flex flex-column flex-grow-1" style={{ height: '100vh', width: '100vw' }}>
+    <div className="d-flex flex-column flex-grow-1" style={{ height: '100dvh', width: '100dvw' }}>
       <div className="d-flex flex-column z-index-above mt-4 flex-grow-1">
         <div className="d-flex gap-4 mx-2 align-items-center justify-content-center">
           <div className="position-relative text-center">

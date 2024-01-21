@@ -7,13 +7,14 @@
   width: 100% !important;
   height: auto !important;
   max-height: 65vh !important;
+  max-height: 65dvh !important;
   object-fit: contain !important;
   overflow: hidden !important;
   object-position: center center !important;
 }
 
 .fullscreen .image-gallery-slide img {
-  max-height: 100vh !important;
+  max-height: 100dvh !important;
 }
 
 .voted-result {
@@ -29,11 +30,4 @@
 .image-gallery-thumbnails {
   padding-top: 6px;
   padding-bottom: 0;
-}
-
-svg {
-  text {
-    background: #222 !important;
-    padding: 4px;
-  }
 }
