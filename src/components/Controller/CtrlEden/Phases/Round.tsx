@@ -110,8 +110,8 @@ const Round = () => {
                   {animationCompleted
                     ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                       <div className="px-4">
-                        <div className="mb-4 fw-bold text-info">You're in the audience!</div>
-                        <div className="text-light">After players submitted their prompts, you can vote for your
+                        <div className="mb-4 fw-bold text-info fs-3">You're in the audience!</div>
+                        <div className="fs-5 text-light">After players submitted their prompts, you can vote for your
                           favorite
                         </div>
                       </div>
