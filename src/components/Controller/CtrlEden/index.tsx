@@ -47,7 +47,7 @@ const CtrlEden = (props: Props) => {
 
     socket.emit('OSC_CTRL_MESSAGE', {
       message: 'userName',
-      text: socketStore.connectionState.clientId,
+      text: socketStore.connectionState.clientId.slice(0, 6),
     });
   }, []);
 
