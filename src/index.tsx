@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreProvider } from './contexts/storeContext';
 import SensorsProvider from './contexts/sensorsContext';
@@ -12,7 +12,12 @@ import {RootStore} from "./stores/rootStore";
 // @ts-ignore
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+
+// @ts-ignore: Unreachable code error
+const root = ReactDOM.createRoot(rootElement);
+
+root.render(
   <React.StrictMode>
     <SensorsProvider multiplier={3} useGravity={false}>
       <StoreProvider store={new RootStore()}>
@@ -21,8 +26,7 @@ ReactDOM.render(
         </BrowserRouter>
       </StoreProvider>
     </SensorsProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
