@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite';
 
 const Timer = ({ currentTime, duration }: { currentTime: number|undefined, duration: number|undefined }) => {
   return (
-    <div className="ms-auto me-2 overflow-hidden flex-grow-1 d-flex align-items-center"
-         style={{ width: '48px', height: '48px' }}>
+    <div className="ms-auto me-2 mb-1 overflow-hidden flex-grow-1 d-flex align-items-center"
+         style={{ width: '44px', height: '44px' }}>
       <CircularProgressbar
         value={currentTime && duration ? (currentTime / duration * 100) : 0}
         text={`${(currentTime || 0).toFixed(0)}s`}
