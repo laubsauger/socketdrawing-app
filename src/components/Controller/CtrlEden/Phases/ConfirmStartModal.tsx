@@ -20,8 +20,8 @@ const ConfirmStartModal = () => {
 
   return (
     <>
-      <Button variant="outline-secondary" onClick={handleShow}>
-        Launch Game
+      <Button variant="outline-secondary" size="sm" onClick={handleShow}>
+        Launch
       </Button>
 
       <Modal show={showModal} onHide={handleClose}>
