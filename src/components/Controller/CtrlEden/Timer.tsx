@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 const Timer = ({ currentTime, duration }: { currentTime: number|undefined, duration: number|undefined }) => {
   return (
     <div className="ms-auto me-1 mt-1 mb-1 overflow-hidden d-flex align-items-center"
-         style={{ width: '44px', height: '44px' }}>
+         style={{ width: '40px', height: '40px' }}>
       <CircularProgressbar
         value={currentTime && duration ? (currentTime / duration * 100) : 0}
         text={`${(currentTime || 0).toFixed(0)}s`}
