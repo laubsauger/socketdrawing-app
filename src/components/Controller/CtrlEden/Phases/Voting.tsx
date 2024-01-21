@@ -7,7 +7,7 @@ import VoteButton from '../VoteButton';
 import 'react-circular-progressbar/dist/styles.css';
 import Timer from '../Timer';
 
-export type Result = { player_index: number, image: string, votes?: number }
+export type Result = { player_index: number, image: string, votes?: number, prompt?: string }
 
 const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
   const { gameStore, socketStore } = useStores()

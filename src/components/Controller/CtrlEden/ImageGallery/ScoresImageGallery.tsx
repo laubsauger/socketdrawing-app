@@ -46,7 +46,7 @@ const ScoresImageGallery = ({
           <div className="image-gallery-thumbnail-inner position-relative h-100">
              <img src={image.image} alt="" className="image-gallery-thumbnail-image" />
             <div className="position-absolute top-0 z-index-above w-100 h-100 d-">
-              <div className="image-gallery-thumbnail-label bg-opacity-75 bg-black position-relative align-self-end" style={{ top: '9px' }}><span>Votes:{' '}</span><span className="fw-semibold">{image.votes}</span></div>
+              <div className="image-gallery-thumbnail-label bg-black position-relative align-self-end" style={{ opacity: '85%', top: '9px' }}><span>Votes:{' '}</span><span className="fw-semibold">{image.votes}</span></div>
               {index === 0 && (
                 <div className="image-gallery-thumbnail-label" style={{ position: 'absolute', top: 'initial', bottom: '-9px' }}>Winner!</div>
               )}

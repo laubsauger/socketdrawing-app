@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { Player } from '../../../../stores/socketStore';
 import { Result } from './Voting';
 import ScoresImageGallery from '../ImageGallery/ScoresImageGallery';
+import ListItemPlayer from '../ListItemPlayer';
 
 const Scores = () => {
   const { gameStore, socketStore } = useStores()
   const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
-  const [resultInView, setResultInView] = useState<Result | null>(gameStore.votingData?.results ? gameStore.votingData.results[0] : null)
-
+  const [resultInView, setResultInView] = useState<Result | null>(gameStore.scoreData?.scores ? gameStore.scoreData.scores[0] : null)
   useEffect(() => {
     if (gameStore.players && socketStore.connectionState.clientId) {
       const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
@@ -24,8 +24,6 @@ const Scores = () => {
   const getPlayer = (player_index: number): Player => {
     return gameStore.players.filter(player => player.client_index === player_index)[0]
   }
-
-  console.log(socketStore.roomState.users)
 
   return (
     <div
@@ -64,10 +62,13 @@ const Scores = () => {
             }
             initialResultInView={resultInView || undefined}
           />
+          <div className="px-3 mt-4">
+            <ListItemPlayer player={gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0]}/>
+            <div className="text-light">
+              {resultInView?.prompt}
+            </div>
+          </div>
         </motion.div>
-        <div>
-          {resultInView?.player_index}
-        </div>
       </div>
     </div>
   )
