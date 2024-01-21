@@ -94,7 +94,7 @@ const Round = () => {
             transition={{ delay: 2.5, duration: 0.5, ease: 'backOut' }}
             onAnimationStart={() => setAnimationCompleted(false)}
             onAnimationComplete={() => setAnimationCompleted(true)}
-            className="mt-auto mb-auto"
+            className="mb-auto"
           >
             <div className="position-relative">
               {isPlayer

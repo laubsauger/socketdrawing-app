@@ -7,7 +7,7 @@ const RoundEnd = () => {
   return (
     <div
       className="d-flex flex-column justify-content-center align-items-center w-100"
-       style={{ height: '100vh', width: '100vw' }}
+       style={{ height: 'calc(100vh - 32px)', width: '100vw' }}
     >
       <div className="p-2 mt-2 text-center flex-grow-1 w-100 d-flex flex-column justify-content-center">
         <motion.div
@@ -21,7 +21,7 @@ const RoundEnd = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.5, duration: 0.5, ease: 'backOut' }}
         >
-          <div className="fs-5 d-flex flex-column z-index-above my-4">
+          <div className="fs-5 d-flex flex-column z-index-above mt-2">
             Submissions are in
           </div>
         </motion.div>

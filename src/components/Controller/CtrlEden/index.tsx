@@ -15,6 +15,7 @@ import RoundEnd from './Phases/RoundEnd';
 import Voting from './Phases/Voting';
 import Scores from './Phases/Scores';
 import SessionInfo from '../SessionInfo';
+import { useSocket } from '../../../hooks/useSocket';
 
 type Props = {
   firedMouseUp: boolean
@@ -31,8 +32,8 @@ const vibrationSignal = (pattern: number|number[]) => {
 }
 
 const CtrlEden = (props: Props) => {
-  const { gameStore } = useStores();
-
+  const { gameStore, socketStore } = useStores();
+  const socket = useSocket();
   const [showLounge, setShowLounge] = useState(true)
   const [showSplash, setShowSplash] = useState(false)
   const [showPlayers, setShowPlayers] = useState(false)
@@ -43,6 +44,11 @@ const CtrlEden = (props: Props) => {
 
   useEffect(() => {
     gameStore.setCurrentPhase('lounge')
+
+    socket.emit('OSC_CTRL_MESSAGE', {
+      message: 'userName',
+      text: socketStore.connectionState.clientId,
+    });
   }, []);
 
   useEffect(() => {
