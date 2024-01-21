@@ -59,7 +59,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.5, duration: 0.5, ease: 'backOut' }}
         >
-          <div className={`fs-5 d-flex justify-content-between align-items-center z-index-above mt-2`}>
+          <div className={`fs-6 d-flex justify-content-between align-items-center z-index-above mt-2`}>
             <div>Choose your favorite submission</div>
             <Timer currentTime={roundTimer} duration={timer} />
           </div>
