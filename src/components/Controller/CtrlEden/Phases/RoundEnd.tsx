@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite';
-import { Phase4RoundData } from '../../../stores/gameStore';
+import { Phase4RoundData } from '../../../../stores/gameStore';
 import { motion } from 'framer-motion';
 
 const RoundEnd = () => {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useStores } from '../../../hooks/useStores';
+import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
-import ImageGallery from './ImageGallery/ImageGallery';
-import VoteButton from './VoteButton';
+import ImageGallery from '../ImageGallery/ImageGallery';
+import VoteButton from '../VoteButton';
 import 'react-circular-progressbar/dist/styles.css';
-import Timer from './Timer';
+import Timer from '../Timer';
 
 export type Result = { player_index: number, image: string }
 

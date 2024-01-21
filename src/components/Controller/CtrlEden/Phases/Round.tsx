@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useStores } from '../../../hooks/useStores';
+import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import CtrlText from '../CtrlText';
+import CtrlText from '../../CtrlText';
 import { motion, useAnimate } from 'framer-motion';
-import Timer from './Timer';
+import Timer from '../Timer';
 
 const Round = () => {
   const [scope, animate] = useAnimate();

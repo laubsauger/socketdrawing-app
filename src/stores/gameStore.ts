@@ -1,7 +1,7 @@
 import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
 import { Player } from './socketStore';
-import { Result } from '../components/Controller/CtrlEden/Voting';
+import { Result } from '../components/Controller/CtrlEden/Phases/Voting';
 
 export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'
 

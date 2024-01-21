@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
 import { Button } from 'react-bootstrap';
-import { Result } from './Voting';
+import { Result } from './Phases/Voting';
 
 type Props = {
   label?: string,

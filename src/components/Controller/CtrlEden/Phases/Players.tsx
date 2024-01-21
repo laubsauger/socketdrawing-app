@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useStores } from '../../../hooks/useStores';
+import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import { Player } from '../../../stores/socketStore';
+import { Player } from '../../../../stores/socketStore';
 import { Phase2PlayerData } from 'src/stores/gameStore';
-import ListItemPlayer from './ListItemPlayer';
-import ListAudience from './ListAudience';
-import { buttonColors } from '../index';
+import ListItemPlayer from '../ListItemPlayer';
+import ListAudience from '../ListAudience';
+import { buttonColors } from '../../index';
 
 const Players = ({ data }: { data: Phase2PlayerData}) => {
   const { socketStore, gameStore } = useStores()

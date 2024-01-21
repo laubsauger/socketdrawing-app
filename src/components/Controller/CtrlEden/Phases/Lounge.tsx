@@ -1,6 +1,6 @@
 import React from 'react'
-import CtrlText from '../CtrlText';
-import { useStores } from '../../../hooks/useStores';
+import CtrlText from '../../CtrlText';
+import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 // import Toasty from '../../Toasty';
 

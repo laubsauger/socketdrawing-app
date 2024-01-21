@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useStores } from '../../../hooks/useStores';
+import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
-import { Player } from '../../../stores/socketStore';
+import { Player } from '../../../../stores/socketStore';
 import { Badge } from 'react-bootstrap';
 
 const Scores = () => {

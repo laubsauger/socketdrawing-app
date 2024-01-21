@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../../hooks/useStores';
-import Splash from './Splash';
-import Lounge from './Lounge';
-import Players from './Players';
+import Splash from './Phases/Splash';
+import Lounge from './Phases/Lounge';
+import Players from './Phases/Players';
 import {
   Phase1SplashData,
   Phase2PlayerData,
   Phase3RoundData,
   Phase4RoundData,
 } from '../../../stores/gameStore';
-import Round from './Round';
-import RoundEnd from './RoundEnd';
-import Voting from './Voting';
-import Scores from './Scores';
+import Round from './Phases/Round';
+import RoundEnd from './Phases/RoundEnd';
+import Voting from './Phases/Voting';
+import Scores from './Phases/Scores';
 import SessionInfo from '../SessionInfo';
 
 type Props = {
