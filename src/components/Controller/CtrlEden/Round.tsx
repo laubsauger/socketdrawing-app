@@ -6,16 +6,18 @@ import { Phase3RoundData } from '../../../stores/gameStore';
 // import ListAudience from './ListAudience';
 import CtrlText from '../CtrlText';
 import { motion, useAnimate } from 'framer-motion';
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 
 const Round = () => {
   const [scope, animate] = useAnimate();
   const { gameStore, socketStore } = useStores()
 
   const [ roundTimer, setRoundTimer ] = useState<number|undefined>(undefined)
+  const { timer } = gameStore.roundData || {}
+
   const [ animationCompleted, setAnimationCompleted ] = useState(false)
   const [ titleAnimationCompleted, setTitleAnimationCompleted ] = useState(false)
   const [ firstRender, setFirstRender ] = useState(true)
-  const { timer } = gameStore.roundData || {}
   const [ isPlayer, setIsPlayer ] = useState(false)
 
   useEffect(() => {
@@ -107,33 +109,37 @@ const Round = () => {
                 />
                 :
                 <>
-                {animationCompleted
-                  ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5}}>
-                    <div className="px-4">
-                      <div className="mb-4 fw-bold text-info">You're in the audience!</div>
-                      <div className="text-light">After players submitted their prompts, you can vote for your favorite
+                  {animationCompleted
+                    ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                      <div className="px-4">
+                        <div className="mb-4 fw-bold text-info">You're in the audience!</div>
+                        <div className="text-light">After players submitted their prompts, you can vote for your
+                          favorite
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                  : null
-                }
+                    </motion.div>
+                    : null
+                  }
                 </>
               }
 
-              {roundTimer && roundTimer > 0
-                ? (
-                  <>
-                    <div
-                      className="position-absolute mb-1 bottom-0 d-flex rounded-circle border border-2 border-dark fw-bold align-items-center justify-content-center font-monospace"
-                      style={{ fontSize: '12px', width: '44px', height: '44px', right: '0.5rem' }}
-                    >
-                      <span>{roundTimer?.toFixed(0)}</span>
-                      {/*.<span>{roundTimer?.toFixed(1).slice(3, 4)}</span>*/}
-                    </div>
-                  </>
-                )
-                : null
-              }
+              <div className="ms-auto me-2 overflow-hidden flex-grow-1 d-flex align-items-center"
+                   style={{ width: '56px', height: '56px' }}>
+                <CircularProgressbar
+                  value={roundTimer && timer ? (roundTimer / timer * 100) : 0}
+                  text={`${(roundTimer || 0).toFixed(0)}s`}
+                  counterClockwise={true}
+                  className="mw-100 mh-100 fw-bold font-monospace"
+                  strokeWidth={50}
+                  styles={buildStyles({
+                    strokeLinecap: "butt",
+                    textColor: '#fff',
+                    textSize: '24px',
+                    backgroundColor: '#222',
+                    trailColor: '#222',
+                    pathColor: roundTimer ? roundTimer < 15 ? '#880000' : roundTimer < 30 ? '#a84f17' : roundTimer < 60 ? '#0F4796' : '' : ''
+                  })}/>
+              </div>
             </div>
           </motion.div>
           : null

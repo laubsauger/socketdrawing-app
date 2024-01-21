@@ -36,7 +36,7 @@ const Players = ({ data }: { data: Phase2PlayerData}) => {
       {gameStore.players ?
           <div className="p-2">
             <div className="px-2 mb-2 d-flex justify-content-between">
-              <span>Players</span>
+              <span>Players selected for the next round:</span>
             </div>
             <div className="m-0 px-3 d-flex flex-column gap-2">
                 {gameStore.players?.map((player, index) => (

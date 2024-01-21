@@ -47,6 +47,7 @@ export type Phase4RoundData = {
 }
 
 export type Phase5VotingData = {
+  timer: number
   results: Result[]
 }
 

@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
 import ImageGallery from './ImageGallery/ImageGallery';
 import VoteButton from './VoteButton';
+import 'react-circular-progressbar/dist/styles.css';
+import Timer from './Timer';
 
 export type Result = { player_index: number, image: string }
 
@@ -12,8 +14,9 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
   const [ownResult, setOwnResult] = useState<Result | null>(null)
   const [selectedResult, setSelectedResult] = useState<Result | null>(null)
   const [resultInView, setResultInView] = useState<Result | null>(gameStore.votingData?.results ? gameStore.votingData.results[0] : null)
-  const [ firstRender, setFirstRender ] = useState(true)
-  console.log(selectedResult?.player_index, resultInView?.player_index)
+
+  const [ roundTimer, setRoundTimer ] = useState<number|undefined>(undefined)
+  const { timer } = gameStore.votingData || {}
 
   useEffect(() => {
     if (gameStore.players && socketStore.connectionState.clientId) {
@@ -23,6 +26,21 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
       }
     }
   }, [gameStore.votingData, gameStore.players, socketStore.connectionState.clientId]);
+
+  useEffect(() => {
+    if (!timer) {
+      return
+    }
+
+    setRoundTimer(timer)
+    const decreaseTimerInterval = setInterval(() => {
+      setRoundTimer(prevTimer => prevTimer && prevTimer > 0 ? prevTimer - 0.25 : 0);
+    }, 250)
+
+    return () => {
+      clearInterval(decreaseTimerInterval)
+    }
+  }, [timer]);
 
   return (
     <div
@@ -74,6 +92,9 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
               }
               initialResultInView={resultInView || undefined}
              />
+
+            <Timer currentTime={roundTimer} duration={timer} />
+
              <div className="mx-2 mt-auto mb-2 d-flex justify-content-center">
               <VoteButton
                 selectedResult={selectedResult}
