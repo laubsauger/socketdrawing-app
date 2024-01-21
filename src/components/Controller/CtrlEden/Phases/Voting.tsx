@@ -44,7 +44,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
 
   return (
     <div
-      className="d-flex flex-column overflow-hidden" style={{ height: 'calc(100vh - 96px)', width: '100vw' }}
+      className="d-flex flex-column overflow-hidden" style={{ width: '100vw' }}
     >
       <div className={`p-2 mt-2 text-center w-100 d-flex flex-column`}>
         <motion.div
@@ -76,13 +76,13 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
       {/*      <Button variant="dark" className="mt-auto mx-2 mb-2" onClick={() => setSelectedResult(null)}><>Change vote</></Button>*/}
       {/*    </div>*/}
       {/*  : <div className="d-flex flex-column flex-grow-1">*/}
-       <div className="d-flex flex-column flex-grow-1">
+       <div className="d-flex flex-column ">
          {/*<div className="d-flex flex-wrap">*/}
            <motion.div
              initial={{ scale: 0 }}
              animate={{ scale: 1 }}
              transition={{ delay: 1, duration: 0.5, ease: 'backOut' }}
-             className="d-flex flex-column flex-grow-1"
+             className="d-flex flex-column"
            >
              <VotingImageGallery
                onSlideChanged={setResultInView}
