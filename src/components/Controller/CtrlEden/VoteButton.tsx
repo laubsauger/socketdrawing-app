@@ -19,12 +19,13 @@ const VoteButton = (props:Props) => {
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
 
+  console.log(selectedResult, resultInView)
+
   const handleBtnPress = useCallback(() => {
-    if (!selectedResult || !resultInView) {
+    if (!resultInView) {
       return
     }
 
-    console.log(selectedResult.player_index, resultInView.player_index)
     setPressed(true);
     socket.emit('OSC_CTRL_MESSAGE', {
       message: 'button',
@@ -42,7 +43,7 @@ const VoteButton = (props:Props) => {
 
     setPressed(false);
     onClick && onClick()
-  }, [ onClick, socket, resultInView, selectedResult ]);
+  }, [ onClick, socket, resultInView ]);
 
   if (!resultInView) {
     return null
