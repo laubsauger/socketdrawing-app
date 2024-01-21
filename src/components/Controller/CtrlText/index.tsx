@@ -55,7 +55,7 @@ const CtrlText = (props: Props) => {
               <div className="w-100">
                 <Form.Control
                   as="textarea"
-                  rows={10}
+                  rows={8}
                   placeholder={label}
                   required={true}
                   onChange={handleChangeText}
