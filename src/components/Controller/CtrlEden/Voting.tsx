@@ -52,7 +52,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, ease: 'backOut' }}
         >
-          <div className="fs-4 fw-bold">{gameStore.roundData?.prompt}</div>
+          <div className="fs-4 fw-bold">{gameStore.roundData?.prompt}123123</div>
         </motion.div>
         <motion.div
           initial={{ scale: 0 }}
@@ -95,7 +95,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
 
             <Timer currentTime={roundTimer} duration={timer} />
 
-             <div className="mx-2 mt-auto mb-2 d-flex justify-content-center">
+             <div className="mx-2 mb-2 d-flex justify-content-center">
               <VoteButton
                 selectedResult={selectedResult}
                 resultInView={resultInView}
@@ -105,42 +105,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
               />
              </div>
            </motion.div>
-             {/*{gameStore.votingData?.results.map((result, index) => (*/}
-             {/*  <div*/}
-             {/*    key={result.image}*/}
-             {/*    className={`w-50`}*/}
-             {/*  >*/}
-             {/*    {ownResult?.player_index === result.player_index ?*/}
-             {/*      null*/}
-             {/*      :*/}
-             {/*      <CtrlButton*/}
-             {/*        type='div'*/}
-             {/*        channelName={`b${result.player_index}`}*/}
-             {/*        onClick={() => {*/}
-             {/*          setFirstRender(false)*/}
-             {/*          setSelectedResult(result)*/}
-             {/*        }}*/}
-             {/*      >*/}
-             {/*        <motion.img*/}
-             {/*          initial={firstRender ? { scale: 0 } : false}*/}
-             {/*          animate={{ scale: 1 }}*/}
-             {/*          transition={{ delay: 1 + (0.5 * index), duration: 0.5, ease: 'backOut', origin: 0 }}*/}
-             {/*          key={result.image}*/}
-             {/*          src={result.image}*/}
-             {/*          alt={result.image}*/}
-             {/*          style={{*/}
-             {/*            maxWidth: '100%',*/}
-             {/*            padding: '6px',*/}
-             {/*            objectFit: 'contain'*/}
-             {/*          }}*/}
-             {/*        />*/}
-             {/*      </CtrlButton>*/}
-             {/*    }*/}
-             {/*  </div>*/}
-             {/*))}*/}
-         {/*</div>*/}
        </div>
-      {/*}*/}
     </div>
 )
 }

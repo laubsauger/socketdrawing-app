@@ -97,6 +97,7 @@ export class SocketStore implements ISocketStore {
 
   @action resetConnectionState() {
     this.connectionState = Object.assign({}, connectionStateStub);
+
   }
 
   @action updateRoomState(state:RoomState) {
@@ -111,7 +112,7 @@ export class SocketStore implements ISocketStore {
   }
 
   @action setAvailableInstances(instances:Instance[]) {
-    this.availableInstances = instances;
+    this.availableInstances = instances.filter(instance => instance.id === 5);
   }
 
   @action setCurrentInstance(instance:Instance|undefined) {

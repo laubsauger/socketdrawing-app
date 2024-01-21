@@ -63,10 +63,10 @@ const Join: React.FC = (props) => {
         <h5 className="mb-3">Available Sessions</h5>
         { isLoadingInstances && <LoadingSpinner size='small'/> }
         { !isLoadingInstances && socketStore.availableInstances.length ?
-          <Accordion defaultActiveKey={String(1)}>
+          <Accordion defaultActiveKey={String(5)}>
           { socketStore.availableInstances.map(instance =>
             <Accordion.Item key={instance.id} eventKey={String(instance.id)}>
-              <Accordion.Header>{ instance.id } :: { instance.name }</Accordion.Header>
+              <Accordion.Header>{ instance.name }</Accordion.Header>
               <Accordion.Body>
                 <Row>
                   <Col lg={6} md={12} className="mb-3">

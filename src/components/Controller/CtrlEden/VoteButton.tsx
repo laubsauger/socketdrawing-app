@@ -19,8 +19,6 @@ const VoteButton = (props:Props) => {
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
 
-  console.log(selectedResult, resultInView)
-
   const handleBtnPress = useCallback(() => {
     if (!resultInView) {
       return

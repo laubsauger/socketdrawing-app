@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
-import {useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import './styles.scss';
 import config from '../../config';
@@ -38,6 +38,7 @@ const CtrlFaders = (numFaders:number, eventHandler:any) => {
 }
 
 const Controller = () => {
+  const navigate = useNavigate();
   const { isSupported, released, request, release } = useWakeLock({
     // onRequest: () => alert('Screen Wake Lock: requested!'),
     // onError: () => alert('An error happened 💥'),
@@ -142,6 +143,7 @@ const Controller = () => {
   const handleDisconnected = useCallback((data:any) => {
     console.log('socket::disconnected', data);
     socketStore.resetConnectionState();
+    window.location.href = '/'
   }, [ socketStore ]);
 
   const handleJoinAccepted = useCallback((data:any) => {

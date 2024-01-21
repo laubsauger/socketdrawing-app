@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import { Phase3RoundData } from '../../../stores/gameStore';
-// import PlayerItem from './ListItemPlayer';
-// import ListAudience from './ListAudience';
 import CtrlText from '../CtrlText';
 import { motion, useAnimate } from 'framer-motion';
-import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import Timer from './Timer';
 
 const Round = () => {
