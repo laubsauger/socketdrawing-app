@@ -7,7 +7,7 @@ const RoundEnd = () => {
   return (
     <div
       className="d-flex flex-column justify-content-center align-items-center w-100"
-       style={{ height: 'calc(100vh - 64px)', width: '100vw' }}
+       style={{ height: 'calc(100vh - 96px)', width: '100vw' }}
     >
       <div className="p-2 mt-2 text-center flex-grow-1 w-100 d-flex flex-column justify-content-center">
         <motion.div

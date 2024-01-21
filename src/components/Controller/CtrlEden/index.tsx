@@ -125,7 +125,7 @@ const CtrlEden = (props: Props) => {
 
   return (
     <div className="d-flex flex-column overflow-hidden" style={{ height: '100%'}}>
-      <SessionInfo />
+      {/*<SessionInfo />*/}
 
       { showLounge
         ? <Lounge />
