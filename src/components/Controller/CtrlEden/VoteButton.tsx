@@ -3,14 +3,15 @@ import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
 import { Button } from 'react-bootstrap';
+import { Result } from './Voting';
 
 type Props = {
   label?: string,
   className?: string,
   released?: boolean,
   onClick?: () => void
-  selectedResult: any,
-  resultInView: any,
+  selectedResult: Result|null,
+  resultInView: Result|null,
 };
 
 const VoteButton = (props:Props) => {
@@ -19,39 +20,33 @@ const VoteButton = (props:Props) => {
   const socket = useSocket();
 
   const handleBtnPress = useCallback(() => {
-    console.log(selectedResult, resultInView)
+    if (!selectedResult || !resultInView) {
+      return
+    }
+
+    console.log(selectedResult.player_index, resultInView.player_index)
     setPressed(true);
     socket.emit('OSC_CTRL_MESSAGE', {
       message: 'button',
       btnId: `b${resultInView.player_index}`,
       state: 1,
     });
-    socket.emit('OSC_CTRL_MESSAGE', {
-      message: 'button',
-      btnId: `b${resultInView.player_index}`,
-      state: 0,
-    });
+
+    setTimeout(() => {
+      socket.emit('OSC_CTRL_MESSAGE', {
+        message: 'button',
+        btnId: `b${resultInView.player_index}`,
+        state: 0,
+      });
+    }, 100)
 
     setPressed(false);
     onClick && onClick()
   }, [ onClick, socket, resultInView, selectedResult ]);
-  //
-  // useEffect(() => {
-  //   console.log('fireMouseUp')
-  //   // if (typeof released === 'undefined') {
-  //   //   return
-  //   // }
-  //
-  //   if (pressed && released) {
-  //     socket.emit('OSC_CTRL_MESSAGE', {
-  //       message: 'button',
-  //       btnId: `b${resultInView.player_index}`,
-  //       state: 0,
-  //     });
-  //
-  //     setPressed(false);
-  //   }
-  // }, [socket, pressed, released ]);
+
+  if (!resultInView) {
+    return null
+  }
 
   return (
     <Button

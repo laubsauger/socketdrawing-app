@@ -1,26 +1,19 @@
-import React, { EventHandler, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useStores } from '../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
-import ImageGallery from './ImageGallery';
+import ImageGallery from './ImageGallery/ImageGallery';
 import VoteButton from './VoteButton';
 
-
-const ownResultStyles = () => {
-  return {
-    filter: 'grayscale(1)',
-    padding: '16px'
-  }
-}
-type Result = { player_index: number, image: string }
+export type Result = { player_index: number, image: string }
 
 const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
   const { gameStore, socketStore } = useStores()
   const [ownResult, setOwnResult] = useState<Result | null>(null)
   const [selectedResult, setSelectedResult] = useState<Result | null>(null)
-  const [resultInView, setResultInView] = useState<Result | null>(null)
+  const [resultInView, setResultInView] = useState<Result | null>(gameStore.votingData?.results ? gameStore.votingData.results[0] : null)
   const [ firstRender, setFirstRender ] = useState(true)
-  console.log(selectedResult)
+  console.log(selectedResult?.player_index, resultInView?.player_index)
 
   useEffect(() => {
     if (gameStore.players && socketStore.connectionState.clientId) {
@@ -30,8 +23,6 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
       }
     }
   }, [gameStore.votingData, gameStore.players, socketStore.connectionState.clientId]);
-
-
 
   return (
     <div
@@ -43,7 +34,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, ease: 'backOut' }}
         >
-          <div className="fs-4 fw-bold">Voting</div>
+          <div className="fs-4 fw-bold">{gameStore.roundData?.prompt}</div>
         </motion.div>
         <motion.div
           initial={{ scale: 0 }}
@@ -77,9 +68,11 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
            >
              <ImageGallery
                onSlideChanged={setResultInView}
+               votedResult={selectedResult}
                votableResults={
                 gameStore.votingData?.results.filter(result => ownResult?.player_index !== result?.player_index)
               }
+              initialResultInView={resultInView || undefined}
              />
              <div className="mx-2 mt-auto mb-2 d-flex justify-content-center">
               <VoteButton

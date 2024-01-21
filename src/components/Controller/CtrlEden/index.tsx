@@ -20,6 +20,16 @@ type Props = {
   firedMouseUp: boolean
 }
 
+const vibrationSignal = (pattern: number|number[]) => {
+  if ("vibrate" in navigator) {
+    // Vibration API is supported.
+    navigator.vibrate(pattern);
+  } else {
+    // Vibration API is not supported.
+    // Use a different approach or disable it.
+  }
+}
+
 const CtrlEden = (props: Props) => {
   const { gameStore } = useStores();
 
@@ -56,7 +66,7 @@ const CtrlEden = (props: Props) => {
       setShowRoundEnd(false)
       setShowVoting(false)
       setShowScores(false)
-      navigator.vibrate(200);
+      vibrationSignal(200);
       return
     }
     setShowSplash(false)
@@ -67,7 +77,7 @@ const CtrlEden = (props: Props) => {
       setShowRoundEnd(false)
       setShowVoting(false)
       setShowScores(false)
-      navigator.vibrate(200);
+      vibrationSignal(200);
       return
     }
     setShowPlayers(false)
@@ -77,7 +87,7 @@ const CtrlEden = (props: Props) => {
       setShowRoundEnd(false)
       setShowVoting(false)
       setShowScores(false)
-      navigator.vibrate(200);
+      vibrationSignal(200);
       return
     }
     setShowRoundStart(false);
@@ -86,7 +96,7 @@ const CtrlEden = (props: Props) => {
       setShowRoundEnd(true);
       setShowVoting(false)
       setShowScores(false)
-      navigator.vibrate(200);
+      vibrationSignal(200);
       return
     }
     setShowRoundEnd(false)
@@ -94,14 +104,14 @@ const CtrlEden = (props: Props) => {
     if (gameStore.currentPhase === 'voting') {
       setShowVoting(true)
       setShowScores(false)
-      navigator.vibrate(200)
+      vibrationSignal(200)
       return
     }
     setShowVoting(false)
 
     if (gameStore.currentPhase === 'results') {
       setShowScores(true)
-      navigator.vibrate(200)
+      vibrationSignal(200)
       return
     }
     setShowScores(false)

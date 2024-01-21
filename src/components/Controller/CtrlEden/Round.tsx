@@ -33,7 +33,6 @@ const Round = () => {
     if (!animationCompleted || !timer) {
       return
     }
-
     setFirstRender(false)
 
     setRoundTimer(timer)

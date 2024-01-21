@@ -1,6 +1,7 @@
 import { action, observable, makeAutoObservable } from 'mobx';
 import { RootStore } from './rootStore';
 import { Player } from './socketStore';
+import { Result } from '../components/Controller/CtrlEden/Voting';
 
 export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'
 
@@ -46,12 +47,7 @@ export type Phase4RoundData = {
 }
 
 export type Phase5VotingData = {
-  results: [
-    {
-      player_index: number,
-      image: string,
-    }
-  ]
+  results: Result[]
 }
 
 export type Phase6ScoreData = {

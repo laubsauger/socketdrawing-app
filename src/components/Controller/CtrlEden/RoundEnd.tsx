@@ -14,7 +14,7 @@ const RoundEnd = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }} transition={{ duration: 0.5, ease: 'backOut' }}
         >
-          <div className="fs-4 fw-bold">Round ended</div>
+          <div className="fs-4 fw-bold">Pencils down!</div>
         </motion.div>
         <motion.div
           initial={{ scale: 0 }}
@@ -22,7 +22,7 @@ const RoundEnd = () => {
           transition={{ delay: 0.5, duration: 0.5, ease: 'backOut' }}
         >
           <div className="fs-5 d-flex flex-column z-index-above my-4">
-            Submissions are in!
+            Submissions are in
           </div>
         </motion.div>
       </div>
