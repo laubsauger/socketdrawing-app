@@ -44,7 +44,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
 
   return (
     <div
-      className="d-flex flex-column overflow-hidden" style={{ height: '100vh', width: '100vw' }}
+      className="d-flex flex-column overflow-hidden" style={{ height: 'calc(100vh - 96px)', width: '100vw' }}
     >
       <div className={`p-2 mt-2 text-center w-100 d-flex flex-column`}>
         <motion.div
