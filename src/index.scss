@@ -220,38 +220,34 @@ main {
 }
 
 .CtrlButton-red {
-  border-color: #ff4444;
-
+  border: 1px solid rgba(255, 68, 68, 0.50);
   &:active {
     background-color: #ff4444;
-    outline: 1px solid #ff4444;
+    outline: 1px solid rgba(255, 68, 68, 0.50);
   }
 }
 
 .CtrlButton-green {
-  border-color: #448444;
-
+  border: 2px solid rgba(68, 132, 68, 0.5);
   &:active {
     background-color: #448444;
-    outline: 2px solid #448444;
+    outline: 2px solid rgba(68, 132, 68, 0.5);
   }
 }
 
 .CtrlButton-blue {
-  border-color: #3333ff;
-
+  border: 2px solid rgba(51, 51, 255, 0.5);
   &:active {
     background-color: #3333ff;
-    outline: 2px solid #3333ff;
+    outline: 2px solid rgba(51, 51, 255, 0.5);
   }
 }
 
 .CtrlButton-yellow {
-  border-color: #ffb833;
-
+  border: 2px solid rgba(255, 184, 51, 0.5);
   &:active {
     background-color: #ffb833;
-    outline: 2px solid #ffb833;
+    outline: 2px solid rgba(255, 184, 51, 0.5);
   }
 }
 
