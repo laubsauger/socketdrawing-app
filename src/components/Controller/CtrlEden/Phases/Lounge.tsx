@@ -2,7 +2,15 @@ import React from 'react'
 import CtrlText from '../../CtrlText';
 import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
+import { Button } from 'react-bootstrap';
 // import Toasty from '../../Toasty';
+const handleLaunchClick = () => {
+  console.log('launch selected game mode, ping osc')
+  console.log('show confirmation popup, show total users, total players, game mode selector, start game on click')
+  const handleConfirmationPopup = () => {
+    // handle confirmation popup logic here
+  }
+}
 
 const Lounge = () => {
   const { socketStore, gameStore } = useStores()
@@ -22,6 +30,9 @@ const Lounge = () => {
             // setShowWelcome(true)
           }}
         />
+      </div>
+      <div className="d-flex justify-content-end px-2">
+        <Button variant={'success'} onClick={() => handleLaunchClick()}>Launch Game</Button>
       </div>
       <hr className="m-2"/>
       <div>
