@@ -3,6 +3,7 @@ import ReactImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import './styles.scss'
 import { Result } from '../Voting';
+import { observer } from 'mobx-react-lite';
 
 const ImageGallery = ({
   votableResults,
@@ -52,4 +53,4 @@ const ImageGallery = ({
   );
 };
 
-export default ImageGallery;
+export default observer(ImageGallery);

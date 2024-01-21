@@ -2,6 +2,7 @@
 import React from "react";
 
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { observer } from 'mobx-react-lite';
 
 const ImageZoom = ({imageUrl}: {imageUrl: string}) => {
   return (
@@ -13,4 +14,4 @@ const ImageZoom = ({imageUrl}: {imageUrl: string}) => {
   );
 }
 
-export default ImageZoom
+export default observer(ImageZoom)

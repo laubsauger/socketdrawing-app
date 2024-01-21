@@ -7,6 +7,7 @@ import { Phase3RoundData } from '../../../stores/gameStore';
 import CtrlText from '../CtrlText';
 import { motion, useAnimate } from 'framer-motion';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
+import Timer from './Timer';
 
 const Round = () => {
   const [scope, animate] = useAnimate();
@@ -123,23 +124,7 @@ const Round = () => {
                 </>
               }
 
-              <div className="ms-auto me-2 overflow-hidden flex-grow-1 d-flex align-items-center"
-                   style={{ width: '56px', height: '56px' }}>
-                <CircularProgressbar
-                  value={roundTimer && timer ? (roundTimer / timer * 100) : 0}
-                  text={`${(roundTimer || 0).toFixed(0)}s`}
-                  counterClockwise={true}
-                  className="mw-100 mh-100 fw-bold font-monospace"
-                  strokeWidth={50}
-                  styles={buildStyles({
-                    strokeLinecap: "butt",
-                    textColor: '#fff',
-                    textSize: '24px',
-                    backgroundColor: '#222',
-                    trailColor: '#222',
-                    pathColor: roundTimer ? roundTimer < 15 ? '#880000' : roundTimer < 30 ? '#a84f17' : roundTimer < 60 ? '#0F4796' : '' : ''
-                  })}/>
-              </div>
+              <Timer currentTime={roundTimer} duration={timer} />
             </div>
           </motion.div>
           : null

@@ -1,6 +1,7 @@
 import ListItemAudience from './ListItemAudience';
 import React from 'react';
 import { useStores } from '../../../hooks/useStores';
+import { observer } from 'mobx-react-lite';
 
 const ListAudience = () => {
   const { gameStore } = useStores()
@@ -21,4 +22,4 @@ const ListAudience = () => {
 )
 }
 
-export default ListAudience
+export default observer(ListAudience)
