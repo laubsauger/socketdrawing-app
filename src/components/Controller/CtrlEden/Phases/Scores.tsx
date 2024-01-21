@@ -3,11 +3,13 @@ import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
 import { Player } from '../../../../stores/socketStore';
-import { Badge } from 'react-bootstrap';
+import { Result } from './Voting';
+import ScoresImageGallery from '../ImageGallery/ScoresImageGallery';
 
 const Scores = () => {
   const { gameStore, socketStore } = useStores()
   const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
+  const [resultInView, setResultInView] = useState<Result | null>(gameStore.votingData?.results ? gameStore.votingData.results[0] : null)
 
   useEffect(() => {
     if (gameStore.players && socketStore.connectionState.clientId) {
@@ -35,31 +37,36 @@ const Scores = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, ease: 'backOut' }}
         >
-          <div className="fs-4 fw-bold">Scores</div>
+          <div className="fs-4 fw-bold">{gameStore.roundData?.prompt}</div>
+        </motion.div>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.5, ease: 'backOut' }}
+        >
+          <div className={`fs-5 d-flex flex-column z-index-above mt-2 mb-2`}>
+            Votes are in!
+          </div>
         </motion.div>
       </div>
 
       <div className="d-flex flex-column flex-grow-1">
-        <div className="d-flex flex-wrap">
-          {gameStore.scoreData?.scores.map((result, index) => (
-            <div key={result.image} className="w-50">
-              <div className="d-flex gap-2 justify-content-between">
-                <div>{result.player_index}</div>
-              </div>
-
-              <motion.img
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 1 + (0.5 * index), duration: 0.5, ease: 'backOut', origin: 0 }}
-                key={result.image} src={result.image} alt={result.image} className="object-fit-contain"
-                style={{ maxWidth: '100%' }}
-              />
-              {/*<div className={`CtrlButton-${getPlayer(result.player_index).color}`}>*/}
-              <div className="d-flex gap-2">
-                Votes: {result.votes}
-              </div>
-            </div>
-          ))}
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 1, duration: 0.5, ease: 'backOut' }}
+          className="d-flex flex-column flex-grow-1"
+        >
+          <ScoresImageGallery
+            onSlideChanged={setResultInView}
+            results={
+              gameStore.scoreData?.scores
+            }
+            initialResultInView={resultInView || undefined}
+          />
+        </motion.div>
+        <div>
+          {resultInView?.player_index}
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import './styles.scss'
 import { Result } from '../Phases/Voting';
 import { observer } from 'mobx-react-lite';
 
-const ImageGallery = ({
+const VotingImageGallery = ({
   votableResults,
   initialResultInView,
   votedResult,
@@ -53,4 +53,4 @@ const ImageGallery = ({
   );
 };
 
-export default observer(ImageGallery);
+export default observer(VotingImageGallery)

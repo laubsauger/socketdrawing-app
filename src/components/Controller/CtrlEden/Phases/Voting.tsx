@@ -2,30 +2,30 @@ import React, { useEffect, useState } from 'react'
 import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
-import ImageGallery from '../ImageGallery/ImageGallery';
+import VotingImageGallery from '../ImageGallery/VotingImageGallery';
 import VoteButton from '../VoteButton';
 import 'react-circular-progressbar/dist/styles.css';
 import Timer from '../Timer';
 
-export type Result = { player_index: number, image: string }
+export type Result = { player_index: number, image: string, votes?: number }
 
 const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
   const { gameStore, socketStore } = useStores()
-  const [ownResult, setOwnResult] = useState<Result | null>(null)
+  // const [ownResult, setOwnResult] = useState<Result | null>(null)
   const [selectedResult, setSelectedResult] = useState<Result | null>(null)
   const [resultInView, setResultInView] = useState<Result | null>(gameStore.votingData?.results ? gameStore.votingData.results[0] : null)
 
   const [ roundTimer, setRoundTimer ] = useState<number|undefined>(undefined)
   const { timer } = gameStore.votingData || {}
 
-  useEffect(() => {
-    if (gameStore.players && socketStore.connectionState.clientId) {
-      const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
-      if (currentPlayer) {
-        setOwnResult(gameStore.votingData?.results.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
-      }
-    }
-  }, [gameStore.votingData, gameStore.players, socketStore.connectionState.clientId]);
+  // useEffect(() => {
+  //   if (gameStore.players && socketStore.connectionState.clientId) {
+  //     const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
+  //     if (currentPlayer) {
+  //       setOwnResult(gameStore.votingData?.results.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
+  //     }
+  //   }
+  // }, [gameStore.votingData, gameStore.players, socketStore.connectionState.clientId]);
 
   useEffect(() => {
     if (!timer) {
@@ -84,7 +84,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
              transition={{ delay: 1, duration: 0.5, ease: 'backOut' }}
              className="d-flex flex-column flex-grow-1"
            >
-             <ImageGallery
+             <VotingImageGallery
                onSlideChanged={setResultInView}
                votedResult={selectedResult}
                votableResults={
