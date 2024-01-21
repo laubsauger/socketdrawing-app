@@ -66,7 +66,7 @@ const Round = () => {
 
   return (
     <div className="d-flex flex-column flex-grow-1" style={{ height: '100dvh', width: '100dvw' }}>
-      <div className="d-flex flex-column z-index-above mt-4 flex-grow-1">
+      <div className="d-flex flex-column z-index-above flex-grow-1">
         <div className="d-flex gap-4 mx-2 align-items-center justify-content-center">
           <div className="position-relative text-center">
             <motion.div
@@ -110,7 +110,7 @@ const Round = () => {
                   {animationCompleted
                     ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
                       <div className="px-4">
-                        <div className="mb-4 fw-bold text-info fs-3">You're in the audience!</div>
+                        <div className="mb-4 fw-bold text-info fs-4">You're in the audience!</div>
                         <div className="fs-5 text-light">After players submitted their prompts, you can vote for your
                           favorite
                         </div>

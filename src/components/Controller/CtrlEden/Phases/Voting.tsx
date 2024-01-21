@@ -44,7 +44,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
 
   return (
     <div
-      className="d-flex flex-column overflow-hidden" style={{ width: '100vw' }}
+      className="d-flex flex-column overflow-hidden" style={{ width: '100vw', height: '100dvh' }}
     >
       <div className={`pt-0 p-2 text-center w-100 d-flex flex-column`}>
         <motion.div
@@ -77,13 +77,13 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
       {/*      <Button variant="dark" className="mt-auto mx-2 mb-2" onClick={() => setSelectedResult(null)}><>Change vote</></Button>*/}
       {/*    </div>*/}
       {/*  : <div className="d-flex flex-column flex-grow-1">*/}
-       <div className="d-flex flex-column ">
+       <div className="d-flex flex-column h-100">
          {/*<div className="d-flex flex-wrap">*/}
            <motion.div
              initial={{ scale: 0 }}
              animate={{ scale: 1 }}
              transition={{ delay: 1, duration: 0.5, ease: 'backOut' }}
-             className="d-flex flex-column"
+             className="d-flex flex-column h-100"
            >
              <VotingImageGallery
                onSlideChanged={setResultInView}
@@ -95,19 +95,22 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
               initialResultInView={resultInView || undefined}
              />
 
-             <div className="mb-2 d-flex justify-content-center position-absolute bottom-0 w-100">
-              <VoteButton
-                selectedResult={selectedResult}
-                resultInView={resultInView}
-                className="w-100 mx-2"
-                onClick={() => setSelectedResult(resultInView)}
-                released={firedMouseUp}
-              />
-             </div>
+             <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 1.5, duration: 0.5, ease: 'backOut' }}>
+               <div className="mt-2 d-flex justify-content-center w-100">
+               {/*<div className="mb-2 d-flex justify-content-center position-absolute bottom-0 w-100">*/}
+                 <VoteButton
+                   selectedResult={selectedResult}
+                   resultInView={resultInView}
+                   className="w-100 mx-2"
+                   onClick={() => setSelectedResult(resultInView)}
+                   released={firedMouseUp}
+                 />
+               </div>
+             </motion.div>
            </motion.div>
        </div>
     </div>
-)
+  )
 }
 
 export default observer(Voting)

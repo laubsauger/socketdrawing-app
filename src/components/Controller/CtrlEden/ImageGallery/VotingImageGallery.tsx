@@ -29,9 +29,17 @@ const VotingImageGallery = ({
       items={votableResults.map((image) => ({
         thumbnail: image.image,
         original: image.image,
+        renderItem: () => (
+          <div className="position-relative">
+            <div className="position-absolute gallery-bg-img-wrap">
+              <img src={image.image} alt="" className="gallery-bg-img"/>
+            </div>
+            <img src={image.image} alt="gallery-img" className="position-relative shadow-sm gallery-img z-index-above"/>
+          </div>
+        ),
         thumbnailClass: votedResult && votedResult.player_index === image.player_index ? (
-            'voted-result'
-          ) : '',
+          'voted-result'
+        ) : '',
         thumbnailLabel: votedResult && votedResult.player_index === image.player_index ? (
             'Voted!'
           ) : '',
@@ -40,12 +48,12 @@ const VotingImageGallery = ({
             'Voted!'
           ) : '',
       }))}
-      showFullscreenButton={false}
+      showFullscreenButton={true}
       showPlayButton={false}
       autoPlay={false}
       slideDuration={undefined}
       showBullets={true}
-      showNav={true}
+      showNav={false}
       onBeforeSlide={(currentIndex) => {
         onSlideChanged && onSlideChanged(votableResults[currentIndex])
       }}

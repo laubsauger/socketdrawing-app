@@ -6,11 +6,15 @@ import { Button } from 'react-bootstrap';
 import ConfirmStartModal from './ConfirmStartModal';
 
 const Lounge = () => {
-  const [ showConfirmModal, setShowConfirmModal ] = useState(false)
   const { socketStore, gameStore } = useStores()
   return (
     <div>
-      <div className="text-center fw-bold py-2 bg-dark">Waiting Room</div>
+      <div className="text-center fw-bold p-2 bg-body border-bottom d-flex gap-2 align-items-center justify-content-between">
+        <div>Prompt Battle - Waiting Room</div>
+        <div className="d-flex justify-content-end px-2">
+          <ConfirmStartModal/>
+        </div>
+      </div>
       <div className="p-2">
         <div>
           Who are you?
@@ -24,9 +28,6 @@ const Lounge = () => {
             // setShowWelcome(true)
           }}
         />
-      </div>
-      <div className="d-flex justify-content-end px-2">
-        <ConfirmStartModal />
       </div>
       <hr className="m-2"/>
       <div>

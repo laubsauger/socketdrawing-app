@@ -7,11 +7,9 @@ import { observer } from 'mobx-react-lite';
 
 const ScoresImageGallery = ({
   results,
-  // initialResultInView,
   onSlideChanged
 }: {
   results: Result[]|undefined,
-  // initialResultInView?: Result,
   onSlideChanged: (result: any) => void
 }) => {
   const ref = useRef(null)
@@ -43,8 +41,16 @@ const ScoresImageGallery = ({
         thumbnailClass: index === 0 ? (
             'voted-result'
           ) : '',
+        // renderItem: () => (
+        //   <img src={image.image} alt="" />
+        // ),
         renderItem: () => (
-          <img src={image.image} alt="" />
+          <div className="position-relative">
+            <div className="position-absolute gallery-bg-img-wrap">
+              <img src={image.image} alt="" className="gallery-bg-img"/>
+            </div>
+            <img src={image.image} alt="gallery-img" className="position-relative shadow-sm gallery-img z-index-above"/>
+          </div>
         ),
         renderThumbInner: () => (
           <div className="image-gallery-thumbnail-inner position-relative h-100">
@@ -65,7 +71,7 @@ const ScoresImageGallery = ({
       autoPlay={false}
       slideDuration={undefined}
       showBullets={true}
-      showNav={true}
+      showNav={false}
       onBeforeSlide={(currentIndex) => {
         onSlideChanged && onSlideChanged(sortedResults[currentIndex])
       }}
