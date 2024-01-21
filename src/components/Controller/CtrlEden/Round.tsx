@@ -49,10 +49,11 @@ const Round = () => {
     animate(
       scope.current,
       {
-        y: 0
+        y: 0,
+        scale: 0.8
       },
       {
-        delay: 2,
+        delay: 2.5,
         ease: 'backOut',
         duration: 0.5
       }
@@ -73,7 +74,7 @@ const Round = () => {
               initial={firstRender ? { scale: 0, y: '-100vh' } : false}
               onAnimationStart={() => setTitleAnimationCompleted(false)}
             >
-              <div className="fw-semibold fs-5">{gameStore.roundData?.prompt}</div>
+              <div className="fw-semibold fs-2">{gameStore.roundData?.prompt}</div>
               <motion.div
                 initial={firstRender ? { scale: 0, y: '-100vh'} : false}
                 animate={{ scale: 1, y: 0 }}
