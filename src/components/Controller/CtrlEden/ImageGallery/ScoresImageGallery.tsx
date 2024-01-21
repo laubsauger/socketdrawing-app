@@ -7,11 +7,11 @@ import { observer } from 'mobx-react-lite';
 
 const ScoresImageGallery = ({
   results,
-  initialResultInView,
+  // initialResultInView,
   onSlideChanged
 }: {
   results: Result[]|undefined,
-  initialResultInView?: Result,
+  // initialResultInView?: Result,
   onSlideChanged: (result: any) => void
 }) => {
   const ref = useRef(null)
@@ -25,6 +25,10 @@ const ScoresImageGallery = ({
     }
   }, [results]);
 
+  useEffect(() => {
+    onSlideChanged(sortedResults ? sortedResults[0] : 0)
+  }, [sortedResults]);
+
   if (!sortedResults) {
     return <div>No images</div>
   }
@@ -32,7 +36,7 @@ const ScoresImageGallery = ({
   return (
     <ReactImageGallery
       ref={ref}
-      startIndex={initialResultInView ? sortedResults.indexOf(initialResultInView) : 0}
+      startIndex={0}
       items={sortedResults.map((image, index) => ({
         thumbnail: image.image,
         original: image.image,

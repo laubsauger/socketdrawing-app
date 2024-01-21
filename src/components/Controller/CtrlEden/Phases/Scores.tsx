@@ -10,7 +10,7 @@ import ListItemPlayer from '../ListItemPlayer';
 const Scores = () => {
   const { gameStore, socketStore } = useStores()
   const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
-  const [resultInView, setResultInView] = useState<Result | null>(gameStore.scoreData?.scores ? gameStore.scoreData.scores[0] : null)
+  const [resultInView, setResultInView] = useState<Result | null>(null)
   useEffect(() => {
     if (gameStore.players && socketStore.connectionState.clientId) {
       const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
@@ -60,7 +60,7 @@ const Scores = () => {
             results={
               gameStore.scoreData?.scores
             }
-            initialResultInView={resultInView || undefined}
+            // initialResultInView={undefined}
           />
           <div className="px-3 mt-4">
             <ListItemPlayer player={gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0]}/>
