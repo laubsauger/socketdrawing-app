@@ -52,7 +52,7 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, ease: 'backOut' }}
         >
-          <div className="fs-4 fw-bold">{gameStore.roundData?.prompt}123123</div>
+          <div className="fs-4 fw-bold">{gameStore.roundData?.prompt}</div>
         </motion.div>
         <motion.div
           initial={{ scale: 0 }}
