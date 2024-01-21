@@ -88,7 +88,8 @@ const Voting = ({firedMouseUp}: {firedMouseUp: boolean}) => {
                onSlideChanged={setResultInView}
                votedResult={selectedResult}
                votableResults={
-                gameStore.votingData?.results.filter(result => ownResult?.player_index !== result?.player_index)
+                // gameStore.votingData?.results.filter(result => ownResult?.player_index !== result?.player_index)
+                gameStore.votingData?.results
               }
               initialResultInView={resultInView || undefined}
              />
