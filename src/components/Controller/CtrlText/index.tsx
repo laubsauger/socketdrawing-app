@@ -102,7 +102,7 @@ const CtrlText = (props: Props) => {
             :
             (
               <>
-                {textArea ? <div className="mt-4 mb-0 w-100 text-success">Prompt sent! Sit back and relax</div> : null}
+                {textArea ? <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back and relax</div> : null}
               </>
             )
           }
