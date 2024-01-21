@@ -10,7 +10,7 @@ const Lounge = () => {
   return (
     <div>
       <div className="text-center fs-6 fw-bold px-2 p-1 bg-body border-bottom d-flex gap-2 align-items-center justify-content-between">
-        <div>Prompt Battle - Waiting Room</div>
+        <div>Prompt Battle - Lounge</div>
         <div className="d-flex justify-content-end p-0">
           <ConfirmStartModal/>
         </div>
