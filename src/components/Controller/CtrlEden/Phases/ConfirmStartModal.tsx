@@ -20,7 +20,7 @@ const ConfirmStartModal = () => {
 
   return (
     <>
-      <Button variant="outline-secondary" size="sm" onClick={handleShow}>
+      <Button variant="outline-info" size="sm" onClick={handleShow}>
         Launch
       </Button>
 
