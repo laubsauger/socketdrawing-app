@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import CtrlText from '../../CtrlText';
 import { motion, useAnimate } from 'framer-motion';
 import Timer from '../Timer';
+import ListItemPlayer from '../ListItemPlayer';
 
 const Round = () => {
   const [scope, animate] = useAnimate();
@@ -109,11 +110,29 @@ const Round = () => {
                 <>
                   {animationCompleted
                     ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-                      <div className="px-4">
-                        <div className="mb-4 fw-bold text-info fs-4">You're in the audience!</div>
+                      <div className="px-2">
+                        <div className="mb-3 fw-bold text-info fs-4">You're in the audience!</div>
                         <div className="fs-5 text-light">After players submitted their prompts, you can vote for your
                           favorite
                         </div>
+                        <>
+                          <hr className="mt-3"/>
+                          {gameStore.players ?
+                            <div>
+                              <div className="mb-2 d-flex justify-content-between">
+                                <span className="text-dark-emphasis">Players</span>
+                              </div>
+                              <div className="m-0">
+                                {gameStore.players?.map((player, index) => (
+                                  <div key={`${player.id}_${index}`}>
+                                    <ListItemPlayer player={player}/>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            : null
+                          }
+                        </>
                       </div>
                     </motion.div>
                     : null
@@ -134,33 +153,6 @@ const Round = () => {
             <div>Players: {gameStore.players.length}</div>
             <div>Audience: {gameStore.audience.length}</div>
           </div>
-          // <>
-          //   <hr className="my-1"/>
-          //   {gameStore.players ?
-          //     <div className="p-2">
-          //       <div className="mb-2 d-flex justify-content-between">
-          //         <span className="text-dark-emphasis">Players</span>
-          //       </div>
-          //       <div className="m-0 px-2">
-          //         <div>
-          //           {gameStore.players?.map((player, index) => (
-          //             <div key={`${player.id}_${index}`}>
-          //               <PlayerItem player={player}/>
-          //               <div>
-          //                 Points: {player.points}
-          //               </div>
-          //             </div>
-          //           ))}
-          //         </div>
-          //       </div>
-          //     </div>
-          //     : null
-          //   }
-          //   {gameStore.audience
-          //     ? <ListAudience />
-          //     : null
-          //   }
-          // </>
         )
         : null
       }
