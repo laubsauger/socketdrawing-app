@@ -23,7 +23,7 @@ const Lounge = () => {
           <ConfirmStartModal/>
         </div>
       </div>
-      <div className="p-2">
+      <div className="pt-2 px-2">
         <div>
           Who are you?
         </div>
