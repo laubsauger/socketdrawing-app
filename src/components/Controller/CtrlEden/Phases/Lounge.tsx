@@ -5,7 +5,15 @@ import { observer } from 'mobx-react-lite';
 import { Button } from 'react-bootstrap';
 import ConfirmStartModal from './ConfirmStartModal';
 
+
+
 const Lounge = () => {
+  const filler = new Array(64).fill(0)
+  const dummyList = filler.map(item => {
+    return {name: 'longassnameasdasa', id: '1', client_index: 1}
+  })
+  console.log(filler, dummyList)
+  console.log(dummyList)
   const { socketStore, gameStore } = useStores()
   return (
     <div>
@@ -29,19 +37,20 @@ const Lounge = () => {
           }}
         />
       </div>
-      <hr className="m-2"/>
+      <hr className="m-2 mt-0"/>
       <div>
         <div className="px-2 mb-2 d-flex justify-content-between">
           <span>Users</span>
           <span className="fs-6 text-light">{socketStore.roomState.users?.length} / {socketStore.roomState.numMaxUsers}</span>
         </div>
-        <div className="m-0 px-3">
+        <div className="m-0 px-2">
           <div className="limited-length-list" style={{ fontSize: '12px' }}>
             { socketStore.roomState.users?.map((user, index) =>(
-              <div key={`${user.id}_${index}`}>
+            // { dummyList?.map((user, index) =>(
+            <div style={{ maxWidth: '100%' }} className='font-monospace' key={`${user.id}_${index}`}>
                 <>
                   {user.id === socketStore.connectionState.clientId
-                    ? <div className="text-info fw-bold">{user.client_index}:{user.name ? user.name : user.id.slice(0, 6)}</div>
+                    ? <div className="text-info fw-bold text-truncate">{user.client_index}:{user.name ? user.name : user.id.slice(0, 6)}</div>
                     : <div>{user.client_index}:{user.name ? user.name : user.id.slice(0, 6)}</div>
                   }
                 </>

@@ -28,7 +28,7 @@ const CtrlText = (props: Props) => {
   const doSubmit = () => {
     socket.emit('OSC_CTRL_MESSAGE', {
       message: messageField,
-      text: text,
+      text: text.trim(),
     });
 
     setSent(true);
@@ -47,9 +47,9 @@ const CtrlText = (props: Props) => {
   }, [socket, text]);
 
   return (
-    <div className={`CtrlText p-2 mt-0 mb-0`}>
+    <div className={`CtrlText p-2 mt-0 mb-0`}   style={textArea ? {} : { height: '54px' }}>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="d-flex flex-column" controlId="formTextPrompt">
+        <Form.Group className={`d-flex ${textArea ? 'flex-column' : ''}`} controlId="formTextPrompt">
           {textArea
             ? (
               <div className="w-100">
@@ -71,13 +71,16 @@ const CtrlText = (props: Props) => {
                 {!sent
                   ? <InputGroup className="d-flex align-items-center">
                       <Form.Control
+                        maxLength={20}
                         type="text"
+                        value={text}
                         placeholder={label}
                         required={true}
                         onChange={handleChangeText}
                         aria-label={label}
                         autoFocus={autoFocus}
                         disabled={props.singleUse ? sent && props.singleUse : sent}
+                        style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                       />
                     </InputGroup>
                   : null
@@ -88,7 +91,7 @@ const CtrlText = (props: Props) => {
           {!sent
             ? (
               <div>
-                  <div className="mt-2">
+                  <div className={`${textArea ? 'mt-2' : '' }`} style={ textArea ? {} : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
                     <Button
                       variant="primary"
                       type="submit"
@@ -107,21 +110,6 @@ const CtrlText = (props: Props) => {
             )
           }
         </Form.Group>
-
-        {/*<Form.Group className="mb-3" controlId="formImage">*/}
-        {/*  <Form.Label>Image URL (optional)</Form.Label>*/}
-        {/*  <Form.Control type="url" pattern="https://.*" placeholder="Link to a .JPG or .PNG image" onChange={handleChangeImage}/>*/}
-        {/*</Form.Group>*/}
-
-        {/*<Form.Group className="mb-3" controlId="formUsername">*/}
-        {/*  <Form.Label>Name (optional)</Form.Label>*/}
-        {/*  <Form.Control type="text" placeholder="Your name" onChange={handleChangeName}/>*/}
-        {/*</Form.Group>*/}
-
-        {/*<Form.Group className="mb-3" controlId="formBasicEmail">*/}
-        {/*  <Form.Label>Email (optional)</Form.Label>*/}
-        {/*  <Form.Control type="email" placeholder="Your email" onChange={handleChangeEmail}/>*/}
-        {/*</Form.Group>*/}
       </Form>
 
       {sent

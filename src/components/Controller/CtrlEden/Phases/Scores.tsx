@@ -62,9 +62,9 @@ const Scores = () => {
             }
             // initialResultInView={undefined}
           />
-          <div className="px-3 mt-4">
+          <div className="px-2 mt-2">
             <ListItemPlayer player={gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0]}/>
-            <div className="text-light">
+            <div className="text-light mt-1">
               {resultInView?.prompt}
             </div>
           </div>

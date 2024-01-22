@@ -203,12 +203,11 @@ main {
 
 .limited-length-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(22, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(32, 1fr);
   grid-column-gap: 1em;
   grid-auto-flow: column;
 }
-
 
 .CtrlButton-black {
   border-color: #333;
