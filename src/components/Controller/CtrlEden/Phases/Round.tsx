@@ -109,7 +109,7 @@ const Round = () => {
                 :
                 <>
                   {animationCompleted
-                    ? <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+                    ? <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ ease: 'backOut', duration: 0.5 }}>
                       <div className="px-2">
                         <div className="mb-3 fw-bold text-info fs-4">You're in the audience!</div>
                         <div className="fs-5 text-light">After players submitted their prompts, you can vote for your
