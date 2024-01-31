@@ -112,7 +112,7 @@ export class SocketStore implements ISocketStore {
   }
 
   @action setAvailableInstances(instances:Instance[]) {
-    this.availableInstances = instances.filter(instance => instance.id === 5);
+    this.availableInstances = instances;
   }
 
   @action setCurrentInstance(instance:Instance|undefined) {
