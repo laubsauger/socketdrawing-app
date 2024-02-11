@@ -55,17 +55,17 @@ const CtrlButton = (props:Props) => {
         onMouseDown={handleBtnPress}
         style={style}
       >
-        {children ? children : label}
+        {children ? children : (label || channelName)}
       </div>
     )
   }
 
   return (
     <button
-      className={`CtrlButton CtrlButton-${variant}`}
+      className={`CtrlButton ${variant ? `CtrlButton-${variant}` : ''}`}
       onMouseDown={handleBtnPress}
     >
-      { label }
+      { label || channelName }
     </button>
   )
 };

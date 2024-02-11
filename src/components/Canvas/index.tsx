@@ -92,9 +92,9 @@ const Canvas = (props:Props) => {
   useEffect(() => {
     let totalHeight = 0;
 
-    if (socketStore.currentInstance?.settings.controls.text) {
-      totalHeight += 70
-    }
+    // if (socketStore.currentInstance?.settings.controls.texts) {
+    //   totalHeight += 108
+    // }
 
     if (socketStore.currentInstance?.settings.controls.buttons) {
       totalHeight += 93
@@ -107,14 +107,17 @@ const Canvas = (props:Props) => {
     setToolbarsHeight(`${totalHeight}px`);
   }, [ socketStore.currentInstance ])
 
-  return <canvas className="position-fixed w-100"
-                 style={{ height: `calc(100dvh - ${toolbarsHeight})` }}
-                 ref={canvasRef}
-                 onMouseDown={onMouseDown}
-                 onMouseUp={onMouseUp}
-                 onMouseMove={onMouseMove}
-                 {...rest}
-  />;
+  return (
+    <canvas
+      className="position-fixed border-bottom border-tops border-secondary"
+      style={{ width: '100%', height: `calc(100dvh - 108px)` }}
+      ref={canvasRef}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseMove={onMouseMove}
+      {...rest}
+    />
+  )
 }
 
 export default observer(Canvas);

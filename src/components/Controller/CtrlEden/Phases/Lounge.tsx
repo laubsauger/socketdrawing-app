@@ -8,12 +8,12 @@ import ConfirmStartModal from './ConfirmStartModal';
 
 
 const Lounge = () => {
-  const filler = new Array(64).fill(0)
-  const dummyList = filler.map(item => {
-    return {name: 'longassnameasdasa', id: '1', client_index: 1}
-  })
-  console.log(filler, dummyList)
-  console.log(dummyList)
+  // const filler = new Array(64).fill(0)
+  // const dummyList = filler.map(item => {
+  //   return {name: 'longassnameasdasa', id: '1', client_index: 1}
+  // })
+  // console.log(filler, dummyList)
+  // console.log(dummyList)
   const { socketStore, gameStore } = useStores()
   return (
     <div>

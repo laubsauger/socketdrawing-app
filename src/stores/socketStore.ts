@@ -20,6 +20,18 @@ export type RoomState = {
   currentSlot?: number;
 }
 
+export type Control = {
+  id: string
+  type: 'text'|'button'|'eden'|'xy'
+  options: {
+    variant?: 'black'|'red'|'green'|'blue'|'yellow'
+    label?: string,
+    submit?: boolean
+    mode?: 'paint'|'crosshair',
+    multiline?: boolean
+  }
+}
+
 export type Instance = {
   id: number,
   name: string,
@@ -30,14 +42,14 @@ export type Instance = {
     randomPick?: boolean,
     sequentialPick?: boolean,
     controls: {
-      eden?: boolean,
-      name?: string,
-      text?: string,
-      xy?: boolean,
-      buttons?: number,
-      faders?: number,
-      gyroscope?: boolean,
-      accelerometer?: boolean,
+      eden?: [
+        Control
+      ],
+      buttons?: Control[],
+      faders?: Control[]
+      texts?: Control[],
+      xy?: Control[],
+      sensors?: Control[],
     }
   }
 }
@@ -97,7 +109,6 @@ export class SocketStore implements ISocketStore {
 
   @action resetConnectionState() {
     this.connectionState = Object.assign({}, connectionStateStub);
-
   }
 
   @action updateRoomState(state:RoomState) {

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import { observer } from 'mobx-react-lite';
 import Slider from 'react-input-slider';
 import throttle from 'lodash.throttle';
@@ -8,7 +8,7 @@ import { useSocket } from "../../../hooks/useSocket";
 
 type Props = {
   label: string,
-  variant: 'black' | 'red' | 'green' | 'blue',
+  variant?: 'black'|'red'|'green'|'blue'|'yellow'
   channelName: string,
 };
 
@@ -31,7 +31,7 @@ const CtrlFader = (props:Props) => {
   }, [ sendValue, socket, channelName ]);
 
   return (
-    <div className={`CtrlFader CtrlFader-${variant} position-relative h-100 overflow-hidden font-monospace`}>
+    <div className={`CtrlFader ${variant ? `CtrlFader-${variant}` : ''} position-relative h-100 overflow-hidden font-monospace`}>
       <Slider
         axis="y"
         y={value}

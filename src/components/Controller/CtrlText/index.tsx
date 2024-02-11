@@ -5,17 +5,18 @@ import { useSocket } from "../../../hooks/useSocket";
 import { Button, Form, InputGroup } from "react-bootstrap";
 
 type Props = {
-  label: string,
+  label?: string,
   messageField: string,
   textArea?: boolean,
   onSubmitSuccess?: (text: string|null) => void,
   singleUse?: boolean,
   autoFocus?: boolean,
   shouldSubmit?: boolean,
+  hasSubmit?: boolean,
 };
 
 const CtrlText = (props: Props) => {
-  const { label, messageField, textArea, autoFocus, shouldSubmit, onSubmitSuccess } = props;
+  const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
   const socket = useSocket();
@@ -23,14 +24,21 @@ const CtrlText = (props: Props) => {
   const handleChangeText = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     console.log('change', ev.target.value)
     setText(ev.target.value);
+
+    if (!hasSubmit) {
+      sendText(ev.target.value)
+    }
   }, []);
 
-  const doSubmit = () => {
+  const sendText = (text: string) => {
     socket.emit('OSC_CTRL_MESSAGE', {
       message: messageField,
       text: text.trim(),
     });
+  }
 
+  const doSubmit = () => {
+    sendText(text)
     setSent(true);
     onSubmitSuccess && onSubmitSuccess(text)
   }
@@ -61,14 +69,14 @@ const CtrlText = (props: Props) => {
                   onChange={handleChangeText}
                   aria-label={label}
                   autoFocus={autoFocus}
-                  disabled={props.singleUse ? sent && props.singleUse : sent}
+                  disabled={props.singleUse ? sent && props.singleUse : (!hasSubmit ? false : sent)}
                   className={sent ? 'border-success bg-black' : ''}
                 />
               </div>
             )
             : (
               <>
-                {!sent
+                {!sent || !hasSubmit
                   ? <InputGroup className="d-flex align-items-center">
                       <Form.Control
                         maxLength={20}
@@ -79,7 +87,7 @@ const CtrlText = (props: Props) => {
                         onChange={handleChangeText}
                         aria-label={label}
                         autoFocus={autoFocus}
-                        disabled={props.singleUse ? sent && props.singleUse : sent}
+                        disabled={props.singleUse ? sent && props.singleUse : (!hasSubmit ? false : sent)}
                         style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                       />
                     </InputGroup>
@@ -88,7 +96,7 @@ const CtrlText = (props: Props) => {
               </>
             )
           }
-          {!sent
+          {!sent && hasSubmit
             ? (
               <div>
                   <div className={`${textArea ? 'mt-2' : '' }`} style={ textArea ? {} : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
@@ -105,7 +113,7 @@ const CtrlText = (props: Props) => {
             :
             (
               <>
-                {textArea ? <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back and relax</div> : null}
+                {textArea && hasSubmit ? <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back and relax</div> : null}
               </>
             )
           }

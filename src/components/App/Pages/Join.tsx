@@ -101,10 +101,13 @@ const Join: React.FC = (props) => {
                   </Col>
                   <Col lg={3} xs={6}>
                     <h6 className="text-muted">Controls</h6>
-                    <div>
+                    <div className="small">
                       { Object.entries(instance.settings.controls).filter(([key, val]) => !!val).map(([key, val]) =>
                         <div key={ key }>
-                          <Badge bg="black">{ key } { val !== true ? `[ ${val} ]` : '' }</Badge>
+                          <div>
+                            <div className="bg-black ps-2 rounded-top">{ key }</div>
+                            <div className="bg-black ps-3 text-muted">{ val.map(v => <div key={v.id}>{v.id}:{v.type}</div>) }</div>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -115,7 +118,7 @@ const Join: React.FC = (props) => {
                     { instance.settings.slotPick &&
                       <>
                         <div className="mt-4 text-center">Choose Slot</div>
-                        <div className="btn-group" role="group" aria-label="Basic outlined example">
+                        <div className="btn-group d-flex flex-wrap" role="group" aria-label="Basic outlined example">
                           {SlotButtons(instance)}
                         </div>
                       </>

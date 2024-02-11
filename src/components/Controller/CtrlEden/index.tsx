@@ -126,7 +126,6 @@ const CtrlEden = (props: Props) => {
   return (
     <div className="d-flex flex-column overflow-hidden" style={{ height: '100%'}}>
       {/*<SessionInfo />*/}
-
       { showLounge
         ? <Lounge />
         : null
@@ -155,51 +154,6 @@ const CtrlEden = (props: Props) => {
         ? <Scores />
         : null
       }
-{/*`      {*/}
-{/*        showPrompt && gameStore.currentData*/}
-{/*          ?*/}
-{/*          :*/}
-{/*      }`*/}
-{/*      <div className="p-2 border-bottom d-flex gap-2 justify-content-between">*/}
-{/*        <div className="d-flex align-items-center gap-2">*/}
-{/*          /!* //@todo: game.name, game.id *!/*/}
-{/*          <strong>{socketStore.currentInstance?.name}</strong>*/}
-{/*          /!* //@todo: game.round *!/*/}
-{/*          <Badge bg="dark">Round 1</Badge>*/}
-{/*        </div>*/}
-{/*        <div className="d-flex align-items-center gap-2">*/}
-{/*          /!* //@todo: game.phase (type Phases) *!/*/}
-{/*          /!*<Badge bg="light">Lounge</Badge>*!/*/}
-{/*          <Badge bg="light">Splash</Badge>*/}
-{/*          /!*<Badge bg="light">Player Selection</Badge>*!/*/}
-{/*          /!*<Badge bg="warning">Prompting</Badge>*!/*/}
-{/*          /!*<Badge bg="info">Voting</Badge>*!/*/}
-{/*          /!*<Badge bg="success">Results</Badge>*!/*/}
-{/*        </div>*/}
-{/*      </div>*/}
-
-      {/*{ gameStore.currentPhase ? gameStore.currentPhase : 'unknown / undefined phase' }*/}
-
-      {/*{ showOtherControls*/}
-      {/*  ? (*/}
-      {/*    <div className="d-flex flex-column z-index-above">*/}
-      {/*      <div>*/}
-      {/*        <CtrlText*/}
-      {/*          label={'Text Prompt'}*/}
-      {/*          messageField={'textPrompt'}*/}
-      {/*          textArea={true}*/}
-      {/*        />*/}
-      {/*      </div>*/}
-      {/*      <div*/}
-      {/*        className="d-flex position-absolute justify-content-between py-2 px-2 w-100 bg-black"*/}
-      {/*        style={{ zIndex: 10, borderTop: '1px solid black', bottom: '0px' }}*/}
-      {/*      >*/}
-      {/*        {CtrlButtons(4, props.firedMouseUp)}*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  )*/}
-      {/*  : null*/}
-      {/*}*/}
     </div>
   )
 };

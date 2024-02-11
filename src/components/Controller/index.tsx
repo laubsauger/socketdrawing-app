@@ -13,29 +13,13 @@ import CtrlText from "./CtrlText";
 import Sensors from "./Sensors";
 import CtrlFader from "./CtrlFader";
 import CtrlEden from './CtrlEden';
-import { Player } from '../../stores/socketStore';
+import { Control, Player } from '../../stores/socketStore';
 import { useWakeLock } from 'react-screen-wake-lock';
+import LogoBackground from '../LogoBackground';
 
 export type PlayerColor = 'black'|'red'|'green'|'blue'|'yellow';
 
 export const buttonColors: PlayerColor[] = [ 'red', 'green', 'blue', 'yellow' ]
-
-export const CtrlButtons = (numButtons:number, eventHandler?:any) => {
-
-  let content = [];
-  for (let i = 1; i <= numButtons; i++) {
-    content.push(<CtrlButton type='button' key={i} channelName={`b${i}`} label={String(i)} variant={buttonColors[i - 1]  as 'black'|'red'|'green'|'blue'|'yellow'} released={eventHandler || undefined}/>);
-  }
-  return content;
-}
-
-const CtrlFaders = (numFaders:number, eventHandler:any) => {
-  let content = [];
-  for (let i = 1; i <= numFaders; i++) {
-    content.push(<CtrlFader key={i} channelName={`f${i}`} label={String(i)} variant='blue'/>);
-  }
-  return content;
-}
 
 const Controller = () => {
   const navigate = useNavigate();
@@ -248,7 +232,10 @@ const Controller = () => {
   const handleMouseUp = useCallback((data:any) => {
     console.log('UI::mouseUp', data);
     setFiredMouseUp(true);
-    setFiredMouseUp(false);
+
+    setTimeout(() => {
+      setFiredMouseUp(false);
+    }, 50)
   }, []);
 
   useEffect(() => {
@@ -263,39 +250,62 @@ const Controller = () => {
 
   return (
     <div className='Controller d-flex flex-column ' style={{ height: '100%' }}>
-      {/*<LogoBackground />*/}
-
+      { !socketStore.currentInstance?.settings?.controls?.eden ? <LogoBackground /> : null }
       { socketStore.connectionState.joined &&
         <React.Fragment>
           { socketStore.currentInstance &&
             <>
               <div className="w-100 h-100">
-                {(socketStore.currentInstance.settings.controls.gyroscope || socketStore.currentInstance.settings.controls.accelerometer) ?
-                  <Sensors
-                    gyroscope={socketStore.currentInstance.settings.controls.gyroscope || false}
-                    accelerometer={socketStore.currentInstance.settings.controls.accelerometer || false}
-                  />
+                {/*{(socketStore.currentInstance.settings.controls.sensors ) ?*/}
+                {/*  <Sensors*/}
+                {/*    gyroscope={socketStore.currentInstance.settings.controls.gyroscope || false}*/}
+                {/*    accelerometer={socketStore.currentInstance.settings.controls.accelerometer || false}*/}
+                {/*  />*/}
+                {/*  : null*/}
+                {/*}*/}
+                {socketStore.currentInstance.settings.controls.faders && socketStore.currentInstance.settings.controls.faders.length > 0
+                  ? (
+                    <div className="d-flex justify-content-between py-2 px-2 w-100 h-100">
+                      { socketStore.currentInstance.settings.controls.faders.map((fader) =>
+                        <CtrlFader
+                          key={fader.id}
+                          channelName={fader.id}
+                          label={fader.options?.label || ''}
+                          variant={fader.options?.variant}
+                        />
+                      ) }
+                    </div>
+                  )
                   : null
                 }
-                {socketStore.currentInstance.settings.controls.faders
-                  ? <div className="d-flex justify-content-between py-2 px-2 w-100 h-100">
-                    {CtrlFaders(socketStore.currentInstance.settings.controls.faders, firedMouseUp)}
-                  </div>
-                  : null
-                }
-                {socketStore.currentInstance.settings.controls.name
-                  ? <CtrlText label={'Name'} messageField='userName'/>
-                  : null
-                }
-                {socketStore.currentInstance.settings.controls.text
-                  ? <CtrlText label={'Text Prompt'} messageField={'textPrompt'} textArea={true}/>
+                {socketStore.currentInstance.settings.controls.texts && socketStore.currentInstance.settings.controls.texts.length > 0
+                  ? (
+                    <>
+                      { socketStore.currentInstance.settings.controls.texts.map(text =>
+                        <CtrlText
+                          key={text.id}
+                          label={text.options?.label || ''}
+                          messageField={text.id}
+                          textArea={text.options.multiline}
+                          hasSubmit={text.options.submit}
+                        />
+                      ) }
+                    </>
+                  )
                   : null
                 }
                 {socketStore.currentInstance.settings.controls.xy
-                  ? <CtrlXY
-                    channelNames={{ x: 'x', y: 'y' }}
-                    released={firedMouseUp}
-                  />
+                  ? (
+                  <>
+                    { socketStore.currentInstance.settings.controls.xy.map(xyControl =>
+                      <CtrlXY
+                        key={xyControl.id}
+                        channelNames={{ x: `x_${xyControl.id}`, y: `y_${xyControl.id}` }}
+                        released={firedMouseUp}
+                      />
+                    ) }
+                  </>
+                  )
                   : null
                 }
                 {socketStore.currentInstance.settings.controls.eden
@@ -303,11 +313,23 @@ const Controller = () => {
                   : null
                 }
               </div>
-              {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons > 0 &&
-                <div className="d-flex justify-content-between py-2 px-2 w-100 bg-black"
-                     style={{ zIndex: 10, borderTop: '1px solid black' }}>
-                  {CtrlButtons(socketStore.currentInstance.settings.controls.buttons, firedMouseUp)}
-                </div>
+              {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons.length > 0
+                ? <div
+                    className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom"
+                    style={{ zIndex: 10, borderTop: '1px solid black' }}
+                  >
+                  { socketStore.currentInstance.settings.controls.buttons.map((btn) =>
+                    <CtrlButton
+                      key={btn.id}
+                      type='button'
+                      channelName={btn.id}
+                      label={btn.options?.label}
+                      variant={btn.options?.variant}
+                      released={firedMouseUp || undefined}
+                    />
+                  )}
+                  </div>
+                : null
               }
             </>
           }
