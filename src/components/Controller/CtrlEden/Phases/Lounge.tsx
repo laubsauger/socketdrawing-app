@@ -31,6 +31,7 @@ const Lounge = () => {
           singleUse={true}
           label={'Name'}
           messageField='userName'
+          hasSubmit={true}
           onSubmitSuccess={(name: string|null) => {
             gameStore.setUserName(name)
             // setShowWelcome(true)
