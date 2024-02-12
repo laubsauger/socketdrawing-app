@@ -97,6 +97,7 @@ const Round = () => {
             onAnimationComplete={() => setAnimationCompleted(true)}
             className="mb-auto"
           >
+            <Timer currentTime={roundTimer} duration={timer} />
             <div className="position-relative">
               {isPlayer
                 ?
@@ -105,7 +106,6 @@ const Round = () => {
                   messageField={'textPrompt'}
                   textArea={true}
                   hasSubmit={true}
-                  singleUse={true}
                   shouldSubmit={roundTimer === 0}
                 />
                 :
@@ -141,8 +141,6 @@ const Round = () => {
                   }
                 </>
               }
-
-              <Timer currentTime={roundTimer} duration={timer} />
             </div>
           </motion.div>
           : null

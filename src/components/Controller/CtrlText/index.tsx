@@ -113,7 +113,7 @@ const CtrlText = (props: Props) => {
             :
             (
               <>
-                {textArea && hasSubmit ? <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back and relax</div> : null}
+                {textArea && hasSubmit ? <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back, relax and wait for others to submit theirs.</div> : null}
               </>
             )
           }
