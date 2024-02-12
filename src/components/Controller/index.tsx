@@ -302,6 +302,7 @@ const Controller = () => {
                         key={xyControl.id}
                         channelNames={{ x: `x_${xyControl.id}`, y: `y_${xyControl.id}` }}
                         released={firedMouseUp}
+                        feedback={xyControl.options.mode === 'paint'}
                       />
                     ) }
                   </>

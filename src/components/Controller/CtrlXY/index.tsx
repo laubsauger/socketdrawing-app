@@ -10,6 +10,7 @@ type Props = {
     y: string
   },
   released: boolean,
+  feedback?: boolean
 }
 
 function normalizePosition(x:number, y:number, width:number, height:number) {
@@ -64,7 +65,7 @@ const drawCrossHair = (ctx:CanvasRenderingContext2D, canvasWidth:number, canvasH
 }
 
 const CtrlXY = (props:Props) => {
-  const { channelNames, released } = props;
+  const { channelNames, released, feedback } = props;
   const socket = useSocket();
 
   const [ isPainting, setIsPainting ] = useState(false);
@@ -80,24 +81,39 @@ const CtrlXY = (props:Props) => {
       console.log('is drawing');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      // if (feedbackPositions) {
-      //   for (let i = 0; i < feedbackPositions.length; i++) {
-      //     console.log('feedback', i)
-      //     drawCrossHair(ctx, ref.current.width, ref.current.height, feedbackPositions[feedbackPositions.length-1-i], 0.5 / feedbackPositions.length-1-i );
-      //   }
-      // }
-
+      if (feedback) {
+        drawTrails(ctx)
+      }
       drawCrossHair(ctx, ref.current.width, ref.current.height, pos, 0.7);
-      //
-      // const newPosSet = [ ...feedbackPositions, pos ];
-      // if (newPosSet.length > 100) {
-      //   setFeedbackPositions([ ...feedbackPositions.slice(1), pos ]);
-      // } else {
-      //   setFeedbackPositions([ ...feedbackPositions, pos ]);
-      // }
     }
   }, [ isPainting, pos, ref, feedbackPositions]);
 
+  const [cursorPositions, setCursorPositions] = useState<Array<{x: number, y: number, life: number}>>([]);
+  const [trailIsActive, setTrailIsActive] = useState<boolean>(true);
+
+  const drawTrails = useCallback((context: CanvasRenderingContext2D) => {
+    cursorPositions.forEach((position, index) => {
+      const alpha = position.life / 500;
+
+      context.beginPath();
+      context.arc(position.x, position.y, 10, 0, Math.PI * 2, false);
+      context.closePath();
+      context.fillStyle = `rgba(64,64,255,${alpha})`;
+      context.fill();
+
+      position.life -= 1;
+
+      if (position.life === 0) {
+        cursorPositions.splice(index, 1);
+      }
+    });
+
+    setCursorPositions(cursorPositions);
+  }, [cursorPositions, trailIsActive]);
+
+  const trailMouseMove = useCallback((e:any) => {
+    setCursorPositions(cursorPositions.concat([{x: pos.x, y: pos.y, life: 500}]));
+  }, [cursorPositions, pos]);
 
   const emitPaintMessage = useCallback((mousePos: { normalized_x: number, normalized_y: number }) => {
     const posObj:any = {};
@@ -192,9 +208,15 @@ const CtrlXY = (props:Props) => {
         options={{ context: '2d' }}
         setRef={setRef}
         onMouseDown={handleDragStart}
-        onMouseMove={handlePaint}
+        onMouseMove={(ev) => {
+          trailMouseMove(ev)
+          handlePaint(ev)
+        }}
         onTouchStart={handleDragStart}
-        onTouchMove={handlePaint}
+        onTouchMove={(ev) => {
+          trailMouseMove(ev)
+          handlePaint(ev)
+        }}
       />
     </div>
   )

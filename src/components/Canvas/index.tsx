@@ -20,40 +20,19 @@ const Canvas = (props:Props) => {
   const { draw, options, setRef, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd, ...rest } = props;
   const { context } = options;
   const canvasRef = useCanvas(draw, { context });
-
   const [ toolbarsHeight, setToolbarsHeight ] = useState<string>('0px');
-  //
-  // const handleTouchMove = (ev:any) => {
-  //   ev.preventDefault();
-  //
-  //   if (!canvasRef.current) {
-  //     //@ts-ignore
-  //     canvasRef.current = setTimeout(() => {
-  //       // if (ev.target === canvasRef.current) {
-  //         if (onTouchMove) {
-  //           onTouchMove(ev);
-  //         }
-  //       // }
-  //       //@ts-ignore
-  //       clearTimeout(canvasRef.current);
-  //       canvasRef.current = null;
-  //     }, 500)
-  //   }
-  // }
 
   const touchStartListener = useCallback((e:any) => {
-      if (e.target === canvasRef.current) {
-        e.preventDefault();
-
-        if (onTouchStart) {
-          onTouchStart(e);
-        }
+    if (e.target === canvasRef.current) {
+      e.preventDefault();
+      if (onTouchStart) {
+        onTouchStart(e);
       }
+    }
   }, [onTouchStart]);
 
   const touchMoveListener = useCallback((e:any) => {
     e.preventDefault();
-
     if (e.target === canvasRef.current) {
       if (onTouchMove) {
         onTouchMove(e);
@@ -64,7 +43,6 @@ const Canvas = (props:Props) => {
   const touchEndListener = useCallback((e:any) => {
     if (e.target === canvasRef.current) {
       e.preventDefault();
-
       if (onTouchEnd) {
         onTouchEnd(e);
       }
@@ -74,14 +52,12 @@ const Canvas = (props:Props) => {
   useEffect(() => {
     if (setRef) {
       setRef(canvasRef);
-
       if (canvasRef && canvasRef.current) {
         document.body.addEventListener('touchstart', touchStartListener, { passive: false })
         document.body.addEventListener('touchmove', touchMoveListener, { passive: false })
         document.body.addEventListener('touchend', touchEndListener, { passive: false })
       }
     }
-    //
     return () => {
       document.body.removeEventListener('touchstart', touchStartListener);
       document.body.removeEventListener('touchmove', touchMoveListener);
@@ -92,25 +68,20 @@ const Canvas = (props:Props) => {
   useEffect(() => {
     let totalHeight = 0;
 
-    // if (socketStore.currentInstance?.settings.controls.texts) {
-    //   totalHeight += 108
-    // }
-
-    if (socketStore.currentInstance?.settings.controls.buttons) {
-      totalHeight += 93
+    if (socketStore.currentInstance?.settings.controls.texts && socketStore.currentInstance?.settings.controls.texts?.length > 1) {
+      totalHeight += 108
     }
 
-    if (socketStore.currentInstance?.settings.controls.eden) {
+    if (socketStore.currentInstance?.settings.controls.buttons || socketStore.currentInstance?.settings.controls.eden) {
       totalHeight += 93
     }
-
     setToolbarsHeight(`${totalHeight}px`);
-  }, [ socketStore.currentInstance ])
+  }, [ socketStore.currentInstance ]);
 
   return (
     <canvas
       className="position-fixed border-bottom border-tops border-secondary"
-      style={{ width: '100%', height: `calc(100dvh - 108px)` }}
+      style={{ width: '100%', height: `calc(100dvh - ${toolbarsHeight})` }}
       ref={canvasRef}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
@@ -119,5 +90,4 @@ const Canvas = (props:Props) => {
     />
   )
 }
-
 export default observer(Canvas);
