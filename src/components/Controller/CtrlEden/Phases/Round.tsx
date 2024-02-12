@@ -104,6 +104,8 @@ const Round = () => {
                   label={'Text Prompt'}
                   messageField={'textPrompt'}
                   textArea={true}
+                  hasSubmit={true}
+                  singleUse={true}
                   shouldSubmit={roundTimer === 0}
                 />
                 :
