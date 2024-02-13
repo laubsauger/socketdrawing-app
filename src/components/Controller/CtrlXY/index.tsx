@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import './styles.scss';
 import Canvas from "../../Canvas";
@@ -13,7 +13,11 @@ type Props = {
   feedback?: boolean
 }
 
-function normalizePosition(x:number, y:number, width:number, height:number) {
+type NormalizedPosition = {
+  x:number, y:number, normalized_x:number, normalized_y:number
+}
+
+function normalizePosition(x:number, y:number, width:number, height:number): NormalizedPosition {
   const { devicePixelRatio:ratio = 1 } = window;
 
   const normalized_x = (x / width) * ratio;
@@ -67,16 +71,12 @@ const drawCrossHair = (ctx:CanvasRenderingContext2D, canvasWidth:number, canvasH
 const CtrlXY = (props:Props) => {
   const { channelNames, released, feedback } = props;
   const socket = useSocket();
-
+  const positionsToDraw = useRef<{ x: number }[]>([]);
   const [ isPainting, setIsPainting ] = useState(false);
   const [ pos, setPos ] = useState<any>({ x: 0.5, y: 0.5, normalized_x: 0.5, normalized_y: 0.5 });
   const [ ref, setRef ] = useState<any>({});
 
-  const [ feedbackPositions, setFeedbackPositions ] = useState<any>([]);
-
-  // console.log('window.devicePixelRatio', window.devicePixelRatio);
-
-  const draw = useCallback((ctx:any, frameCount:any) => {
+  const draw = useCallback((ctx:any) => {
     if (isPainting && pos && ref.current) {
       console.log('is drawing');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -86,7 +86,7 @@ const CtrlXY = (props:Props) => {
       }
       drawCrossHair(ctx, ref.current.width, ref.current.height, pos, 0.7);
     }
-  }, [ isPainting, pos, ref, feedbackPositions]);
+  }, [ isPainting, pos, ref]);
 
   const [cursorPositions, setCursorPositions] = useState<Array<{x: number, y: number, life: number}>>([]);
   const [trailIsActive, setTrailIsActive] = useState<boolean>(true);
@@ -150,6 +150,7 @@ const CtrlXY = (props:Props) => {
     } else {
       setPos(mousePos);
       emitPaintMessage(mousePos);
+      positionsToDraw.current.push(mousePos);
     }
   }, [ref, pos, emitPaintMessage, emitMouseDownStateMessage]);
 
@@ -161,6 +162,7 @@ const CtrlXY = (props:Props) => {
     const mousePos = ev.type === 'touchmove' ? getTouchPosition(ev, ref) : getMousePosition(ev, ref);
     setPos(mousePos);
     emitPaintMessage(mousePos);
+    positionsToDraw.current.push(mousePos);
   }, [ ref, isPainting, emitPaintMessage ]);
 
   // const throttledHandlePaint = (ev:any) => {

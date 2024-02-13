@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, TouchEventHandler, useCallback, useEffect, useState} from 'react'
+import React, { MouseEventHandler, TouchEventHandler, useCallback, useEffect, useRef, useState } from 'react'
 import useCanvas from "../../hooks/useCanvas";
 import {useStores} from "../../hooks/useStores";
 import {observer} from "mobx-react-lite";
@@ -49,6 +49,31 @@ const Canvas = (props:Props) => {
     }
   }, [ onTouchEnd ]);
 
+
+  const mouseDownListener = useCallback((e:any) => {
+    if (e.target === canvasRef.current) {
+      if (onMouseDown) {
+        onMouseDown(e);
+      }
+    }
+  }, [onMouseDown]);
+
+  const mouseMoveListener = useCallback((e:any) => {
+    if (e.target === canvasRef.current) {
+      if (onMouseMove) {
+        onMouseMove(e);
+      }
+    }
+  }, [onMouseMove]);
+
+  const mouseUpListener = useCallback((e:any) => {
+    if (e.target === canvasRef.current) {
+      if (onMouseUp) {
+        onMouseUp(e);
+      }
+    }
+  }, [onMouseUp]);
+
   useEffect(() => {
     if (setRef) {
       setRef(canvasRef);
@@ -56,14 +81,20 @@ const Canvas = (props:Props) => {
         document.body.addEventListener('touchstart', touchStartListener, { passive: false })
         document.body.addEventListener('touchmove', touchMoveListener, { passive: false })
         document.body.addEventListener('touchend', touchEndListener, { passive: false })
+        document.body.addEventListener('mousedown', mouseDownListener);
+        document.body.addEventListener('mousemove', mouseMoveListener);
+        document.body.addEventListener('mouseup', mouseUpListener);
       }
     }
     return () => {
       document.body.removeEventListener('touchstart', touchStartListener);
       document.body.removeEventListener('touchmove', touchMoveListener);
       document.body.removeEventListener('touchend', touchEndListener);
+      document.body.removeEventListener('mousedown', mouseDownListener);
+      document.body.removeEventListener('mousemove', mouseMoveListener);
+      document.body.removeEventListener('mouseup', mouseUpListener);
     }
-  }, [ setRef, canvasRef, onTouchMove ]);
+  }, [ setRef, canvasRef, onTouchMove, mouseDownListener, mouseMoveListener, mouseUpListener ]);
 
   useEffect(() => {
     let totalHeight = 0;
@@ -83,9 +114,6 @@ const Canvas = (props:Props) => {
       className="position-fixed border-bottom border-tops border-secondary"
       style={{ width: '100%', height: `calc(100dvh - ${toolbarsHeight})` }}
       ref={canvasRef}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
       {...rest}
     />
   )

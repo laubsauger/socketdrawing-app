@@ -102,6 +102,7 @@ const Round = () => {
               {isPlayer
                 ?
                 <CtrlText
+                  id={'textPrompt'}
                   label={'Text Prompt'}
                   messageField={'textPrompt'}
                   textArea={true}

@@ -283,9 +283,10 @@ const Controller = () => {
                     <>
                       { socketStore.currentInstance.settings.controls.texts.map(text =>
                         <CtrlText
+                          id={text.id}
                           key={text.id}
                           label={text.options?.label || ''}
-                          messageField={text.id}
+                          messageField={'textPrompt'}
                           textArea={text.options.multiline}
                           hasSubmit={text.options.submit}
                         />
@@ -300,7 +301,7 @@ const Controller = () => {
                     { socketStore.currentInstance.settings.controls.xy.map(xyControl =>
                       <CtrlXY
                         key={xyControl.id}
-                        channelNames={{ x: `x_${xyControl.id}`, y: `y_${xyControl.id}` }}
+                        channelNames={{ x: `x`, y: `y` }}
                         released={firedMouseUp}
                         feedback={xyControl.options.mode === 'paint'}
                       />

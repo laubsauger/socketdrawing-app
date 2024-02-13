@@ -28,6 +28,7 @@ const Lounge = () => {
           Who are you?
         </div>
         <CtrlText
+          id={'userName'}
           singleUse={true}
           label={'Name'}
           messageField='userName'

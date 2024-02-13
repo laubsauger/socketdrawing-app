@@ -5,6 +5,7 @@ import { useSocket } from "../../../hooks/useSocket";
 import { Button, Form, InputGroup } from "react-bootstrap";
 
 type Props = {
+  id: string
   label?: string,
   messageField: string,
   textArea?: boolean,
@@ -33,6 +34,7 @@ const CtrlText = (props: Props) => {
   const sendText = (text: string) => {
     socket.emit('OSC_CTRL_MESSAGE', {
       message: messageField,
+      id: props.id,
       text: text.trim(),
     });
   }

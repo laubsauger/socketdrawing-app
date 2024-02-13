@@ -22,7 +22,7 @@ function resizeCanvasToDisplaySize(canvas:HTMLCanvasElement) {
 }
 
 const useCanvas = (draw:Function, options:{ context:any }) => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [ canvas, setCanvas ] = useState<HTMLCanvasElement|false>(false);
 
