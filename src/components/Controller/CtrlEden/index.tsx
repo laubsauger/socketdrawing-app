@@ -16,6 +16,7 @@ import Voting from './Phases/Voting';
 import Scores from './Phases/Scores';
 import SessionInfo from '../SessionInfo';
 import { useSocket } from '../../../hooks/useSocket';
+import { redirect, useNavigate, useSearchParams } from 'react-router-dom';
 
 type Props = {
   firedMouseUp: boolean
@@ -32,8 +33,10 @@ const vibrationSignal = (pattern: number|number[]) => {
 }
 
 const CtrlEden = (props: Props) => {
-  const { gameStore, socketStore } = useStores();
-  const socket = useSocket();
+  const [searchParams] = useSearchParams()
+
+  const { gameStore, socketStore } = useStores()
+  const socket = useSocket()
   const [showLounge, setShowLounge] = useState(true)
   const [showSplash, setShowSplash] = useState(false)
   const [showPlayers, setShowPlayers] = useState(false)
@@ -41,6 +44,20 @@ const CtrlEden = (props: Props) => {
   const [showRoundEnd, setShowRoundEnd] = useState(false)
   const [showVoting, setShowVoting] = useState(false)
   const [showScores, setShowScores] = useState(false)
+  const navigate = useNavigate();
+  useEffect(() => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    if (currentParams && currentParams['kill']) {
+      const shouldKill = currentParams['kill'] === 'true'
+      console.log({ shouldKill }); // get new values onchange
+      if (shouldKill) {
+        socket.emit('OSC_CTRL_MESSAGE', {
+          message: 'kill',
+        });
+        navigate("/session/5/0");
+      }
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     gameStore.setCurrentPhase('lounge')
