@@ -128,7 +128,7 @@ const Round = () => {
                               <div className="m-0">
                                 {gameStore.players?.map((player, index) => (
                                   <div key={`${player.id}_${index}`}>
-                                    <ListItemPlayer player={player}/>
+                                    <ListItemPlayer player={player} index={index}/>
                                   </div>
                                 ))}
                               </div>

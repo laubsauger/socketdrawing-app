@@ -40,7 +40,7 @@ const Players = ({ data }: { data: Phase2PlayerData}) => {
             </div>
             <div className="m-0 px-3 d-flex flex-column gap-2">
                 {gameStore.players?.map((player, index) => (
-                  <ListItemPlayer key={`${player.id}_${index}`} player={player}/>
+                  <ListItemPlayer key={`${player.id}_${index}`} player={player} index={index} />
                 ))}
             </div>
           </div>
