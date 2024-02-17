@@ -66,7 +66,7 @@ const ScoresImageGallery = ({
           </div>
         )
       }))}
-      showFullscreenButton={false}
+      showFullscreenButton={true}
       showPlayButton={false}
       autoPlay={false}
       slideDuration={undefined}
