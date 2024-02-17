@@ -136,7 +136,7 @@ const CtrlXY = (props:Props) => {
   const handleDragStart = useCallback((ev:any) => {
     if (!ref || ev.target !== ref.current) {
       console.log('no ref or ref current is not target, dont draw');
-      return;
+      return
     }
 
     emitMouseDownStateMessage(1);
@@ -199,12 +199,12 @@ const CtrlXY = (props:Props) => {
 
   return (
     <div className={`CtrlXY ${isPainting ? 'no-cursor' : ''}`}>
-      <div className="position-absolute w-100 d-flex flex-column align-items-end font-monospace bottom-0 " >
-        <div style={{ marginRight: '10px' }}>x (normalized): { pos.normalized_x.toFixed(2) }</div>
-        <div style={{ marginRight: '10px' }}>y (normalized): { pos.normalized_y.toFixed(2) }</div>
-        <div style={{ marginRight: '10px' }} className="d-flex"><div>x (screen):</div> <div style={{ width: '78px', textAlign: 'end' }}>{ pos.x }</div></div>
-        <div style={{ marginRight: '10px' }} className="d-flex"><div>y (screen):</div><div style={{ width: '78px', textAlign: 'end' }}>{pos.y}</div></div>
-      </div>
+      {/*<div className="position-absolute w-100 d-flex flex-column align-items-end font-monospace bottom-0 " >*/}
+      {/*  <div style={{ marginRight: '10px' }}>x (normalized): { pos.normalized_x.toFixed(2) }</div>*/}
+      {/*  <div style={{ marginRight: '10px' }}>y (normalized): { pos.normalized_y.toFixed(2) }</div>*/}
+      {/*  <div style={{ marginRight: '10px' }} className="d-flex"><div>x (screen):</div> <div style={{ width: '78px', textAlign: 'end' }}>{ pos.x }</div></div>*/}
+      {/*  <div style={{ marginRight: '10px' }} className="d-flex"><div>y (screen):</div><div style={{ width: '78px', textAlign: 'end' }}>{pos.y}</div></div>*/}
+      {/*</div>*/}
       <Canvas
         draw={draw}
         options={{ context: '2d' }}

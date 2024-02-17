@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
@@ -17,6 +17,7 @@ type Props = {
 };
 
 const CtrlText = (props: Props) => {
+  const ref = useRef<HTMLInputElement>(null)
   const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
@@ -56,6 +57,28 @@ const CtrlText = (props: Props) => {
     doSubmit()
   }, [socket, text]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // @ts-ignore
+      if (ref.current && !ref.current?.contains(event.target)) {
+        // if clicked outside of input, remove focus
+        (ref.current as HTMLInputElement).blur();
+      }
+    };
+
+    // attach the listeners on component mount
+    document.addEventListener("mousedown", handleClickOutside);
+    // @ts-ignore
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      // remove the listeners on component cleanup
+      document.removeEventListener("mousedown", handleClickOutside);
+      // @ts-ignore
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className={`CtrlText p-2 mt-0 mb-0`}   style={textArea ? {} : { height: '54px' }}>
       <Form onSubmit={handleSubmit}>
@@ -64,6 +87,7 @@ const CtrlText = (props: Props) => {
             ? (
               <div className="w-100">
                 <Form.Control
+                  ref={ref}
                   as="textarea"
                   rows={8}
                   placeholder={label}
@@ -81,6 +105,7 @@ const CtrlText = (props: Props) => {
                 {!sent || !hasSubmit
                   ? <InputGroup className="d-flex align-items-center">
                       <Form.Control
+                        ref={ref}
                         maxLength={20}
                         type="text"
                         value={text}
