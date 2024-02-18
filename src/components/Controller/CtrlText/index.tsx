@@ -17,7 +17,7 @@ type Props = {
 };
 
 const CtrlText = (props: Props) => {
-  const ref = useRef<HTMLInputElement>(null)
+  const ref = useRef<HTMLInputElement|null>(null)
   const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
@@ -87,6 +87,7 @@ const CtrlText = (props: Props) => {
             ? (
               <div className="w-100">
                 <Form.Control
+                  //@ts-ignore
                   ref={ref}
                   as="textarea"
                   rows={8}

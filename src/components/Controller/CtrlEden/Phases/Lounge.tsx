@@ -4,16 +4,11 @@ import { useStores } from '../../../../hooks/useStores';
 import { observer } from 'mobx-react-lite';
 import { Button } from 'react-bootstrap';
 import ConfirmStartModal from './ConfirmStartModal';
+import UserNameForm from '../UserNameForm';
 
 
 
 const Lounge = () => {
-  // const filler = new Array(64).fill(0)
-  // const dummyList = filler.map(item => {
-  //   return {name: 'longassnameasdasa', id: '1', client_index: 1}
-  // })
-  // console.log(filler, dummyList)
-  // console.log(dummyList)
   const { socketStore, gameStore } = useStores()
   return (
     <div>
@@ -22,22 +17,6 @@ const Lounge = () => {
         <div className="d-flex justify-content-end p-0">
           <ConfirmStartModal/>
         </div>
-      </div>
-      <div className="pt-2 px-2">
-        <div>
-          Who are you?
-        </div>
-        <CtrlText
-          id={'userName'}
-          singleUse={true}
-          label={'Name'}
-          messageField='userName'
-          hasSubmit={true}
-          onSubmitSuccess={(name: string|null) => {
-            gameStore.setUserName(name)
-            // setShowWelcome(true)
-          }}
-        />
       </div>
       <hr className="m-2 mt-0"/>
       <div>

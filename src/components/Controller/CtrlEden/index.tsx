@@ -17,6 +17,7 @@ import Scores from './Phases/Scores';
 import SessionInfo from '../SessionInfo';
 import { useSocket } from '../../../hooks/useSocket';
 import { redirect, useNavigate, useSearchParams } from 'react-router-dom';
+import UserNameForm from './UserNameForm';
 
 type Props = {
   firedMouseUp: boolean
@@ -142,7 +143,16 @@ const CtrlEden = (props: Props) => {
 
   return (
     <div className="d-flex flex-column overflow-hidden" style={{ height: '100%'}}>
-      {/*<SessionInfo />*/}
+      { !gameStore.userName
+        ? (
+          <div className="position-absolute bg-opacity-50 bg-black d-flex flex-column align-items-center justify-content-center z-index-above" style={{ inset: 0 }}>
+            <h3>Wanna get prompin'?</h3>
+            <UserNameForm />
+          </div>
+        )
+        : null
+      }
+
       { showLounge
         ? <Lounge />
         : null
