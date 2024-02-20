@@ -34,7 +34,6 @@ const Round = () => {
       return
     }
     setFirstRender(false)
-
     setRoundTimer(timer)
     const decreaseTimerInterval = setInterval(() => {
       setRoundTimer(prevTimer => prevTimer && prevTimer > 0 ? prevTimer - 0.25 : 0);
@@ -107,7 +106,7 @@ const Round = () => {
                   messageField={'textPrompt'}
                   textArea={true}
                   hasSubmit={true}
-                  shouldSubmit={roundTimer === 0}
+                  shouldSubmit={typeof roundTimer !== 'undefined' && roundTimer <= 0}
                 />
                 :
                 <>
