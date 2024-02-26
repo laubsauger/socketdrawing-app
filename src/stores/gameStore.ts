@@ -1,9 +1,9 @@
-import { action, observable, makeAutoObservable } from 'mobx';
+import { action, observable, makeAutoObservable, runInAction } from 'mobx';
 import { RootStore } from './rootStore';
 import { Player } from './socketStore';
 import { Result } from '../components/Controller/CtrlEden/Phases/Voting';
 
-export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'
+export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'|'points'
 
 export interface IGameStore {
   id: string;
@@ -51,7 +51,7 @@ export type Phase5VotingData = {
   results: Result[]
 }
 
-export type Phase6ScoreData = {
+export type Phase6ResultData = {
   scores: [
     {
       player_index: number,
@@ -61,7 +61,18 @@ export type Phase6ScoreData = {
   ]
 }
 
-export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData | Phase4RoundData | Phase5VotingData | Phase6ScoreData
+export type Phase7PointsData = {
+  points: [
+    {
+      player_index: number,
+      points: number,
+      pointsPrev: number,
+      pointsDiff: number,
+    }
+  ]
+}
+
+export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData | Phase4RoundData | Phase5VotingData | Phase6ResultData | Phase7PointsData
 
 export class GameStore implements IGameStore {
   private rootStore: RootStore;
@@ -77,7 +88,8 @@ export class GameStore implements IGameStore {
   @observable audience: Player[] = [];
   @observable roundData: Phase3RoundData|null = null;
   @observable votingData: Phase5VotingData|null = null;
-  @observable scoreData: Phase6ScoreData|null = null;
+  @observable resultData: Phase6ResultData|null = null;
+  @observable pointsData: Phase7PointsData|null = null;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -101,7 +113,7 @@ export class GameStore implements IGameStore {
       this.setAudience([])
       this.setRoundData(null)
       this.setVotingData(null)
-      this.setScoreData(null)
+      this.setResultData(null)
       return
     }
 
@@ -114,7 +126,7 @@ export class GameStore implements IGameStore {
 
     if (this.currentPhase === 'round_start') {
       this.setVotingData(null)
-      this.setScoreData(null)
+      this.setResultData(null)
       this.setRoundData(data.gameState.data as Phase3RoundData)
       return
     }
@@ -125,7 +137,12 @@ export class GameStore implements IGameStore {
     }
 
     if (this.currentPhase === 'results') {
-      this.setScoreData(data.gameState.data as Phase6ScoreData)
+      this.setResultData(data.gameState.data as Phase6ResultData)
+      return
+    }
+
+    if (this.currentPhase === 'points') {
+      this.setPointsData(data.gameState.data as Phase7PointsData)
       return
     }
   }
@@ -158,8 +175,8 @@ export class GameStore implements IGameStore {
     this.votingData = votingData || null
   }
 
-  @action setScoreData = (scoreData: Phase6ScoreData|null) : void => {
-    this.scoreData = scoreData || null
+  @action setResultData = (resultData: Phase6ResultData|null) : void => {
+    this.resultData = resultData || null
   }
 
   @action setPhases = (phases: Phase[]): void => {
@@ -172,5 +189,18 @@ export class GameStore implements IGameStore {
 
   @action setUserName = (name: string|null): void => {
     this.userName = name;
+  }
+
+  @action setPointsData = (data: Phase7PointsData|null) : void => {
+    this.pointsData = data || null
+
+    runInAction(() => {
+      this.setPlayers(this.players.map((player) => {
+        return {
+          ...player,
+          points: data?.points.filter((points) => points.player_index === player.client_index)[0]?.points || 0
+        }
+      }))
+    })
   }
 }

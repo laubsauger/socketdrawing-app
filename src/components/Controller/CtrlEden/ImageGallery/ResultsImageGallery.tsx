@@ -5,7 +5,7 @@ import './styles.scss'
 import { Result } from '../Phases/Voting';
 import { observer } from 'mobx-react-lite';
 
-const ScoresImageGallery = ({
+const ResultsImageGallery = ({
   results,
   onSlideChanged
 }: {
@@ -79,4 +79,4 @@ const ScoresImageGallery = ({
   );
 };
 
-export default observer(ScoresImageGallery);
+export default observer(ResultsImageGallery);

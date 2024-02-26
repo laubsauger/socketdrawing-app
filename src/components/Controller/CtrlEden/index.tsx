@@ -7,17 +7,18 @@ import Players from './Phases/Players';
 import {
   Phase1SplashData,
   Phase2PlayerData,
-  Phase3RoundData,
-  Phase4RoundData,
+  // Phase3RoundData,
+  // Phase4RoundData,
 } from '../../../stores/gameStore';
 import Round from './Phases/Round';
 import RoundEnd from './Phases/RoundEnd';
 import Voting from './Phases/Voting';
-import Scores from './Phases/Scores';
-import SessionInfo from '../SessionInfo';
+import Results from './Phases/Results';
+// import SessionInfo from '../SessionInfo';
 import { useSocket } from '../../../hooks/useSocket';
-import { redirect, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import UserNameForm from './UserNameForm';
+import Points from './Phases/Points';
 
 type Props = {
   firedMouseUp: boolean
@@ -44,7 +45,8 @@ const CtrlEden = (props: Props) => {
   const [showRoundStart, setShowRoundStart] = useState(false)
   const [showRoundEnd, setShowRoundEnd] = useState(false)
   const [showVoting, setShowVoting] = useState(false)
-  const [showScores, setShowScores] = useState(false)
+  const [showResults, setShowResults] = useState(false)
+  const [showPoints, setShowPoints] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
     const currentParams = Object.fromEntries([...searchParams]);
@@ -78,7 +80,8 @@ const CtrlEden = (props: Props) => {
       setShowRoundStart(false)
       setShowRoundEnd(false)
       setShowVoting(false)
-      setShowScores(false)
+      setShowResults(false)
+      setShowPoints(false)
       return
     }
     setShowLounge(false)
@@ -89,7 +92,8 @@ const CtrlEden = (props: Props) => {
       setShowRoundStart(false)
       setShowRoundEnd(false)
       setShowVoting(false)
-      setShowScores(false)
+      setShowResults(false)
+      setShowPoints(false)
       vibrationSignal(200);
       return
     }
@@ -100,7 +104,8 @@ const CtrlEden = (props: Props) => {
       setShowRoundStart(false)
       setShowRoundEnd(false)
       setShowVoting(false)
-      setShowScores(false)
+      setShowResults(false)
+      setShowPoints(false)
       vibrationSignal(200);
       return
     }
@@ -110,8 +115,9 @@ const CtrlEden = (props: Props) => {
       setShowRoundStart(true);
       setShowRoundEnd(false)
       setShowVoting(false)
-      setShowScores(false)
-      vibrationSignal(200);
+      setShowResults(false)
+      setShowPoints(false)
+      vibrationSignal([200, 50, 200, 50]);
       return
     }
     setShowRoundStart(false);
@@ -119,7 +125,8 @@ const CtrlEden = (props: Props) => {
     if (gameStore.currentPhase === 'round_end') {
       setShowRoundEnd(true);
       setShowVoting(false)
-      setShowScores(false)
+      setShowResults(false)
+      setShowPoints(false)
       vibrationSignal(200);
       return
     }
@@ -127,18 +134,26 @@ const CtrlEden = (props: Props) => {
 
     if (gameStore.currentPhase === 'voting') {
       setShowVoting(true)
-      setShowScores(false)
+      setShowResults(false)
+      setShowPoints(false)
       vibrationSignal(200)
       return
     }
     setShowVoting(false)
 
     if (gameStore.currentPhase === 'results') {
-      setShowScores(true)
+      setShowResults(true)
+      setShowPoints(false)
       vibrationSignal(200)
       return
     }
-    setShowScores(false)
+    setShowResults(false)
+
+    if (gameStore.currentPhase === 'points') {
+      setShowPoints(true)
+      vibrationSignal(200)
+    }
+    setShowPoints(false)
   }, [gameStore.currentPhase])
 
   return (
@@ -177,8 +192,12 @@ const CtrlEden = (props: Props) => {
         ? <Voting firedMouseUp={props.firedMouseUp}/>
         : null
       }
-      { showScores && gameStore.currentData
-        ? <Scores />
+      { showResults && gameStore.currentData
+        ? <Results />
+        : null
+      }
+      { showPoints && gameStore.currentData
+        ? <Points />
         : null
       }
     </div>

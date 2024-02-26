@@ -4,10 +4,10 @@ import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
 import { Player } from '../../../../stores/socketStore';
 import { Result } from './Voting';
-import ScoresImageGallery from '../ImageGallery/ScoresImageGallery';
+import ResultsImageGallery from '../ImageGallery/ResultsImageGallery';
 import ListItemPlayer from '../ListItemPlayer';
 
-const Scores = () => {
+const Results = () => {
   const { gameStore, socketStore } = useStores()
   const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
   const [resultInView, setResultInView] = useState<Result | null>(null)
@@ -16,14 +16,10 @@ const Scores = () => {
       const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
       console.log(currentPlayer)
       if (currentPlayer) {
-        setOwnResult(gameStore.scoreData?.scores.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
+        setOwnResult(gameStore.resultData?.scores.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
       }
     }
-  }, [gameStore.scoreData, gameStore.players, socketStore.connectionState.clientId]);
-
-  const getPlayer = (player_index: number): Player => {
-    return gameStore.players.filter(player => player.client_index === player_index)[0]
-  }
+  }, [gameStore.resultData, gameStore.players, socketStore.connectionState.clientId]);
 
   return (
     <div
@@ -55,10 +51,10 @@ const Scores = () => {
           transition={{ delay: 1, duration: 0.5, ease: 'backOut' }}
           className="d-flex flex-column flex-grow-1"
         >
-          <ScoresImageGallery
+          <ResultsImageGallery
             onSlideChanged={setResultInView}
             results={
-              gameStore.scoreData?.scores
+              gameStore.resultData?.scores
             }
             // initialResultInView={undefined}
           />
@@ -74,4 +70,4 @@ const Scores = () => {
   )
 }
 
-export default observer(Scores)
+export default observer(Results)
