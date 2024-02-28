@@ -25,7 +25,7 @@ const ResultsImageGallery = ({
 
   useEffect(() => {
     onSlideChanged(sortedResults ? sortedResults[0] : 0)
-  }, [sortedResults]);
+  }, [sortedResults, onSlideChanged]);
 
   if (!sortedResults) {
     return <div>No images</div>

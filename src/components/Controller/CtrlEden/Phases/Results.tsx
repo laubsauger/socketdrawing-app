@@ -9,17 +9,22 @@ import ListItemPlayer from '../ListItemPlayer';
 
 const Results = () => {
   const { gameStore, socketStore } = useStores()
-  const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
+  // const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
   const [resultInView, setResultInView] = useState<Result | null>(null)
+  const [playerInView, setPlayerInView] = useState<Player | undefined>(undefined)
+  // useEffect(() => {
+  //   if (gameStore.players && socketStore.connectionState.clientId) {
+  //     const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
+  //     console.log(currentPlayer)
+  //     // if (currentPlayer) {
+  //     //   setOwnResult(gameStore.resultData?.scores.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
+  //     // }
+  //   }
+  // }, [gameStore.resultData, gameStore.players, socketStore.connectionState.clientId]);
+
   useEffect(() => {
-    if (gameStore.players && socketStore.connectionState.clientId) {
-      const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
-      console.log(currentPlayer)
-      if (currentPlayer) {
-        setOwnResult(gameStore.resultData?.scores.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
-      }
-    }
-  }, [gameStore.resultData, gameStore.players, socketStore.connectionState.clientId]);
+    setPlayerInView(gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0])
+  }, [resultInView]);
 
   return (
     <div
@@ -59,7 +64,7 @@ const Results = () => {
             // initialResultInView={undefined}
           />
           <div className="px-2 mt-2">
-            <ListItemPlayer player={gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0]} index={1}/>
+            <ListItemPlayer player={playerInView} index={1}/>
             <div className="text-light mt-1">
               {resultInView?.prompt}
             </div>

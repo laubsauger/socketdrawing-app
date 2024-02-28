@@ -4,7 +4,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { motion } from 'framer-motion';
 
-const ListItemPlayer = ({player, index}:{player: Player, index: number}) => {
+const ListItemPlayer = ({player, index}:{player?: Player, index: number}) => {
   const { socketStore } = useStores()
 
   if (!player || !player.id) {
