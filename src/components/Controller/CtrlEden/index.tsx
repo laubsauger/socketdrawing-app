@@ -161,7 +161,7 @@ const CtrlEden = (props: Props) => {
       { !gameStore.userName
         ? (
           <div className="position-absolute bg-opacity-50 bg-black d-flex flex-column align-items-center justify-content-center" style={{ inset: 0, zIndex: 5000}}>
-            <h3>Wanna get prompin'?</h3>
+            <h3>Who's prompin'?</h3>
             <UserNameForm />
           </div>
         )

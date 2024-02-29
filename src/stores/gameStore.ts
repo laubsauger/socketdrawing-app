@@ -5,6 +5,12 @@ import { Result } from '../components/Controller/CtrlEden/Phases/Voting';
 
 export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'|'points'
 
+export type PromptItem = {
+  id: number,
+  prompt: string,
+  hint?: string
+}
+
 export interface IGameStore {
   id: string;
   name?: string;
@@ -38,9 +44,10 @@ export type Phase2PlayerData = {
 export type Phase3RoundData = {
   pre_delay?: number
   timer: number
-  prompt: string
-  hint?: string
-}
+  audience: {
+    prompt_selection: PromptItem[]
+  }
+} & PromptItem
 
 export type Phase4RoundData = {
 
@@ -114,6 +121,7 @@ export class GameStore implements IGameStore {
       this.setRoundData(null)
       this.setVotingData(null)
       this.setResultData(null)
+      this.setPointsData(null)
       return
     }
 
