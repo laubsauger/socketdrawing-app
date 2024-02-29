@@ -24,8 +24,8 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
           transition={{ delay: 2, ease: 'backOut',  duration: 0.5 }}
         >
           <div
-            className="fw-bold fs-2 text-white p-4 rounded-4 bg-black"
-            style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
+            className="fw-bold fs-2 text-white p-4 rounded-4"
+            style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)', backgroundColor: 'rgba(0,0,0,0.85)' }}
           >
             {data.title}
           </div>
@@ -37,8 +37,8 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
             transition={{ delay: 2.5, ease: 'backOut', duration: 0.5 }}
           >
             <div
-              className="fs-3 text-primary px-3 py-3 rounded-4 bg-black mb-3"
-              style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
+              className="fs-3 text-primary px-3 py-3 rounded-4 mb-3"
+              style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)', backgroundColor: 'rgba(0,0,0,0.85)' }}
             >
               <div className="fs-6 text-light font-monospace">
                 {data.description}
@@ -62,8 +62,8 @@ const Splash = ({data}: { data: Phase1SplashData}) => {
               transition={{ delay: 3, ease: 'backOut', duration: 0.5 }}
             >
               <div
-                className="d-flex flex-column justify-content-center align-items-center position-relative overflow-hidden rounded-4 bg-black p-1 mb-3"
-                style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)' }}
+                className="d-flex flex-column justify-content-center align-items-center position-relative overflow-hidden rounded-4 p-1 mb-3"
+                style={{ boxShadow: '0 0.75rem 2rem rgb(0 0 0)', backgroundColor: 'rgba(0,0,0,0.85)' }}
               >
                 <div className="mb-2" style={{ color: '#0a73d5' }}>Awaiting player selection</div>
                 <div className="dot-floating mb-2"></div>
