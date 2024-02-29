@@ -113,41 +113,43 @@ const Round = () => {
                 :
                 <>
                   {animationCompleted
-                    ? <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ ease: 'backOut', duration: 0.5 }}>
-                      <div className="px-2">
-                        <div className="text-center">
-                          <div className="mb-3 fw-bold text-info fs-4">You're in the audience!</div>
-                          <div className="fs-6 text-light">Waiting for players to submit their prompts...</div>
-                        </div>
-
-                        <hr className="mt-3"/>
-                        <div className="px-4">
-                          <div className="fs-5 text-light">Vote for the next prompt:
+                    ? (
+                      // <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ ease: 'backOut', duration: 0.5 }}>
+                        <div className="px-2">
+                          <div className="text-center">
+                            <div className="mb-3 fw-bold text-info fs-4">You're in the audience!</div>
+                            <div className="fs-6 text-light">Waiting for players to submit their prompts...</div>
                           </div>
-                          {gameStore.roundData?.audience.prompt_selection
-                            ? <PromptVote items={gameStore.roundData?.audience.prompt_selection}/>
+
+                          <hr className="mt-3"/>
+                          <div className="px-4">
+                            <div className="fs-5 text-light">Vote for the next prompt:
+                            </div>
+                            {gameStore.roundData?.audience.prompt_selection
+                              ? <PromptVote items={gameStore.roundData?.audience.prompt_selection}/>
+                              : null
+                            }
+                          </div>
+
+                          <hr className="mt-3"/>
+                          {gameStore.players ?
+                            <div>
+                              <div className="mb-2 d-flex justify-content-between">
+                                <span className="text-dark-emphasis">Players</span>
+                              </div>
+                              <div className="m-0">
+                                {gameStore.players?.map((player, index) => (
+                                  <div key={`${player.id}_${index}`}>
+                                    <ListItemPlayer player={player} index={index}/>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
                             : null
                           }
                         </div>
-
-                        <hr className="mt-3"/>
-                        {gameStore.players ?
-                          <div>
-                            <div className="mb-2 d-flex justify-content-between">
-                              <span className="text-dark-emphasis">Players</span>
-                            </div>
-                            <div className="m-0">
-                              {gameStore.players?.map((player, index) => (
-                                <div key={`${player.id}_${index}`}>
-                                  <ListItemPlayer player={player} index={index}/>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          : null
-                        }
-                      </div>
-                    </motion.div>
+                      // </motion.div>
+                    )
                     : null
                   }
                 </>
