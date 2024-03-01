@@ -67,7 +67,7 @@ const ResultsImageGallery = ({
           </div>
         )
       }))}
-      showFullscreenButton={true}
+      showFullscreenButton={false}
       showPlayButton={false}
       autoPlay={false}
       slideDuration={undefined}

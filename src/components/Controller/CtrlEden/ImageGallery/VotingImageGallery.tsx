@@ -49,12 +49,12 @@ const VotingImageGallery = ({
             'Voted!'
           ) : '',
       }))}
-      showFullscreenButton={true}
+      showFullscreenButton={false}
       showPlayButton={false}
       autoPlay={false}
       slideDuration={undefined}
       showBullets={true}
-      showNav={false}
+      showNav={true}
       onBeforeSlide={(currentIndex) => {
         onSlideChanged && onSlideChanged(votableResults[currentIndex])
       }}
