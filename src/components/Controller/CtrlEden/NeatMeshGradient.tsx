@@ -60,7 +60,7 @@ const NeatMeshGradient = () => {
 
   useEffect(() => {
     if (neatInstance) {
-      neatInstance.speed = 120
+      neatInstance.speed = 3
     }
 
     return () => {
