@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 const ListItemPlayer = ({player, index}:{player?: Player, index: number}) => {
   const { socketStore } = useStores()
-
+  console.log({player})
   if (!player || !player.id) {
     return (
       <div className="text-light">unknown</div>

@@ -12,15 +12,15 @@ const Results = () => {
   // const [ ownResult, setOwnResult ] = useState<{player_index:number, image: string}|null>(null)
   const [resultInView, setResultInView] = useState<Result | null>(null)
   const [playerInView, setPlayerInView] = useState<Player | undefined>(undefined)
-  // useEffect(() => {
-  //   if (gameStore.players && socketStore.connectionState.clientId) {
-  //     const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
-  //     console.log(currentPlayer)
-  //     // if (currentPlayer) {
-  //     //   setOwnResult(gameStore.resultData?.scores.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
-  //     // }
-  //   }
-  // }, [gameStore.resultData, gameStore.players, socketStore.connectionState.clientId]);
+  useEffect(() => {
+    if (gameStore.players && socketStore.connectionState.clientId) {
+      const currentPlayer = gameStore.players.filter(player => player.id === socketStore.connectionState.clientId)[0]
+      console.log(currentPlayer)
+      // if (currentPlayer) {
+      //   setOwnResult(gameStore.resultData?.scores.filter(result => result.player_index === currentPlayer.client_index)[0] || null)
+      // }
+    }
+  }, [gameStore.resultData, gameStore.players, socketStore.connectionState.clientId]);
 
   useEffect(() => {
     setPlayerInView(gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0])

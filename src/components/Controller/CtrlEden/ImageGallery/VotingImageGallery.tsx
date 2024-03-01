@@ -4,6 +4,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import './styles.scss'
 import { Result } from '../Phases/Voting';
 import { observer } from 'mobx-react-lite';
+import ImageZoom from '../ImageZoom';
 
 const VotingImageGallery = ({
   votableResults,
@@ -34,7 +35,7 @@ const VotingImageGallery = ({
             <div className="position-absolute gallery-bg-img-wrap">
               <img src={image.image} alt="" className="gallery-bg-img"/>
             </div>
-            <img src={image.image} alt="gallery-img" className="position-relative shadow-sm gallery-img z-index-above"/>
+            <ImageZoom src={image.image} alt="gallery-img" className="position-relative shadow-sm gallery-img z-index-above" />
           </div>
         ),
         thumbnailClass: votedResult && votedResult.player_index === image.player_index ? (

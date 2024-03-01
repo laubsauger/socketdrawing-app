@@ -8,7 +8,7 @@ const SessionInfo = () => {
   const { socketStore } = useStores();
 
   return (
-    <Container className="SessionInfo pointer-events-none position-fixed bg-black d-flex justify-content-center">
+    <Container className="SessionInfo pointer-events-none position-fixed d-flex justify-content-center"  style={{ bottom: '0px', backgroundColor: 'rgba(0,0,0,1)' }}>
       <div className="text-muted font-monospace opacity-50 d-flex gap-2" style={{ fontSize: '10px' }}>
         { socketStore.connectionState.connecting && <div>Connecting to {config.socketServer}...</div> }
         {/*{ socketStore.connectionState.connected && <div className="text-success">Connected</div> }*/}

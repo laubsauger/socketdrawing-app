@@ -14,11 +14,12 @@ import Round from './Phases/Round';
 import RoundEnd from './Phases/RoundEnd';
 import Voting from './Phases/Voting';
 import Results from './Phases/Results';
-// import SessionInfo from '../SessionInfo';
+import SessionInfo from '../SessionInfo';
 import { useSocket } from '../../../hooks/useSocket';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import UserNameForm from './UserNameForm';
 import Points from './Phases/Points';
+import NeatMeshGradient from './NeatMeshGradient';
 
 type Props = {
   firedMouseUp: boolean
@@ -156,20 +157,28 @@ const CtrlEden = (props: Props) => {
     setShowPoints(false)
   }, [gameStore.currentPhase])
 
+  useEffect(() => {
+
+  }, []);
+
   return (
     <div className="d-flex flex-column overflow-hidden" style={{ height: '100%'}}>
       { !gameStore.userName
         ? (
-          <div className="position-absolute bg-opacity-50 bg-black d-flex flex-column align-items-center justify-content-center" style={{ inset: 0, zIndex: 5000}}>
-            <h3>Who's prompin'?</h3>
-            <UserNameForm />
+          <div className="position-absolute z-index-above h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+            <NeatMeshGradient />
+            <div className="position-absolute z-index-above bg-black text-center rounded-4 p-4" >
+              <h1>Welcome</h1>
+              <h3>Mars Be Prompin'</h3>
+              <UserNameForm/>
+            </div>
           </div>
         )
         : null
       }
 
-      { showLounge
-        ? <Lounge />
+      {showLounge
+        ? <Lounge/>
         : null
       }
       { showSplash && gameStore.currentData

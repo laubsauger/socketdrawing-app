@@ -4,6 +4,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import './styles.scss'
 import { Result } from '../Phases/Voting';
 import { observer } from 'mobx-react-lite';
+import ImageZoom from '../ImageZoom';
 
 const ResultsImageGallery = ({
   results,
@@ -49,7 +50,7 @@ const ResultsImageGallery = ({
             <div className="position-absolute gallery-bg-img-wrap">
               <img src={image.image} alt="" className="gallery-bg-img"/>
             </div>
-            <img src={image.image} alt="gallery-img" className="position-relative shadow-sm gallery-img z-index-above"/>
+            <ImageZoom src={image.image} alt="gallery-img" className="position-relative shadow-sm gallery-img z-index-above" />
           </div>
         ),
         renderThumbInner: () => (
