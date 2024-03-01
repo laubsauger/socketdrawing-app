@@ -63,7 +63,7 @@ const Results = () => {
             }
             // initialResultInView={undefined}
           />
-          <div className="px-2 mt-2">
+          <div className="px-2 mt-2 d-flex flex-column align-items-center">
             <ListItemPlayer player={playerInView} index={1}/>
             <div className="text-light mt-1">
               {resultInView?.prompt}
