@@ -317,7 +317,7 @@ const Controller = () => {
               </div>
               {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons.length > 0
                 ? <div
-                    className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom"
+                    className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top"
                     style={{ zIndex: 10, borderTop: '1px solid black' }}
                   >
                   { socketStore.currentInstance.settings.controls.buttons.map((btn) =>

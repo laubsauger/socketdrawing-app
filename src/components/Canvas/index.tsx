@@ -23,12 +23,12 @@ const Canvas = (props:Props) => {
   const [ toolbarsHeight, setToolbarsHeight ] = useState<string>('0px');
 
   const touchStartListener = useCallback((e:any) => {
-    if (e.target === canvasRef.current) {
+    // if (e.target === canvasRef.current) {
       e.preventDefault();
       if (onTouchStart) {
         onTouchStart(e);
       }
-    }
+    // }
   }, [onTouchStart]);
 
   const touchMoveListener = useCallback((e:any) => {
@@ -81,9 +81,9 @@ const Canvas = (props:Props) => {
         document.body.addEventListener('touchstart', touchStartListener, { passive: false })
         document.body.addEventListener('touchmove', touchMoveListener, { passive: false })
         document.body.addEventListener('touchend', touchEndListener, { passive: false })
-        document.body.addEventListener('mousedown', mouseDownListener);
-        document.body.addEventListener('mousemove', mouseMoveListener);
-        document.body.addEventListener('mouseup', mouseUpListener);
+        document.body.addEventListener('mousedown', mouseDownListener, { passive: false });
+        document.body.addEventListener('mousemove', mouseMoveListener, { passive: false });
+        document.body.addEventListener('mouseup', mouseUpListener, { passive: false });
       }
     }
     return () => {
