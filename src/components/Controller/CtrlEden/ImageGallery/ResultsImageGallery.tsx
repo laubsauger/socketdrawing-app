@@ -72,7 +72,7 @@ const ResultsImageGallery = ({
       autoPlay={false}
       slideDuration={undefined}
       showBullets={true}
-      showNav={false}
+      showNav={true}
       onBeforeSlide={(currentIndex) => {
         onSlideChanged && onSlideChanged(sortedResults[currentIndex])
       }}

@@ -23,7 +23,7 @@ const Results = () => {
   }, [gameStore.resultData, gameStore.players, socketStore.connectionState.clientId]);
 
   useEffect(() => {
-    setPlayerInView(gameStore.players.filter(item => item.client_index === resultInView?.player_index)[0])
+    setPlayerInView(gameStore.players.filter(item => Number(item.client_index) === Number(resultInView?.player_index))[0])
   }, [resultInView]);
 
   return (
