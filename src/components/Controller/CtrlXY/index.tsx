@@ -198,8 +198,8 @@ const CtrlXY = (props:Props) => {
   }, [ released, emitMouseDownStateMessage ]);
 
   return (
-    <div className={`CtrlXY ${isPainting ? 'no-cursor' : ''}`}>
-      {/*<div className="position-absolute w-100 d-flex flex-column align-items-end font-monospace bottom-0 " >*/}
+    <div className={`CtrlXY d-flex mt-2 ${isPainting ? 'no-cursor' : ''}`} style={{ flex: 1 }}>
+      {/*<div className="position-absolute w-100 d-flex flex-column align-items-end font-monospace top-0 " >*/}
       {/*  <div style={{ marginRight: '10px' }}>x (normalized): { pos.normalized_x.toFixed(2) }</div>*/}
       {/*  <div style={{ marginRight: '10px' }}>y (normalized): { pos.normalized_y.toFixed(2) }</div>*/}
       {/*  <div style={{ marginRight: '10px' }} className="d-flex"><div>x (screen):</div> <div style={{ width: '78px', textAlign: 'end' }}>{ pos.x }</div></div>*/}

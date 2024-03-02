@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { PromptItem } from '../../../stores/gameStore';
 import { useSocket } from '../../../hooks/useSocket';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row } from 'react-bootstrap';
 
 const PromptVote = ({ items }: { items: PromptItem[] }) => {
   const socket = useSocket();
@@ -10,7 +10,7 @@ const PromptVote = ({ items }: { items: PromptItem[] }) => {
     console.log('handleVote', id)
     socket.emit('OSC_CTRL_MESSAGE', {
       message: 'action',
-      type: 'prompt_vote',
+      type: 'promptvote',
       value: id
     });
   }, [])

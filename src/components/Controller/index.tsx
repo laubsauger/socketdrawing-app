@@ -255,7 +255,7 @@ const Controller = () => {
         <React.Fragment>
           { socketStore.currentInstance &&
             <>
-              <div className="w-100 h-100">
+              <div className="w-100 h-100 d-flex flex-column">
                 {/*{(socketStore.currentInstance.settings.controls.sensors ) ?*/}
                 {/*  <Sensors*/}
                 {/*    gyroscope={socketStore.currentInstance.settings.controls.gyroscope || false}*/}
@@ -314,33 +314,33 @@ const Controller = () => {
                   ? <CtrlEden firedMouseUp={firedMouseUp}/>
                   : null
                 }
-              </div>
-              {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons.length > 0
-                ? <div
+                {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons.length > 0
+                  ? <div
                     className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top"
                     style={{ zIndex: 10, borderTop: '1px solid black' }}
                   >
-                  { socketStore.currentInstance.settings.controls.buttons.map((btn) =>
-                    <CtrlButton
-                      key={btn.id}
-                      type='button'
-                      channelName={btn.id}
-                      label={btn.options?.label}
-                      variant={btn.options?.variant}
-                      released={firedMouseUp || undefined}
-                    />
-                  )}
+                    { socketStore.currentInstance.settings.controls.buttons.map((btn) =>
+                      <CtrlButton
+                        key={btn.id}
+                        type='button'
+                        channelName={btn.id}
+                        label={btn.options?.label}
+                        variant={btn.options?.variant}
+                        released={firedMouseUp || undefined}
+                      />
+                    )}
                   </div>
-                : null
-              }
+                  : null
+                }
+              </div>
             </>
           }
         </React.Fragment>
       }
 
-      <div className="position-absolute mt-auto z-index-above">
-        <SessionInfo />
-      </div>
+      {/*<div className="position-absolute mt-auto z-index-above">*/}
+      {/*  <SessionInfo />*/}
+      {/*</div>*/}
     </div>
   )
 };

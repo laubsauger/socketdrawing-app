@@ -101,7 +101,7 @@ const Join: React.FC = (props) => {
                   </Col>
                   <Col lg={3} xs={6}>
                     <h6 className="text-muted">Controls</h6>
-                    <div className="small">
+                    <div className="small overflow-x-hidden">
                       { Object.entries(instance.settings.controls).filter(([key, val]) => !!val).map(([key, val]) =>
                         <div key={ key }>
                           <div>

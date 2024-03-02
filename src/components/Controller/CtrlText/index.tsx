@@ -80,7 +80,7 @@ const CtrlText = (props: Props) => {
   }, []);
 
   return (
-    <div className={`CtrlText p-2 mt-0 mb-0`}   style={textArea ? {} : { height: '54px' }}>
+    <div className={`CtrlText p-2 pb-0 mt-0 mb-0`}>
       <Form onSubmit={handleSubmit}>
         <Form.Group className={`d-flex ${textArea ? 'flex-column' : ''}`} controlId="formTextPrompt">
           {textArea

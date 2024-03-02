@@ -167,9 +167,8 @@ const CtrlEden = (props: Props) => {
         ? (
           <div className="position-absolute z-index-above h-100 w-100 d-flex flex-column justify-content-center align-items-center" style={{zIndex: 5000}}>
             <NeatMeshGradient />
-            <div className="position-absolute z-index-above bg-black text-center rounded-4 p-4" >
-              <h1>Welcome</h1>
-              <h3>wMars Be Prompin'</h3>
+            <div className="position-absolute z-index-above bg-black text-center rounded-4 p-4">
+              <h4>Welcome, Martian!</h4>
               <UserNameForm/>
             </div>
           </div>

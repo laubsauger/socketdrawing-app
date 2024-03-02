@@ -8,7 +8,7 @@ const UserNameForm = () => {
   return (
     <div className="pt-2 px-2 mt-4">
       <div className="text-center">
-        Who's prompin'?
+        Who's prompin' today?
       </div>
       <CtrlText
         id={'userName'}
