@@ -23,7 +23,6 @@ export type PlayerColor = 'black'|'red'|'green'|'blue'|'yellow';
 export const buttonColors: PlayerColor[] = [ 'red', 'green', 'blue', 'yellow' ]
 
 const Controller = () => {
-  const navigate = useNavigate();
   const { isSupported, released, request, release } = useWakeLock({
     // onRequest: () => alert('Screen Wake Lock: requested!'),
     // onError: () => alert('An error happened 💥'),
@@ -121,8 +120,6 @@ const Controller = () => {
       failed: false,
       failReason: '',
     });
-
-    // sendJoinRequest();
   }, [ socketStore, sendJoinRequest ]);
 
   const handleDisconnected = useCallback((data:any) => {
@@ -179,7 +176,6 @@ const Controller = () => {
 
   const handleUserUpdate = useCallback((data:any) => {
     console.log('socket::USER_UPDATE', data);
-
     console.log(socketStore.roomState.users)
     socketStore.updateRoomState({
       users: socketStore.roomState.users?.map((user: Player) => {

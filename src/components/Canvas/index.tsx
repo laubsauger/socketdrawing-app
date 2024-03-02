@@ -16,19 +16,18 @@ type Props = {
 }
 
 const Canvas = (props:Props) => {
-  const { socketStore } = useStores();
   const { draw, options, setRef, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd, ...rest } = props;
   const { context } = options;
   const canvasRef = useCanvas(draw, { context });
-  const [ toolbarsHeight, setToolbarsHeight ] = useState<string>('0px');
+  const [key, setKey] = useState(0);
 
   const touchStartListener = useCallback((e:any) => {
-    // if (e.target === canvasRef.current) {
+    if (e.target === canvasRef.current) {
       e.preventDefault();
       if (onTouchStart) {
         onTouchStart(e);
       }
-    // }
+    }
   }, [onTouchStart]);
 
   const touchMoveListener = useCallback((e:any) => {
@@ -75,6 +74,11 @@ const Canvas = (props:Props) => {
   }, [onMouseUp]);
 
   useEffect(() => {
+    const handleResize = () => {
+      // Trigger a re-render
+      setKey(prevKey => prevKey + 1);
+    };
+
     if (setRef) {
       setRef(canvasRef);
       if (canvasRef && canvasRef.current) {
@@ -84,6 +88,7 @@ const Canvas = (props:Props) => {
         canvasRef.current.addEventListener('mousedown', mouseDownListener);
         canvasRef.current.addEventListener('mousemove', mouseMoveListener);
         canvasRef.current.addEventListener('mouseup', mouseUpListener);
+        window.addEventListener('resize', handleResize);
       }
     }
     return () => {
@@ -93,24 +98,25 @@ const Canvas = (props:Props) => {
       canvasRef?.current?.removeEventListener('mousedown', mouseDownListener);
       canvasRef?.current?.removeEventListener('mousemove', mouseMoveListener);
       canvasRef?.current?.removeEventListener('mouseup', mouseUpListener);
+      window.removeEventListener('resize', handleResize);
     }
   }, [ setRef, canvasRef, onTouchMove, mouseDownListener, mouseMoveListener, mouseUpListener ]);
 
-  // useEffect(() => {
-  //   let totalHeight = 0;
-  //
-  //   if (socketStore.currentInstance?.settings.controls.texts && socketStore.currentInstance?.settings.controls.texts?.length > 1) {
-  //     totalHeight += 108
-  //   }
-  //
-  //   if (socketStore.currentInstance?.settings.controls.buttons || socketStore.currentInstance?.settings.controls.eden) {
-  //     totalHeight += 93
-  //   }
-  //   setToolbarsHeight(`${totalHeight}px`);
-  // }, [ socketStore.currentInstance ]);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    // Resize canvas and possibly other operations every time the component re-renders
+    if (canvas) {
+      // context.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Resize the canvas
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+  }, [canvasRef]);
 
   return (
     <canvas
+      key={key}
       className="border-bottom border-top border-secondary"
       style={{ width: '100%' }}
       ref={canvasRef}
