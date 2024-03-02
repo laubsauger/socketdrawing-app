@@ -1,4 +1,13 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, {
+  MouseEvent,
+  MutableRefObject,
+  ReactNode,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { observer } from 'mobx-react-lite';
 
 import './styles.scss';
@@ -18,11 +27,13 @@ type Props = {
 };
 
 const CtrlButton = (props:Props) => {
+  console.log(props)
   const { label, variant, channelName, released , type, children, onClick, className, style} = props;
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
-
-  const handleBtnPress = useCallback(() => {
+  const buttonRef: MutableRefObject<HTMLDivElement|HTMLButtonElement|undefined> = useRef()
+  const handleBtnPress = useCallback((e: React.MouseEvent<HTMLButtonElement|HTMLDivElement>) => {
+    e.preventDefault()
     setPressed(true);
     socket.emit('OSC_CTRL_MESSAGE', {
       message: 'button',
@@ -33,24 +44,53 @@ const CtrlButton = (props:Props) => {
   }, [ socket, channelName ]);
 
   useEffect(() => {
+    if (!buttonRef?.current) {
+      return
+    }
+
+    const contextMenuHandler = (e: React.MouseEvent<HTMLButtonElement|HTMLDivElement>) => {
+      e.preventDefault();
+    }
+
+    // attach contextmenu event listener to button ref
+    //@ts-ignore
+    buttonRef.current.addEventListener('contextmenu', contextMenuHandler)
+
+    return () => {
+      //@ts-ignore
+      buttonRef?.current?.removeEventListener('contextmenu', contextMenuHandler)
+    }
+  }, [buttonRef]);
+
+  useEffect(() => {
+    console.log('useEffect', { released, pressed, channelName })
     if (typeof released === 'undefined') {
       return
     }
 
-    if (pressed && released) {
-      socket.emit('OSC_CTRL_MESSAGE', {
-        message: 'button',
-        btnId: channelName,
-        state: 0,
-      });
+    console.log('trigger delayed release')
+    const delayedReleaseHandler = setTimeout(() => {
+      if (pressed && released) {
+        console.log('send event')
+        socket.emit('OSC_CTRL_MESSAGE', {
+          message: 'button',
+          btnId: channelName,
+          state: 0,
+        });
 
-      setPressed(false);
+        setPressed(false);
+      }
+    }, 250)
+
+    return () => {
+      clearTimeout(delayedReleaseHandler);
     }
   }, [ socket, pressed, released, channelName ]);
 
   if (type === 'div') {
     return (
       <div
+        ref={buttonRef as MutableRefObject<HTMLDivElement>}
         className={className}
         onMouseDown={handleBtnPress}
         style={style}
@@ -62,6 +102,7 @@ const CtrlButton = (props:Props) => {
 
   return (
     <button
+      ref={buttonRef as MutableRefObject<HTMLButtonElement>}
       className={`CtrlButton ${variant ? `CtrlButton-${variant}` : ''}`}
       onMouseDown={handleBtnPress}
     >

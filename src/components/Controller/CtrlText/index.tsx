@@ -14,11 +14,12 @@ type Props = {
   autoFocus?: boolean,
   shouldSubmit?: boolean,
   hasSubmit?: boolean,
+  maxLength?: number
 };
 
 const CtrlText = (props: Props) => {
   const ref = useRef<HTMLInputElement|null>(null)
-  const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess } = props;
+  const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess, maxLength } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
   const socket = useSocket();
@@ -107,7 +108,7 @@ const CtrlText = (props: Props) => {
                   ? <InputGroup className="d-flex align-items-center">
                       <Form.Control
                         ref={ref}
-                        maxLength={20}
+                        maxLength={maxLength ? maxLength : 20}
                         type="text"
                         value={text}
                         placeholder={label}

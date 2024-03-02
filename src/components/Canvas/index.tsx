@@ -81,9 +81,9 @@ const Canvas = (props:Props) => {
         canvasRef.current.addEventListener('touchstart', touchStartListener, { passive: false })
         canvasRef.current.addEventListener('touchmove', touchMoveListener, { passive: false })
         canvasRef.current.addEventListener('touchend', touchEndListener, { passive: false })
-        canvasRef.current.addEventListener('mousedown', mouseDownListener, { passive: false });
-        canvasRef.current.addEventListener('mousemove', mouseMoveListener, { passive: false });
-        canvasRef.current.addEventListener('mouseup', mouseUpListener, { passive: false });
+        canvasRef.current.addEventListener('mousedown', mouseDownListener);
+        canvasRef.current.addEventListener('mousemove', mouseMoveListener);
+        canvasRef.current.addEventListener('mouseup', mouseUpListener);
       }
     }
     return () => {

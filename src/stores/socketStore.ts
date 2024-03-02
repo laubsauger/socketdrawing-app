@@ -22,13 +22,14 @@ export type RoomState = {
 
 export type Control = {
   id: string
-  type: 'text'|'button'|'eden'|'xy'
+  type: 'text'|'button'|'eden'|'xy'|'toggle'
   options: {
     variant?: 'black'|'red'|'green'|'blue'|'yellow'
     label?: string,
     submit?: boolean
     mode?: 'paint'|'crosshair',
     multiline?: boolean
+    maxLength?: number
   }
 }
 

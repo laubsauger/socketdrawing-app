@@ -16,6 +16,7 @@ import CtrlEden from './CtrlEden';
 import { Control, Player } from '../../stores/socketStore';
 import { useWakeLock } from 'react-screen-wake-lock';
 import LogoBackground from '../LogoBackground';
+import CtrlToggle from './CtrlToggle';
 
 export type PlayerColor = 'black'|'red'|'green'|'blue'|'yellow';
 
@@ -235,8 +236,10 @@ const Controller = () => {
 
     setTimeout(() => {
       setFiredMouseUp(false);
-    }, 50)
+    }, 400)
   }, []);
+
+  console.log({ firedMouseUp })
 
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp);
@@ -289,6 +292,7 @@ const Controller = () => {
                           messageField={'textPrompt'}
                           textArea={text.options.multiline}
                           hasSubmit={text.options.submit}
+                          maxLength={text.options.maxLength}
                         />
                       ) }
                     </>
@@ -319,16 +323,32 @@ const Controller = () => {
                     className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top"
                     style={{ zIndex: 10, borderTop: '1px solid black' }}
                   >
-                    { socketStore.currentInstance.settings.controls.buttons.map((btn) =>
-                      <CtrlButton
-                        key={btn.id}
-                        type='button'
-                        channelName={btn.id}
-                        label={btn.options?.label}
-                        variant={btn.options?.variant}
-                        released={firedMouseUp || undefined}
-                      />
-                    )}
+                    { socketStore.currentInstance.settings.controls.buttons.map((btn) => {
+                      if (btn.type === 'toggle') {
+                        return (
+                          <CtrlToggle
+                            key={btn.id}
+                            type='button'
+                            channelName={btn.id}
+                            label={btn.options?.label}
+                            variant={btn.options?.variant}
+                            released={firedMouseUp}
+                          />
+                        )
+                      }
+
+                      return (
+                        <CtrlButton
+                          key={btn.id}
+                          type='button'
+                          channelName={btn.id}
+                          label={btn.options?.label}
+                          variant={btn.options?.variant}
+                          released={firedMouseUp}
+                        />
+                      )}
+                      )
+                    }
                   </div>
                   : null
                 }

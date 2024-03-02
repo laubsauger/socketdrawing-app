@@ -101,11 +101,11 @@ const CtrlXY = (props:Props) => {
       context.fillStyle = `rgba(64,64,255,${alpha})`;
       context.fill();
 
-      position.life -= 1;
+        position.life -= 1;
 
-      if (position.life === 0) {
-        cursorPositions.splice(index, 1);
-      }
+        if (position.life === 0) {
+          cursorPositions.splice(index, 1);
+        }
     });
 
     setCursorPositions(cursorPositions);
