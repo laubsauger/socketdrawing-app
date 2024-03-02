@@ -81,9 +81,9 @@ const CtrlXY = (props:Props) => {
       console.log('is drawing');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      if (feedback) {
-        drawTrails(ctx)
-      }
+      // if (feedback) {
+      //   drawTrails(ctx)
+      // }
       drawCrossHair(ctx, ref.current.width, ref.current.height, pos, 0.7);
     }
   }, [ isPainting, pos, ref]);
