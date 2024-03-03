@@ -86,7 +86,7 @@ const Canvas = (props:Props) => {
         canvasRef.current.addEventListener('touchmove', touchMoveListener, { passive: false })
         canvasRef.current.addEventListener('touchend', touchEndListener, { passive: false })
         canvasRef.current.addEventListener('mousedown', mouseDownListener);
-        canvasRef.current.addEventListener('mousemove', mouseMoveListener);
+        canvasRef.current.addEventListener('mousemove', mouseMoveListener, { passive: false });
         canvasRef.current.addEventListener('mouseup', mouseUpListener);
         window.addEventListener('resize', handleResize);
       }
@@ -106,8 +106,6 @@ const Canvas = (props:Props) => {
     const canvas = canvasRef.current;
     // Resize canvas and possibly other operations every time the component re-renders
     if (canvas) {
-      // context.clearRect(0, 0, canvas.width, canvas.height);
-
       // Resize the canvas
       canvas.width  = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
