@@ -20,6 +20,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import UserNameForm from './UserNameForm';
 import Points from './Phases/Points';
 import NeatMeshGradient from './NeatMeshGradient';
+import './styles.scss';
 
 type Props = {
   firedMouseUp: boolean
@@ -153,6 +154,7 @@ const CtrlEden = (props: Props) => {
     if (gameStore.currentPhase === 'points') {
       setShowPoints(true)
       vibrationSignal(200)
+      return
     }
     setShowPoints(false)
   }, [gameStore.currentPhase])
