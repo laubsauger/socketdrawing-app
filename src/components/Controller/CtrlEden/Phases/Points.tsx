@@ -11,7 +11,7 @@ const Points = () => {
   const { gameStore, socketStore } = useStores();
 
   // Get the max points
-  const maxPoints = Math.max.apply(Math, gameStore.pointsData.points.map((item) => item.pointsPrev + item.pointsDiff));
+  const maxPoints = Math.max.apply(Math, gameStore?.pointsData?.points ? gameStore?.pointsData?.points.map((item) => item.pointsPrev + item.pointsDiff) : [0]);
 
   console.log({maxPoints})
 
@@ -20,11 +20,24 @@ const Points = () => {
     visible: (pointsPercentage: number) => ({
       width: `${pointsPercentage}%`,
       transition: {
-        duration: 1,
+        delay: 3,
+        duration: 5,
         ease: 'easeInOut'
       }
     }),
   };
+
+  const prevVariants = {
+    hidden: { width: 0 },
+    visible: (pointsPercentage: number) => ({
+      width: `${pointsPercentage}%`,
+      transition: {
+        delay: 1,
+        duration: 1,
+        ease: 'easeInOut'
+      }
+    }),
+  }
 
   return (
     <div className="d-flex flex-column" style={{ height: '100vh', width: '100vw' }}>
@@ -61,7 +74,7 @@ const Points = () => {
                 >
                   <motion.div
                     className="points-bar-prev"
-                    variants={barVariants}
+                    variants={prevVariants}
                     initial="hidden"
                     animate="visible"
                     custom={pointsPercentagePrev}
