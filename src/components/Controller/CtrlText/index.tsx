@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import { useSocket } from "../../../hooks/useSocket";
 import { Button, Form, InputGroup } from "react-bootstrap";
+import { useStores } from '../../../hooks/useStores';
 
 type Props = {
   id: string
@@ -18,11 +19,31 @@ type Props = {
 };
 
 const CtrlText = (props: Props) => {
+  const { gameStore } = useStores()
   const ref = useRef<HTMLInputElement|null>(null)
   const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess, maxLength } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
   const socket = useSocket();
+
+  useEffect(() => {
+    console.log('CtrlText - useEffect', gameStore.currentPhase)
+
+    if (gameStore.currentPhase !== 'ui-update') {
+      return
+    }
+
+    if (!gameStore.uiUpdateData || !gameStore?.uiUpdateData?.controls) {
+      return
+    }
+
+    const receivedUpdate = gameStore.uiUpdateData.controls.filter(control => control.id === props.id)[0]
+
+    if (receivedUpdate) {
+      setText(receivedUpdate.value as string)
+    }
+  }, [gameStore.currentPhase, gameStore.uiUpdateData])
+
 
   const handleChangeText = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     console.log('change', ev.target.value)

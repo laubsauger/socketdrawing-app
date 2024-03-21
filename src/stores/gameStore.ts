@@ -3,7 +3,7 @@ import { RootStore } from './rootStore';
 import { Player } from './socketStore';
 import { Result } from '../components/Controller/CtrlEden/Phases/Voting';
 
-export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'|'points'
+export type Phase = 'lounge'|'splash'|'announce_players'|'round_start'|'round_end'|'voting'|'results'|'points'|'ui-update'
 
 export type PromptItem = {
   id: number,
@@ -79,7 +79,16 @@ export type Phase7PointsData = {
   ]
 }
 
-export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData | Phase4RoundData | Phase5VotingData | Phase6ResultData | Phase7PointsData
+export type UIUpdateItem = {
+  id: string,
+  value: string|{x: number, y: number}
+}
+
+export type PhaseUIUpdate = {
+  controls: UIUpdateItem[]
+}
+
+export type PhaseData = Phase0LoungeData | Phase1SplashData | Phase2PlayerData | Phase3RoundData | Phase4RoundData | Phase5VotingData | Phase6ResultData | Phase7PointsData | PhaseUIUpdate
 
 export class GameStore implements IGameStore {
   private rootStore: RootStore;
@@ -97,6 +106,7 @@ export class GameStore implements IGameStore {
   @observable votingData: Phase5VotingData|null = null;
   @observable resultData: Phase6ResultData|null = null;
   @observable pointsData: Phase7PointsData|null = null;
+  @observable uiUpdateData: PhaseUIUpdate|null = null;
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -104,6 +114,15 @@ export class GameStore implements IGameStore {
   }
 
   @action handleUpdate = (data: GameStateUpdatePayload) :void => {
+    if (data.gameState.phase === 'ui-update') {
+      console.log('ui-update', data.gameState.data)
+      this.currentPhase = data.gameState.phase
+      this.currentData = data.gameState.data
+
+      this.setUIUpdateData((data.gameState.data as PhaseUIUpdate))
+      return
+    }
+
     if (this.currentPhase === data.gameState.phase) {
       console.log('redundant handleUpdate, current phase', this.currentPhase)
       return
@@ -210,5 +229,9 @@ export class GameStore implements IGameStore {
         }
       }))
     })
+  }
+
+  @action setUIUpdateData = (data: PhaseUIUpdate|null): void => {
+    this.uiUpdateData = data || null
   }
 }
