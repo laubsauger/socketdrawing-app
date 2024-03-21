@@ -284,11 +284,8 @@ const Controller = () => {
                         <CtrlText
                           id={text.id}
                           key={text.id}
-                          label={text.options?.label || ''}
                           messageField={'textPrompt'}
-                          textArea={text.options.multiline}
-                          hasSubmit={text.options.submit}
-                          maxLength={text.options.maxLength}
+                          {...text.options}
                         />
                       ) }
                     </>
@@ -326,9 +323,8 @@ const Controller = () => {
                             key={btn.id}
                             type='button'
                             channelName={btn.id}
-                            label={btn.options?.label}
-                            variant={btn.options?.variant}
                             released={firedMouseUp}
+                            {...btn.options}
                           />
                         )
                       }
@@ -338,9 +334,8 @@ const Controller = () => {
                           key={btn.id}
                           type='button'
                           channelName={btn.id}
-                          label={btn.options?.label}
-                          variant={btn.options?.variant}
                           released={firedMouseUp}
+                          {...btn.options}
                         />
                       )}
                       )

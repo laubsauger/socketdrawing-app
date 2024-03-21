@@ -12,6 +12,7 @@ type Props = {
   textArea?: boolean,
   onSubmitSuccess?: (text: string|null) => void,
   singleUse?: boolean,
+  hasClearBtn?: boolean,
   autoFocus?: boolean,
   shouldSubmit?: boolean,
   hasSubmit?: boolean,
@@ -43,7 +44,6 @@ const CtrlText = (props: Props) => {
       setText(receivedUpdate.value as string)
     }
   }, [gameStore.currentPhase, gameStore.uiUpdateData])
-
 
   const handleChangeText = useCallback((ev: ChangeEvent<HTMLInputElement>) => {
     console.log('change', ev.target.value)
@@ -140,6 +140,12 @@ const CtrlText = (props: Props) => {
                         disabled={props.singleUse ? sent && props.singleUse : (!hasSubmit ? false : sent)}
                         style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                       />
+                      { props.hasClearBtn
+                        ? <Button variant="outline-secondary" id="button-addon2" onClick={() => setText('')}>
+                            Clear
+                          </Button>
+                        : null
+                      }
                     </InputGroup>
                   : null
                 }

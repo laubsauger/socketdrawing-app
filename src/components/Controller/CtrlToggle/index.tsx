@@ -15,6 +15,7 @@ type Props = {
   children?: ReactNode
   onClick?: () => void
   style?: any
+  size?: "small"|"medium"|"large",
   className?: string
 };
 
@@ -22,6 +23,11 @@ const CtrlToggle = (props:Props) => {
   const { label, variant, channelName, onClick, className, style} = props;
   const socket = useSocket();
   const [checked, setChecked] = useState(false);
+
+  const styles = {
+    ...style,
+    ...(props.size ? props.size === 'large' ? {"height": "6rem"} : '' : {})
+  }
 
   useEffect(() => {
       socket.emit('OSC_CTRL_MESSAGE', {
@@ -34,16 +40,16 @@ const CtrlToggle = (props:Props) => {
 
   return (
     <ToggleButton
-      id="toggle-check"
+      id={channelName}
       type="checkbox"
       variant={variant}
       checked={checked}
       value="1"
       onChange={(e) => setChecked(e.currentTarget.checked)}
       className={`CtrlToggle ${variant ? `CtrlToggle-${variant}` : ''} ${checked ? 'CtrlToggle--checked' : ''} ${className ? className : ''}`}
-      style={style}
+      style={styles}
     >
-      <div>{label}</div> <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : ''}`}>{checked ? 'on' : 'off'}</div>
+      <div>{label}</div> <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : 'text-black'}`}>{checked ? 'on' : 'off'}</div>
     </ToggleButton>
   )
 };

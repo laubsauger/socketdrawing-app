@@ -2,7 +2,7 @@ body.prevent-scroll-drag {
   overscroll-behavior: contain;
   touch-action: none;
   user-select: none;
-
+  overflow: hidden;
 
   .Controller {
     touch-action: none;

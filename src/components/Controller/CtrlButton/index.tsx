@@ -23,11 +23,11 @@ type Props = {
   children?: ReactNode
   onClick?: () => void
   style?: any
+  size?: "small"|"medium"|"large",
   className?: string
 };
 
 const CtrlButton = (props:Props) => {
-  console.log(props)
   const { label, variant, channelName, released , type, children, onClick, className, style} = props;
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
@@ -63,15 +63,15 @@ const CtrlButton = (props:Props) => {
   }, [buttonRef]);
 
   useEffect(() => {
-    console.log('useEffect', { released, pressed, channelName })
+    // console.log('useEffect', { released, pressed, channelName })
     if (typeof released === 'undefined') {
       return
     }
 
-    console.log('trigger delayed release')
+    // console.log('trigger delayed release')
     const delayedReleaseHandler = setTimeout(() => {
       if (pressed && released) {
-        console.log('send event')
+        // console.log('send event')
         socket.emit('OSC_CTRL_MESSAGE', {
           message: 'button',
           btnId: channelName,
@@ -87,13 +87,18 @@ const CtrlButton = (props:Props) => {
     }
   }, [ socket, pressed, released, channelName ]);
 
+  const styles = {
+    ...style,
+    ...(props.size ? props.size === 'large' ? {"height": "6rem"} : '' : {})
+  }
+
   if (type === 'div') {
     return (
       <div
         ref={buttonRef as MutableRefObject<HTMLDivElement>}
         className={className}
         onMouseDown={handleBtnPress}
-        style={style}
+        style={styles}
       >
         {children ? children : (label || channelName)}
       </div>
@@ -105,6 +110,7 @@ const CtrlButton = (props:Props) => {
       ref={buttonRef as MutableRefObject<HTMLButtonElement>}
       className={`CtrlButton ${variant ? `CtrlButton-${variant}` : ''}`}
       onMouseDown={handleBtnPress}
+      style={styles}
     >
       { label || channelName }
     </button>
