@@ -17,7 +17,7 @@ import { Control, Player } from '../../stores/socketStore';
 import { useWakeLock } from 'react-screen-wake-lock';
 import LogoBackground from '../LogoBackground';
 import CtrlToggle from './CtrlToggle';
-
+import { useLocation } from 'react-router-dom';
 export type PlayerColor = 'black'|'red'|'green'|'blue'|'yellow';
 
 export const buttonColors: PlayerColor[] = [ 'red', 'green', 'blue', 'yellow' ]
@@ -247,6 +247,13 @@ const Controller = () => {
     };
   }, [ handleMouseUp ])
 
+  const location = useLocation();
+  const [ isAdminMode, setIsAdminMode ] = useState(false)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    setIsAdminMode(!!params.get('admin'))
+  }, [location.search]);
+
   return (
     <div className='Controller d-flex flex-column ' style={{ height: '100%' }}>
       { !socketStore.currentInstance?.settings?.controls?.eden ? <LogoBackground /> : null }
@@ -317,6 +324,10 @@ const Controller = () => {
                     style={{ zIndex: 10, borderTop: '1px solid black' }}
                   >
                     { socketStore.currentInstance.settings.controls.buttons.map((btn) => {
+                      if (btn.options.admin && !isAdminMode) {
+                        return
+                      }
+
                       if (btn.type === 'toggle') {
                         return (
                           <CtrlToggle

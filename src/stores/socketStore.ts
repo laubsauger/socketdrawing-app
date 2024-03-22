@@ -27,6 +27,7 @@ export type Control = {
     variant?: 'black'|'red'|'green'|'blue'|'yellow'
     label?: string,
     submit?: boolean
+    admin?: boolean
     mode?: 'paint'|'crosshair',
     multiline?: boolean
     maxLength?: number
