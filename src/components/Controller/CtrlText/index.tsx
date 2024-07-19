@@ -4,14 +4,13 @@ import { observer } from 'mobx-react-lite';
 import { useSocket } from "../../../hooks/useSocket";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useStores } from '../../../hooks/useStores';
-import { log } from 'three/examples/jsm/nodes/math/MathNode';
 
 type Props = {
   id: string
   label?: string,
   messageField: string,
   textArea?: boolean,
-  onSubmitSuccess?: (text: string|null) => void,
+  onSubmitSuccess?: (text: string | null) => void,
   singleUse?: boolean,
   hasClearBtn?: boolean,
   autoFocus?: boolean,
@@ -23,8 +22,18 @@ type Props = {
 
 const CtrlText = (props: Props) => {
   const { gameStore } = useStores()
-  const ref = useRef<HTMLInputElement|null>(null)
-  const { onChangeEvent, label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess, maxLength } = props;
+  const ref = useRef<HTMLInputElement | null>(null)
+  const {
+    onChangeEvent,
+    label,
+    messageField,
+    textArea,
+    autoFocus,
+    shouldSubmit,
+    hasSubmit,
+    onSubmitSuccess,
+    maxLength
+  } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
   const socket = useSocket();
@@ -71,6 +80,24 @@ const CtrlText = (props: Props) => {
       text: text.trim(),
     });
   }
+
+  const sendClear = (state: number) => {
+    socket.emit('OSC_CTRL_MESSAGE', {
+      message: 'button',
+      btnId: 'clear',
+      state: state,
+    });
+  }
+
+  const handleClear = () => {
+    setText('')
+
+    sendClear(1)
+    setTimeout(() => {
+      sendClear(0)
+    }, 250)
+  }
+
 
   const doSubmit = () => {
     sendText(text)
@@ -122,10 +149,12 @@ const CtrlText = (props: Props) => {
                   //@ts-ignore
                   ref={ref}
                   as="textarea"
-                  rows={8}
+                  rows={4}
+                  value={text}
                   placeholder={label}
                   required={true}
                   onChange={handleChangeText}
+                  spellCheck={false}
                   aria-label={label}
                   autoFocus={autoFocus}
                   disabled={props.singleUse ? sent && props.singleUse : (hasSubmit ? false : sent)}
@@ -137,26 +166,26 @@ const CtrlText = (props: Props) => {
               <>
                 {!sent || !hasSubmit
                   ? <InputGroup className="d-flex align-items-center">
-                      <Form.Control
-                        ref={ref}
-                        maxLength={maxLength ? maxLength : 20}
-                        type="text"
-                        value={text}
-                        placeholder={label}
-                        required={true}
-                        onChange={handleChangeText}
-                        aria-label={label}
-                        autoFocus={autoFocus}
-                        disabled={props.singleUse ? sent && props.singleUse : (!hasSubmit ? false : sent)}
-                        style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
-                      />
-                      { props.hasClearBtn
-                        ? <Button variant="outline-secondary" id="button-addon2" onClick={() => setText('')}>
-                            Clear
-                          </Button>
-                        : null
-                      }
-                    </InputGroup>
+                    <Form.Control
+                      ref={ref}
+                      maxLength={maxLength ? maxLength : 20}
+                      type="text"
+                      value={text}
+                      placeholder={label}
+                      required={true}
+                      onChange={handleChangeText}
+                      aria-label={label}
+                      autoFocus={autoFocus}
+                      disabled={props.singleUse ? sent && props.singleUse : (!hasSubmit ? false : sent)}
+                      style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+                    />
+                    {props.hasClearBtn
+                      ? <Button variant="outline-secondary" id="button-addon2" onClick={() => setText('')}>
+                        Clear
+                      </Button>
+                      : null
+                    }
+                  </InputGroup>
                   : null
                 }
               </>
@@ -165,32 +194,45 @@ const CtrlText = (props: Props) => {
           {(!props.singleUse || !sent) && hasSubmit
             ? (
               <div>
-                  <div className={`${textArea ? 'mt-2' : '' }`} style={ textArea ? {} : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
-
-                    { onChangeEvent ? (
+                <div className={`${textArea ? 'mt-2' : ''}`}
+                     style={textArea ? {} : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                >
+                  {onChangeEvent ? (
+                    <div className="d-flex flex-nowrap w-100 gap-4 my-4">
                       <Button
                         variant="primary"
+                        className="w-100"
                         onClick={() => sendSubmit(text)}
                         disabled={!text || (props.singleUse ? sent && props.singleUse : false)}
+                        style={{ height: '64px' }}
                       >
-                        Submit
+                        Submit prompt
                       </Button>
-                    ) : (
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        disabled={!text || (props.singleUse ? sent && props.singleUse : sent)}
-                      >
-                        Submit
-                      </Button>
-                    ) }
-                  </div>
+                      {props.hasClearBtn
+                        ? <Button variant="outline-secondary" id="button-addon2" onClick={handleClear}>
+                          Clear
+                        </Button>
+                        : null
+                      }
+                    </div>
+                  ) : (
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      disabled={!text || (props.singleUse ? sent && props.singleUse : sent)}
+                    >
+                      Submit
+                    </Button>
+                  )}
+                </div>
               </div>
             )
             :
             (
               <>
-                {textArea && hasSubmit ? <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back, relax and wait for others to submit theirs.</div> : null}
+                {textArea && hasSubmit ?
+                  <div className="mt-3 mb-0 w-100 text-success">Prompt sent! Sit back, relax and wait for others to
+                    submit theirs.</div> : null}
               </>
             )
           }

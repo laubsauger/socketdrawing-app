@@ -27,10 +27,11 @@ type Props = {
   style?: any
   size?: "small"|"medium"|"large",
   className?: string
+  fill?: boolean
 };
 
 const CtrlButton = (props:Props) => {
-  const { icon, label, variant, channelName, released , type, children, onClick, className, style} = props;
+  const { fill, icon, label, variant, channelName, released , type, children, onClick, className, style} = props;
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
   const buttonRef: MutableRefObject<HTMLDivElement|HTMLButtonElement|undefined> = useRef()
@@ -117,7 +118,7 @@ const CtrlButton = (props:Props) => {
   return (
     <button
       ref={buttonRef as MutableRefObject<HTMLButtonElement>}
-      className={`CtrlButton ${variant ? `CtrlButton-${variant}` : ''}`}
+      className={`CtrlButton ${variant ? `CtrlButton-${variant}` : ''} ${fill ? 'w-100' : 'flex-shrink-0'}`}
       onMouseDown={handleBtnPress}
       style={styles}
     >

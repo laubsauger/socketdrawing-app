@@ -43,21 +43,23 @@ const CtrlToggle = (props:Props) => {
   const IconComponent = icon ? getIcon(icon) : undefined
 
   return (
-    <ToggleButton
-      id={channelName}
-      type="checkbox"
-      variant={variant}
-      checked={checked}
-      value="1"
-      onChange={(e) => setChecked(e.currentTarget.checked)}
-      className={`CtrlToggle ${variant ? `CtrlToggle-${variant}` : ''} ${checked ? 'CtrlToggle--checked' : ''} ${className ? className : ''}`}
-      style={styles}
-    >
-      <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={24} /> : null}</div>
-      <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : 'text-black'}`}>
-        {checked ? 'on' : 'off'}
-      </div>
-    </ToggleButton>
+    <div>
+      <ToggleButton
+        id={channelName}
+        type="checkbox"
+        variant={variant}
+        checked={checked}
+        value="1"
+        onChange={(e) => setChecked(e.currentTarget.checked)}
+        className={`CtrlToggle ${variant ? `CtrlToggle-${variant}` : ''} ${checked ? 'CtrlToggle--checked' : ''} ${className ? className : ''}`}
+        style={styles}
+      >
+        <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={24} /> : null}</div>
+        <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : 'text-black'}`}>
+          {checked ? 'on' : 'off'}
+        </div>
+      </ToggleButton>
+    </div>
   )
 };
 
