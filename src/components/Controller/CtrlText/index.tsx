@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useSocket } from "../../../hooks/useSocket";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useStores } from '../../../hooks/useStores';
+import { log } from 'three/examples/jsm/nodes/math/MathNode';
 
 type Props = {
   id: string
@@ -17,12 +18,13 @@ type Props = {
   shouldSubmit?: boolean,
   hasSubmit?: boolean,
   maxLength?: number
+  onChangeEvent?: boolean
 };
 
 const CtrlText = (props: Props) => {
   const { gameStore } = useStores()
   const ref = useRef<HTMLInputElement|null>(null)
-  const { label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess, maxLength } = props;
+  const { onChangeEvent, label, messageField, textArea, autoFocus, shouldSubmit, hasSubmit, onSubmitSuccess, maxLength } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
   const socket = useSocket();
@@ -49,7 +51,7 @@ const CtrlText = (props: Props) => {
     console.log('change', ev.target.value)
     setText(ev.target.value);
 
-    if (!hasSubmit) {
+    if (hasSubmit && onChangeEvent || !hasSubmit) {
       sendText(ev.target.value)
     }
   }, []);
@@ -58,6 +60,14 @@ const CtrlText = (props: Props) => {
     socket.emit('OSC_CTRL_MESSAGE', {
       message: messageField,
       id: props.id,
+      text: text.trim(),
+    });
+  }
+
+  const sendSubmit = (text: string) => {
+    socket.emit('OSC_CTRL_MESSAGE', {
+      message: messageField,
+      id: 'submit',
       text: text.trim(),
     });
   }
@@ -118,8 +128,8 @@ const CtrlText = (props: Props) => {
                   onChange={handleChangeText}
                   aria-label={label}
                   autoFocus={autoFocus}
-                  disabled={props.singleUse ? sent && props.singleUse : (!hasSubmit ? false : sent)}
-                  className={sent ? 'border-success bg-black' : ''}
+                  disabled={props.singleUse ? sent && props.singleUse : (hasSubmit ? false : sent)}
+                  className={props.singleUse ? (sent && props.singleUse ? 'border-success bg-black' : '') : (hasSubmit ? '' : sent ? 'border-success bg-black' : '')}
                 />
               </div>
             )
@@ -152,17 +162,28 @@ const CtrlText = (props: Props) => {
               </>
             )
           }
-          {!sent && hasSubmit
+          {(!props.singleUse || !sent) && hasSubmit
             ? (
               <div>
                   <div className={`${textArea ? 'mt-2' : '' }`} style={ textArea ? {} : { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}>
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      disabled={!text || (props.singleUse ? sent && props.singleUse : sent)}
-                    >
-                      Submit
-                    </Button>
+
+                    { onChangeEvent ? (
+                      <Button
+                        variant="primary"
+                        onClick={() => sendSubmit(text)}
+                        disabled={!text || (props.singleUse ? sent && props.singleUse : false)}
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        disabled={!text || (props.singleUse ? sent && props.singleUse : sent)}
+                      >
+                        Submit
+                      </Button>
+                    ) }
                   </div>
               </div>
             )

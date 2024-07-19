@@ -5,9 +5,11 @@ import './styles.scss';
 import { useSocket } from "../../../hooks/useSocket";
 import { PlayerColor } from '../index';
 import { ToggleButton } from 'react-bootstrap';
+import { getIcon } from '../../../utils/icons';
 
 type Props = {
   label?: string,
+  icon?: string,
   type: 'div'|'button',
   variant?: PlayerColor
   channelName: string,
@@ -20,7 +22,7 @@ type Props = {
 };
 
 const CtrlToggle = (props:Props) => {
-  const { label, variant, channelName, onClick, className, style} = props;
+  const { icon, label, variant, channelName, onClick, className, style} = props;
   const socket = useSocket();
   const [checked, setChecked] = useState(false);
 
@@ -38,6 +40,8 @@ const CtrlToggle = (props:Props) => {
       onClick && onClick()
   }, [channelName, onClick, checked]);
 
+  const IconComponent = icon ? getIcon(icon) : undefined
+
   return (
     <ToggleButton
       id={channelName}
@@ -49,7 +53,10 @@ const CtrlToggle = (props:Props) => {
       className={`CtrlToggle ${variant ? `CtrlToggle-${variant}` : ''} ${checked ? 'CtrlToggle--checked' : ''} ${className ? className : ''}`}
       style={styles}
     >
-      <div>{label}</div> <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : 'text-black'}`}>{checked ? 'on' : 'off'}</div>
+      <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={24} /> : null}</div>
+      <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : 'text-black'}`}>
+        {checked ? 'on' : 'off'}
+      </div>
     </ToggleButton>
   )
 };

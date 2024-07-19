@@ -25,10 +25,12 @@ export type Control = {
   type: 'text'|'button'|'eden'|'xy'|'toggle'
   options: {
     variant?: 'black'|'red'|'green'|'blue'|'yellow'
+    icon?: string,
     label?: string,
     submit?: boolean
     admin?: boolean
-    mode?: 'paint'|'crosshair',
+    mode?: 'paint'|'crosshair'
+    singleUse?: boolean
     multiline?: boolean
     maxLength?: number
   }

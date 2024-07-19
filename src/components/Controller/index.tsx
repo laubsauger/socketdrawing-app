@@ -6,14 +6,12 @@ import './styles.scss';
 import config from '../../config';
 import CtrlButton from './CtrlButton';
 import CtrlXY from './CtrlXY';
-import SessionInfo from './SessionInfo';
 import { useSocket } from '../../hooks/useSocket';
 import { useStores } from '../../hooks/useStores';
 import CtrlText from "./CtrlText";
-import Sensors from "./Sensors";
 import CtrlFader from "./CtrlFader";
 import CtrlEden from './CtrlEden';
-import { Control, Player } from '../../stores/socketStore';
+import { Player } from '../../stores/socketStore';
 import { useWakeLock } from 'react-screen-wake-lock';
 import LogoBackground from '../LogoBackground';
 import CtrlToggle from './CtrlToggle';
@@ -235,7 +233,7 @@ const Controller = () => {
     }, 400)
   }, []);
 
-  console.log({ firedMouseUp })
+  // console.log({ firedMouseUp })
 
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp);
@@ -292,6 +290,8 @@ const Controller = () => {
                           id={text.id}
                           key={text.id}
                           messageField={'textPrompt'}
+                          textArea={text.options.multiline}
+                          hasSubmit={!!text.options.submit}
                           {...text.options}
                         />
                       ) }
@@ -320,11 +320,11 @@ const Controller = () => {
                 }
                 {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons.length > 0
                   ? <div
-                    className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top"
+                    className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top align-items-center"
                     style={{ zIndex: 10, borderTop: '1px solid black' }}
                   >
                     { socketStore.currentInstance.settings.controls.buttons.map((btn) => {
-                      if (btn.options.admin && !isAdminMode) {
+                      if (btn.options && btn.options.admin && !isAdminMode) {
                         return
                       }
 

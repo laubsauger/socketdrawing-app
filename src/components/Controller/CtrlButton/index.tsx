@@ -13,9 +13,11 @@ import { observer } from 'mobx-react-lite';
 import './styles.scss';
 import { useSocket } from "../../../hooks/useSocket";
 import { PlayerColor } from '../index';
+import { getIcon } from '../../../utils/icons';
 
 type Props = {
   label?: string,
+  icon?: string,
   type: 'div'|'button',
   variant?: PlayerColor
   channelName: string,
@@ -28,7 +30,7 @@ type Props = {
 };
 
 const CtrlButton = (props:Props) => {
-  const { label, variant, channelName, released , type, children, onClick, className, style} = props;
+  const { icon, label, variant, channelName, released , type, children, onClick, className, style} = props;
   const [ pressed, setPressed ] = useState(false);
   const socket = useSocket();
   const buttonRef: MutableRefObject<HTMLDivElement|HTMLButtonElement|undefined> = useRef()
@@ -92,6 +94,8 @@ const CtrlButton = (props:Props) => {
     ...(props.size ? props.size === 'large' ? {"height": "6rem"} : '' : {})
   }
 
+  const IconComponent = icon ? getIcon(icon) : undefined
+
   if (type === 'div') {
     return (
       <div
@@ -100,7 +104,12 @@ const CtrlButton = (props:Props) => {
         onMouseDown={handleBtnPress}
         style={styles}
       >
-        {children ? children : (label || channelName)}
+
+        {children ? children : (
+          <>
+            <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={16}/> : null}</div>
+          </>
+        )}
       </div>
     )
   }
@@ -112,7 +121,11 @@ const CtrlButton = (props:Props) => {
       onMouseDown={handleBtnPress}
       style={styles}
     >
-      { label || channelName }
+      { label ? label : IconComponent ? (
+        <>
+          <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={24}/> : null}</div>
+        </>
+      ) : channelName }
     </button>
   )
 };
