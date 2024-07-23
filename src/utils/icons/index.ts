@@ -1,4 +1,4 @@
-import { IconProps, MicFill, Magic } from 'react-bootstrap-icons'
+import { IconProps, MicFill, Magic, Dice5, Dice5Fill, Snow, Pencil } from 'react-bootstrap-icons'
 import { FunctionComponent } from 'react';
 
 type IconType = {
@@ -7,7 +7,10 @@ type IconType = {
 
 const iconNameMap: IconType = {
   Microphone: MicFill,
-  Magicwand: Magic
+  Magicwand: Magic,
+  Dice: Dice5Fill,
+  Freeze: Snow,
+  Draw: Pencil,
 }
 
 export function getIcon(name: string) {

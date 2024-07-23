@@ -1,13 +1,4 @@
-import React, {
-  MouseEvent,
-  MutableRefObject,
-  ReactNode,
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import React, { MutableRefObject, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import './styles.scss';
@@ -18,24 +9,24 @@ import { getIcon } from '../../../utils/icons';
 type Props = {
   label?: string,
   icon?: string,
-  type: 'div'|'button',
+  type: 'div' | 'button',
   variant?: PlayerColor
   channelName: string,
   released?: boolean,
   children?: ReactNode
   onClick?: () => void
   style?: any
-  size?: "small"|"medium"|"large",
+  size?: "small" | "medium" | "large",
   className?: string
   fill?: boolean
 };
 
-const CtrlButton = (props:Props) => {
-  const { fill, icon, label, variant, channelName, released , type, children, onClick, className, style} = props;
-  const [ pressed, setPressed ] = useState(false);
+const CtrlButton = (props: Props) => {
+  const { fill, icon, label, variant, channelName, released, type, children, onClick, className, style } = props;
+  const [pressed, setPressed] = useState(false);
   const socket = useSocket();
-  const buttonRef: MutableRefObject<HTMLDivElement|HTMLButtonElement|undefined> = useRef()
-  const handleBtnPress = useCallback((e: React.MouseEvent<HTMLButtonElement|HTMLDivElement>) => {
+  const buttonRef: MutableRefObject<HTMLDivElement | HTMLButtonElement | undefined> = useRef()
+  const handleBtnPress = useCallback((e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.preventDefault()
     setPressed(true);
     socket.emit('OSC_CTRL_MESSAGE', {
@@ -44,14 +35,14 @@ const CtrlButton = (props:Props) => {
       state: 1,
     });
     onClick && onClick()
-  }, [ socket, channelName ]);
+  }, [socket, channelName]);
 
   useEffect(() => {
     if (!buttonRef?.current) {
       return
     }
 
-    const contextMenuHandler = (e: React.MouseEvent<HTMLButtonElement|HTMLDivElement>) => {
+    const contextMenuHandler = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
       e.preventDefault();
     }
 
@@ -88,11 +79,11 @@ const CtrlButton = (props:Props) => {
     return () => {
       clearTimeout(delayedReleaseHandler);
     }
-  }, [ socket, pressed, released, channelName ]);
+  }, [socket, pressed, released, channelName]);
 
   const styles = {
     ...style,
-    ...(props.size ? props.size === 'large' ? {"height": "6rem"} : '' : {})
+    ...(props.size ? props.size === 'large' ? { "height": "6rem" } : '' : {})
   }
 
   const IconComponent = icon ? getIcon(icon) : undefined
@@ -105,11 +96,11 @@ const CtrlButton = (props:Props) => {
         onMouseDown={handleBtnPress}
         style={styles}
       >
-
         {children ? children : (
-          <>
-            <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={16}/> : null}</div>
-          </>
+          <div className={IconComponent ? 'hasIcon d-flex align-items-center justify-content-center' : ''}>
+            {label ? <span className={`button-text ${IconComponent ? 'me-2' : ''}`}>{label}</span> : null}
+            {IconComponent ? <IconComponent color={'#fff'} size={24}/> : null}
+          </div>
         )}
       </div>
     )
@@ -122,11 +113,10 @@ const CtrlButton = (props:Props) => {
       onMouseDown={handleBtnPress}
       style={styles}
     >
-      { label ? label : IconComponent ? (
-        <>
-          <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={24}/> : null}</div>
-        </>
-      ) : channelName }
+      <div className={IconComponent ? 'hasIcon d-flex align-items-center justify-content-center' : ''}>
+        {label ? <span className={`button-text ${IconComponent ? 'me-2' : ''}`}>{label}</span> : null}
+        {IconComponent ? <IconComponent color={'#fff'} size={24}/> : null}
+      </div>
     </button>
   )
 };

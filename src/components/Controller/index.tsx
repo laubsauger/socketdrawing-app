@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { observer } from 'mobx-react-lite';
-import { useNavigate, useParams } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 import './styles.scss';
 import config from '../../config';
 import CtrlButton from './CtrlButton';
@@ -320,9 +319,9 @@ const Controller = () => {
                 }
                 {socketStore.currentInstance.settings.controls.buttons && socketStore.currentInstance.settings.controls.buttons.length > 0
                   ? <div
-                    className="d-flex justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top align-items-center gap-4"
-                    style={{ zIndex: 10, borderTop: '1px solid black' }}
-                  >
+                      className={`d-flex ${socketStore.currentInstance.settings.layout?.wrapButtons === false ? '' : 'flex-wrap' } justify-content-between py-2 px-2 w-100 bg-black border-bottom border-top align-items-center gap-2`}
+                      style={{ zIndex: 10, borderTop: '1px solid black' }}
+                    >
                     { socketStore.currentInstance.settings.controls.buttons.map((btn) => {
                       if (btn.options && btn.options.admin && !isAdminMode) {
                         return

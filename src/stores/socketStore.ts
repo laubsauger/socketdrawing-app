@@ -45,6 +45,9 @@ export type Instance = {
     slotPick?: boolean,
     randomPick?: boolean,
     sequentialPick?: boolean,
+    layout: {
+      wrapButtons?: boolean
+    }
     controls: {
       eden?: [
         Control

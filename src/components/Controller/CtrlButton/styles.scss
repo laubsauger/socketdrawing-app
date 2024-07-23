@@ -22,3 +22,16 @@
     color: #000;
   }
 }
+
+@media screen and (max-width: 540px) {
+  /* styles for screens smaller than 540px */
+  .CtrlToggle,
+  .CtrlButton {
+    height: 40px !important;
+  }
+
+  .CtrlToggle .hasIcon .button-text,
+  .CtrlButton .hasIcon .button-text {
+    display: none;
+  }
+}

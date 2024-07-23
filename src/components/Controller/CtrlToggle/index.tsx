@@ -54,7 +54,10 @@ const CtrlToggle = (props:Props) => {
         className={`CtrlToggle ${variant ? `CtrlToggle-${variant}` : ''} ${checked ? 'CtrlToggle--checked' : ''} ${className ? className : ''}`}
         style={styles}
       >
-        <div>{label ? label : IconComponent ? <IconComponent color={'#fff'} size={24} /> : null}</div>
+        <div className={IconComponent ? 'hasIcon d-flex align-items-center justify-content-center' : ''}>
+          {label ? <span className={`button-text ${IconComponent ? 'me-2' : ''}`}>{label}</span> : null}
+          {IconComponent ? <IconComponent color={'#fff'} size={24}/> : null}
+        </div>
         <div className={`fst-italic h-full d-flex ${!checked ? 'text-muted' : 'text-black'}`}>
           {checked ? 'on' : 'off'}
         </div>
