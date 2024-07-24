@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useSocket } from "../../../hooks/useSocket";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useStores } from '../../../hooks/useStores';
+import LoadingSpinner from '../../LoadingSpinner';
 
 type Props = {
   id: string
@@ -36,6 +37,7 @@ const CtrlText = (props: Props) => {
   } = props;
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const socket = useSocket();
 
   useEffect(() => {
@@ -74,11 +76,15 @@ const CtrlText = (props: Props) => {
   }
 
   const sendSubmit = (text: string) => {
+    setIsSubmitting(true)
     socket.emit('OSC_CTRL_MESSAGE', {
       message: messageField,
       id: 'submit',
       text: text.trim(),
     });
+    setTimeout(() => {
+      setIsSubmitting(false)
+    }, 2000)
   }
 
   const sendClear = (state: number) => {
@@ -100,9 +106,13 @@ const CtrlText = (props: Props) => {
 
 
   const doSubmit = () => {
+    setIsSubmitting(true)
     sendText(text)
     setSent(true);
     onSubmitSuccess && onSubmitSuccess(text)
+    setTimeout(() => {
+      setIsSubmitting(false)
+    }, 2000)
   }
 
   useEffect(() => {
@@ -201,12 +211,12 @@ const CtrlText = (props: Props) => {
                     <div className="d-flex flex-nowrap w-100 gap-4 my-4">
                       <Button
                         variant="primary"
-                        className="w-100"
-                        onClick={() => sendSubmit(text)}
-                        disabled={!text || (props.singleUse ? sent && props.singleUse : false)}
+                        className="d-flex gap-2 w-100 align-items-center justify-content-center"
+                        onClick={() => !isSubmitting ? sendSubmit(text) : undefined}
+                        disabled={isSubmitting || (!text || (props.singleUse ? sent && props.singleUse : false))}
                         style={{ height: '64px' }}
                       >
-                        Submit prompt
+                        {isSubmitting ? 'Sending...' : 'Submit prompt'}
                       </Button>
                       {props.hasClearBtn
                         ? <Button variant="outline-secondary" id="button-addon2" onClick={handleClear}>
@@ -219,7 +229,7 @@ const CtrlText = (props: Props) => {
                     <Button
                       variant="primary"
                       type="submit"
-                      disabled={!text || (props.singleUse ? sent && props.singleUse : sent)}
+                      disabled={isSubmitting || (!text || (props.singleUse ? sent && props.singleUse : sent))}
                     >
                       Submit
                     </Button>
