@@ -78,7 +78,7 @@ const CtrlXY = (props:Props) => {
 
   const draw = useCallback((ctx:any) => {
     if (isPainting && pos && ref.current) {
-      console.log('is drawing');
+      // console.log('is drawing');
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
       // if (feedback) {
